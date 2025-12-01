@@ -1,3 +1,5 @@
+
+
 Build a complete responsive Dashboard frontend using Next.js (App Router), TypeScript, pnpm, Tailwind CSS and shadcn/ui (Radix). Use Redux Toolkit (RTK) + RTK Query for state & API. Project must be production-structured and ready to connect to a REST backend (json-server in dev). Follow these exact feature requirements and file/folder names.
 
 Tech stack: Next.js (app router) + TypeScript, pnpm, Tailwind CSS, shadcn/ui, lucide-react icons, Redux Toolkit + RTK Query, react-hook-form + zod for forms, json-server for mock API.
