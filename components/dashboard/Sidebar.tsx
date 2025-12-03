@@ -1,35 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-import {
-    FiHome,
-    FiBarChart2,
-    FiUsers,
-    FiSettings,
-    FiBox,
-    FiGrid,
-    FiX
-} from 'react-icons/fi';
+import { FiX } from 'react-icons/fi';
+import { SidebarMenuData } from '@/constants/SidebarMenu.constant';
+import SidebarItem from './sidebar/SidebarItem';
 
 interface SidebarProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
-const menuItems = [
-    { name: 'Overview', icon: FiHome, path: '/dashboard' },
-    { name: 'Analytics', icon: FiBarChart2, path: '/dashboard/analytics' },
-    { name: 'Customers', icon: FiUsers, path: '/dashboard/customers' },
-    { name: 'Products', icon: FiBox, path: '/dashboard/products' },
-    { name: 'Orders', icon: FiGrid, path: '/dashboard/orders' },
-    { name: 'Settings', icon: FiSettings, path: '/dashboard/settings' },
-];
-
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
-    const pathname = usePathname();
-
     return (
         <>
             {/* Mobile Overlay */}
@@ -63,33 +44,19 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 </div>
 
                 {/* Navigation */}
-                <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-4rem)]">
-                    {menuItems.map((item) => {
-                        const isActive = pathname === item.path;
-                        const Icon = item.icon;
-
-                        return (
-                            <Link
-                                key={item.path}
-                                href={item.path}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${isActive
-                                    ? 'bg-gradient-to-r from-[var(--brand-start)]/10 to-[var(--brand-end)]/10 text-[var(--brand-start)]'
-                                    : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100'
-                                    }`}
-                            >
-                                <Icon
-                                    className={`w-5 h-5 ${isActive ? 'text-[var(--brand-start)]' : 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'
-                                        }`}
-                                />
-                                <span className={`font-medium ${isActive ? 'font-semibold' : ''}`}>
-                                    {item.name}
-                                </span>
-                                {isActive && (
-                                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[var(--brand-start)]" />
-                                )}
-                            </Link>
-                        );
-                    })}
+                <nav className="p-4 space-y-6 overflow-y-auto h-[calc(100vh-4rem)] scrollbar-thin scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-800">
+                    {SidebarMenuData.map((section, index) => (
+                        <div key={index}>
+                            <h3 className="px-4 mb-2 text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+                                {section.title}
+                            </h3>
+                            <div className="space-y-1">
+                                {section.items.map((item) => (
+                                    <SidebarItem key={item.title} item={item} />
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </nav>
             </aside>
         </>

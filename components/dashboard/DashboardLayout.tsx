@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
+import ThemeCustomizer from './customizer/ThemeCustomizer';
 
 interface DashboardLayoutProps {
     children: React.ReactNode;
@@ -30,6 +31,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                     </div>
                 </main>
             </div>
+
+            <ThemeCustomizer />
         </div>
     );
 };

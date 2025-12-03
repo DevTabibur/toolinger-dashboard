@@ -1,4 +1,3 @@
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type UiState = {
@@ -14,6 +13,9 @@ export type UiState = {
     | "without-header";
   boxed: boolean;
   sidebarColor: string;
+  topbarColor: string;
+  sidebarBackground: string;
+  customizerOpen: boolean;
 };
 
 export const defaultUiState: UiState = {
@@ -23,6 +25,9 @@ export const defaultUiState: UiState = {
   layoutMode: "default",
   boxed: false,
   sidebarColor: "#111827",
+  topbarColor: "#ffffff",
+  sidebarBackground: "",
+  customizerOpen: false,
 };
 
 const uiSlice = createSlice({
@@ -47,6 +52,18 @@ const uiSlice = createSlice({
     setSidebarColor(state, action: PayloadAction<string>) {
       state.sidebarColor = action.payload;
     },
+    setTopbarColor(state, action: PayloadAction<string>) {
+      state.topbarColor = action.payload;
+    },
+    setSidebarBackground(state, action: PayloadAction<string>) {
+      state.sidebarBackground = action.payload;
+    },
+    toggleCustomizer(state) {
+      state.customizerOpen = !state.customizerOpen;
+    },
+    setCustomizerOpen(state, action: PayloadAction<boolean>) {
+      state.customizerOpen = action.payload;
+    },
     // helper to replace UI with loaded state
     replaceUi(state, action: PayloadAction<Partial<UiState>>) {
       return { ...state, ...action.payload };
@@ -61,6 +78,10 @@ export const {
   setLayoutMode,
   setBoxed,
   setSidebarColor,
+  setTopbarColor,
+  setSidebarBackground,
+  toggleCustomizer,
+  setCustomizerOpen,
   replaceUi,
 } = uiSlice.actions;
 
