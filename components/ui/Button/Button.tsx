@@ -48,4 +48,22 @@ const Button = ({
         </button>
     );
 }
-export default Button
+
+/*
+ * How to use:
+ * 
+ * import { Button } from "@/components/ui";
+ * import { FiPlus } from "react-icons/fi";
+ * 
+ * <Button variant="solid" onClick={() => console.log("clicked")}>
+ *   Click Me
+ * </Button>
+ * 
+ * <Button variant="outline" size="sm" icon={<FiPlus />}>
+ *   Add Item
+ * </Button>
+ * 
+ * <Button loading>Loading...</Button>
+ */
+
+export default Button;
