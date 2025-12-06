@@ -21,9 +21,11 @@ interface MenuItem {
 
 interface SidebarItemProps {
     item: MenuItem;
+    isMini?: boolean;
+    isSidebarDark?: boolean;
 }
 
-const SidebarItem = ({ item }: SidebarItemProps) => {
+const SidebarItem = ({ item, isMini = false, isSidebarDark = false }: SidebarItemProps) => {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const hasSubItems = item.subItems && item.subItems.length > 0;
@@ -45,35 +47,41 @@ const SidebarItem = ({ item }: SidebarItemProps) => {
     };
 
     const Icon = item.icon;
- 
+
     return (
         <div className="mb-0">
             {hasSubItems ? (
                 <button
                     onClick={toggleOpen}
                     className={`w-full flex items-center justify-between px-4 py-1.5 rounded-lg transition-all duration-200 group ${isActive
-                            ? 'bg-[var(--brand-start)]/5 text-[var(--brand-start)]'
+                        ? 'bg-[var(--brand-start)]/5 text-[var(--brand-start)]'
+                        : isSidebarDark
+                            ? 'text-zinc-400 hover:bg-white/10 hover:text-zinc-100'
                             : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100'
-                        }`}
+                        } ${isMini ? 'justify-center px-2' : ''}`}
                 >
-                    <div className="flex items-center gap-3">
-                        <Icon className={`w-4 h-4 ${isActive ? 'text-[var(--brand-start)]' : 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'}`} />
-                        <span className={`font-medium ${isActive ? 'font-semibold' : ''}`}>{item.title}</span>
+                    <div className={`flex items-center gap-3 ${isMini ? 'justify-center' : ''}`}>
+                        <Icon className={`w-4 h-4 ${isActive ? 'text-[var(--brand-start)]' : isSidebarDark ? 'text-zinc-400 group-hover:text-zinc-300' : 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'}`} />
+                        {!isMini && <span className={`font-medium ${isActive ? 'font-semibold' : ''}`}>{item.title}</span>}
                     </div>
-                    <FiChevronRight
-                        className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-90' : ''} ${isActive ? 'text-[var(--brand-start)]' : 'text-zinc-400'}`}
-                    />
+                    {!isMini && (
+                        <FiChevronRight
+                            className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-90' : ''} ${isActive ? 'text-[var(--brand-start)]' : 'text-zinc-400'}`}
+                        />
+                    )}
                 </button>
             ) : (
                 <Link
                     href={item.href}
                     className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 group ${isActive
-                            ? 'bg-[var(--brand-start)]/5 text-[var(--brand-start)]'
+                        ? 'bg-[var(--brand-start)]/5 text-[var(--brand-start)]'
+                        : isSidebarDark
+                            ? 'text-zinc-400 hover:bg-white/10 hover:text-zinc-100'
                             : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100'
-                        }`}
+                        } ${isMini ? 'justify-center px-2' : ''}`}
                 >
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-[var(--brand-start)]' : 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'}`} />
-                    <span className={`font-medium ${isActive ? 'font-semibold' : ''}`}>{item.title}</span>
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-[var(--brand-start)]' : isSidebarDark ? 'text-zinc-400 group-hover:text-zinc-300' : 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'}`} />
+                    {!isMini && <span className={`font-medium ${isActive ? 'font-semibold' : ''}`}>{item.title}</span>}
                 </Link>
             )}
 
@@ -94,7 +102,9 @@ const SidebarItem = ({ item }: SidebarItemProps) => {
                                         key={subItem.href}
                                         href={subItem.href}
                                         className={`block py-2 text-sm transition-colors relative ${isSubActive
-                                                ? 'text-[var(--brand-start)] font-medium'
+                                            ? 'text-[var(--brand-start)] font-medium'
+                                            : isSidebarDark
+                                                ? 'text-zinc-400 hover:text-zinc-200'
                                                 : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
                                             }`}
                                     >

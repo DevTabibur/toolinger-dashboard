@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type UiState = {
   theme: "system" | "light" | "dark";
   rtl: boolean;
-  accent: string;
+  themeColor: string;
   layoutMode:
     | "default"
     | "mini"
@@ -11,23 +11,25 @@ export type UiState = {
     | "two-column"
     | "detached"
     | "without-header";
-  boxed: boolean;
+  layoutWidth: "fluid" | "stretched";
   sidebarColor: string;
-  topbarColor: string;
+  topbarColor: string | null;
   sidebarBackground: string;
   customizerOpen: boolean;
+  isLoading: boolean;
 };
 
 export const defaultUiState: UiState = {
   theme: "system",
   rtl: false,
-  accent: "#2563eb",
+  themeColor: "#fe9f43",
   layoutMode: "default",
-  boxed: false,
   sidebarColor: "#111827",
-  topbarColor: "#ffffff",
+  topbarColor: null,
   sidebarBackground: "",
+  layoutWidth: "fluid",
   customizerOpen: false,
+  isLoading: false,
 };
 
 const uiSlice = createSlice({
@@ -40,19 +42,19 @@ const uiSlice = createSlice({
     setRtl(state, action: PayloadAction<boolean>) {
       state.rtl = action.payload;
     },
-    setAccent(state, action: PayloadAction<string>) {
-      state.accent = action.payload;
+    setThemeColor(state, action: PayloadAction<string>) {
+      state.themeColor = action.payload;
     },
     setLayoutMode(state, action: PayloadAction<UiState["layoutMode"]>) {
       state.layoutMode = action.payload;
     },
-    setBoxed(state, action: PayloadAction<boolean>) {
-      state.boxed = action.payload;
+    setLayoutWidth(state, action: PayloadAction<UiState["layoutWidth"]>) {
+      state.layoutWidth = action.payload;
     },
     setSidebarColor(state, action: PayloadAction<string>) {
       state.sidebarColor = action.payload;
     },
-    setTopbarColor(state, action: PayloadAction<string>) {
+    setTopbarColor(state, action: PayloadAction<string | null>) {
       state.topbarColor = action.payload;
     },
     setSidebarBackground(state, action: PayloadAction<string>) {
@@ -64,9 +66,18 @@ const uiSlice = createSlice({
     setCustomizerOpen(state, action: PayloadAction<boolean>) {
       state.customizerOpen = action.payload;
     },
+    setLoading(state, action: PayloadAction<boolean>) {
+      state.isLoading = action.payload;
+    },
     // helper to replace UI with loaded state
     replaceUi(state, action: PayloadAction<Partial<UiState>>) {
       return { ...state, ...action.payload };
+    },
+    resetTheme(state) {
+      return {
+        ...defaultUiState,
+        customizerOpen: state.customizerOpen,
+      };
     },
   },
 });
@@ -74,15 +85,17 @@ const uiSlice = createSlice({
 export const {
   setTheme,
   setRtl,
-  setAccent,
+  setThemeColor,
   setLayoutMode,
-  setBoxed,
+  setLayoutWidth,
   setSidebarColor,
   setTopbarColor,
   setSidebarBackground,
   toggleCustomizer,
   setCustomizerOpen,
+  setLoading,
   replaceUi,
+  resetTheme,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

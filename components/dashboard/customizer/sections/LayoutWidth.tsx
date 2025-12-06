@@ -2,33 +2,44 @@
 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { setBoxed } from '@/redux/slices/ui.slice';
+import { setLayoutWidth } from '@/redux/slices/ui.slice';
+import { TbLayoutList } from "react-icons/tb";
+import { RxStretchHorizontally } from "react-icons/rx";
 
 const LayoutWidth = () => {
     const dispatch = useDispatch();
-    const boxed = useSelector((state: RootState) => state.ui.boxed);
-
+    const layoutWidth = useSelector((state: RootState) => state.ui.layoutWidth);
     return (
-        <div className="flex gap-1 pt-4">
-            <button
-                onClick={() => dispatch(setBoxed(false))}
-                className={`flex-1 px-2 py-1.5 text-sm font-medium rounded-lg border transition-colors ${!boxed
+        <>
+
+            <div className="flex gap-1 pt-4">
+                <button
+                    onClick={() => dispatch(setLayoutWidth("fluid"))}
+                    className={`flex-1 flex  items-center justify-center gap-2 px-2 py-1.5 text-sm font-medium  border transition-colors ${layoutWidth === "fluid"
                         ? 'bg-blue-50 border-blue-500 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
                         : 'bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-700'
-                    }`}
-            >
-                Fluid Layout
-            </button>
-            <button
-                onClick={() => dispatch(setBoxed(true))}
-                className={`flex-1 px-2 py-1.5 text-sm font-medium rounded-lg border transition-colors ${boxed
+                        }`}
+                >
+                    <TbLayoutList className="w-4 h-4" />
+                    Fluid
+                </button>
+                <button
+                    onClick={() => dispatch(setLayoutWidth("stretched"))}
+                    className={`flex-1 flex  items-center justify-center gap-2 px-2 py-1.5 text-sm font-medium border transition-colors ${layoutWidth === "stretched"
                         ? 'bg-blue-50 border-blue-500 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
                         : 'bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-700'
-                    }`}
-            >
-                Boxed Layout
-            </button>
-        </div>
+                        }`}
+                >
+                    <RxStretchHorizontally className="w-4 h-4" />
+                    Stretched
+                </button>
+
+            </div>
+        </>
+
+
+
+
     );
 };
 

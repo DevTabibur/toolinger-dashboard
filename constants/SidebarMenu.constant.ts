@@ -10,7 +10,7 @@ import {
   FiList,
   FiAlignLeft,
   FiTag,
-  FiDisc,
+  FiDisc, 
   FiSliders,
 } from "react-icons/fi";
 

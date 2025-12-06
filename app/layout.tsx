@@ -29,7 +29,10 @@ const bootstrapScript = `
     if (ui?.theme === 'dark') document.documentElement.classList.add('dark');
     else if (ui?.theme === 'light') document.documentElement.classList.remove('dark');
 
-    if (ui?.accent) {
+    if (ui?.themeColor) {
+      document.documentElement.style.setProperty('--accent-color', ui.themeColor);
+    } else if (ui?.accent) {
+       // Fallback for old state
       document.documentElement.style.setProperty('--accent-color', ui.accent);
     }
 
@@ -53,20 +56,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <Providers>
-        <html lang="en">
-          <head>{/* inline script must be in head or top of body so it runs before hydration */}
-            <script dangerouslySetInnerHTML={{ __html: bootstrapScript }} />
-          </head>
-          <body
-            className={` ${montserrat_init.className}`}
-          >
-            {children}
-            <ClientToaster />
-          </body>
-        </html>
-      </Providers>
-    </>
+    <html lang="en">
+      <head>{/* inline script must be in head or top of body so it runs before hydration */}
+        <script dangerouslySetInnerHTML={{ __html: bootstrapScript }} />
+      </head>
+      <body
+        className={` ${montserrat_init.className}`}
+      >
+        <Providers>
+          {children}
+          <ClientToaster />
+        </Providers>
+      </body>
+    </html>
   );
 }

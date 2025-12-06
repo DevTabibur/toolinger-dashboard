@@ -1,7 +1,9 @@
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>page 1212
+      <button className="px-4 py-2 border rounded bg-accent">Click</button>
+    </div>
   )
 }
 

@@ -6,15 +6,22 @@ import LanguageSwitcher from './topbar/LanguageSwitcher';
 import ZoomToggle from './topbar/ZoomToggle';
 import Notifications from './topbar/Notifications';
 import ProfileMenu from './topbar/ProfileMenu';
-import ThemeCustomizerTrigger from './customizer/ThemeCustomizerTrigger';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 interface TopbarProps {
     onMenuClick: () => void;
 }
 
 const Topbar = ({ onMenuClick }: TopbarProps) => {
+    const topbarColor = useSelector((state: RootState) => state.ui.topbarColor);
+
     return (
-        <header className="h-16 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-30">
+        <header
+            className="h-14 bg-white dark:bg-[var(--background)] border-b border-border flex items-center justify-between px-4 lg:px-8 sticky top-0 z-30 transition-colors duration-300"
+            style={{ backgroundColor: topbarColor || undefined }}
+
+        >
             {/* Left Side: Menu Toggle & Search */}
             <div className="flex items-center gap-4">
                 <button
@@ -36,9 +43,6 @@ const Topbar = ({ onMenuClick }: TopbarProps) => {
                 <Notifications />
 
                 <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-700 mx-1 hidden sm:block"></div>
-
-                <ThemeCustomizerTrigger />
-
                 <ProfileMenu />
             </div>
         </header>

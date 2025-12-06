@@ -14,7 +14,7 @@ const CustomizerSection = ({ title, children, defaultOpen = false }: CustomizerS
     const [isOpen, setIsOpen] = useState(defaultOpen);
 
     return (
-        <div className="border-b border-zinc-200 dark:border-zinc-800 last:border-0">
+        <div className="border border-zinc-200 dark:border-zinc-800 mb-3 mx-3 mt-2">
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex items-center justify-between p-4 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"

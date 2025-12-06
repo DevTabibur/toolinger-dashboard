@@ -8,7 +8,6 @@ function loadUiFromStorage(): { ui: UiState } | undefined {
     const raw = localStorage.getItem("toolinger_ui");
     if (!raw) return undefined;
     const parsed = JSON.parse(raw);
-    // Validate minimal shape
     return { ui: { ...defaultUiState, ...(parsed || {}) } };
   } catch (e) {
     console.warn("Failed to load ui from storage", e);
@@ -21,18 +20,16 @@ export const store = configureStore({
   preloadedState: loadUiFromStorage(),
 });
 
-// Persist UI automatically to localStorage (simple approach)
 store.subscribe(() => {
   try {
     const state = store.getState();
     const ui = state.ui;
+    // console.log('ui', ui);
     localStorage.setItem("toolinger_ui", JSON.stringify(ui));
   } catch (e) {
-    // ignore
+    console.error("Failed to save ui to storage", e);
   }
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;

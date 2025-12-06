@@ -11,7 +11,7 @@ const ThemeCustomizerTrigger = () => {
     return (
         <button
             onClick={() => dispatch(toggleCustomizer())}
-            className="p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 rounded-full transition-colors relative group"
+            className="fixed top-1/2 right-0 z-50 p-3 bg-[var(--brand-start)] text-white rounded-l-lg shadow-lg hover:bg-[var(--brand-end)] transition-colors group"
             aria-label="Theme Customizer"
         >
             <motion.div
