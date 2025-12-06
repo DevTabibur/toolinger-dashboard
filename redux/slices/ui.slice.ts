@@ -12,7 +12,7 @@ export type UiState = {
     | "detached"
     | "without-header";
   layoutWidth: "fluid" | "stretched";
-  sidebarColor: string;
+  sidebarColor: string | null;
   topbarColor: string | null;
   sidebarBackground: string;
   customizerOpen: boolean;
@@ -24,7 +24,7 @@ export const defaultUiState: UiState = {
   rtl: false,
   themeColor: "#fe9f43",
   layoutMode: "default",
-  sidebarColor: "#111827",
+  sidebarColor: null, // "#111827",
   topbarColor: null,
   sidebarBackground: "",
   layoutWidth: "fluid",

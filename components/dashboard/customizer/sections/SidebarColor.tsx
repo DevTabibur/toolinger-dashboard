@@ -7,7 +7,7 @@ import { FiCheck } from 'react-icons/fi';
 import { gradientColors, solidColors } from '@/constants/sidebarColors.constant';
 
 
-
+ 
 const SidebarColor = () => {
     const dispatch = useDispatch();
     const sidebarColor = useSelector((state: RootState) => state.ui.sidebarColor);
@@ -34,7 +34,7 @@ const SidebarColor = () => {
                 </div>
             </div>
 
-            <div>
+            {/* <div>
                 <p className="text-xs text-zinc-500 mb-2">Gradient Colors</p>
                 <div className="flex flex-wrap gap-2">
                     {gradientColors.map((gradient) => (
@@ -52,7 +52,7 @@ const SidebarColor = () => {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

@@ -7,7 +7,6 @@ import SidebarItem from './sidebar/SidebarItem';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-import { useEffect, useState } from 'react';
 
 interface SidebarProps {
     isOpen: boolean;
@@ -18,27 +17,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     const layoutMode = useSelector((state: RootState) => state.ui.layoutMode);
     const isMini = layoutMode === 'mini';
     const isDetached = layoutMode === 'detached';
-
     const sidebarColor = useSelector((state: RootState) => state.ui.sidebarColor);
-    const theme = useSelector((state: RootState) => state.ui.theme);
-    const [isDark, setIsDark] = useState(false);
-
-    useEffect(() => {
-        const checkDark = () => {
-            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            setIsDark(theme === 'dark' || (theme === 'system' && systemDark));
-        };
-
-        checkDark();
-
-        if (theme === 'system') {
-            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-            const listener = () => checkDark();
-            mediaQuery.addEventListener('change', listener);
-            return () => mediaQuery.removeEventListener('change', listener);
-        }
-    }, [theme]);
-
     const isSidebarDark = sidebarColor !== '#ffffff';
 
 
@@ -53,13 +32,13 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             />
             {/* Sidebar Container */}
             <aside
-
                 className={`fixed lg:static bg-white dark:bg-[var(--background)]  inset-y-0 left-0 z-50 border-r border-gray-200 dark:border-gray-800 transform transition-all duration-300 lg:transform-none lg:translate-x-0 
                    ${isOpen ? 'translate-x-0' : '-translate-x-full'}
                    ${isMini ? 'w-20' : 'w-64'}
                    ${isDetached ? 'lg:m-4  lg:h-[calc(100vh-2rem)] lg:border shadow-sm' : 'h-screen'}
                 `}
             // style={!isDark && sidebarColor ? { background: sidebarColor } : undefined}
+             style={{ backgroundColor: sidebarColor || undefined }}
             >
                 {/* Logo Area */}
                 <div className={`h-14 flex items-center ${isMini ? 'justify-center px-0' : 'justify-between px-6'} border-b border-zinc-100 dark:border-zinc-800`}>
