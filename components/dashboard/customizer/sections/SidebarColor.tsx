@@ -5,13 +5,17 @@ import { RootState } from '@/redux/store';
 import { setSidebarColor } from '@/redux/slices/ui.slice';
 import { FiCheck } from 'react-icons/fi';
 import { gradientColors, solidColors } from '@/constants/sidebarColors.constant';
+import { useRef } from 'react';
+import { IoColorPaletteOutline } from 'react-icons/io5';
 
 
- 
 const SidebarColor = () => {
     const dispatch = useDispatch();
     const sidebarColor = useSelector((state: RootState) => state.ui.sidebarColor);
-
+    const themeColor = useSelector((state: RootState) => state.ui.themeColor);
+    const colorInputRef = useRef<HTMLInputElement>(null);
+    const isCustomColor = !solidColors.includes(sidebarColor as any);
+    
     return (
         <div className="space-y-4 gap-1 pt-4">
             <div>
@@ -31,6 +35,27 @@ const SidebarColor = () => {
                             </button>
                         </div>
                     ))}
+                    {/* Custom Color Picker Trigger */}
+                    <div className="relative">
+                        <div className='border border-zinc-300 dark:border-gray-600  p-1 '>
+                            <button
+                                onClick={() => colorInputRef.current?.click()}
+                                className={`w-7 h-7  flex items-center justify-center transition-all hover:scale-110 ${isCustomColor
+                                    ? 'border-[var(--brand-start)] bg-[var(--brand-start)]/10 text-[var(--brand-start)]'
+                                    : 'bg-zinc-100 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-600 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                                    }`}
+                            >
+                                <IoColorPaletteOutline className="w-5 h-5" />
+                            </button>
+                            <input
+                                ref={colorInputRef}
+                                type="color"
+                                className="absolute inset-0 opacity-0 w-0 h-0 pointer-events-none"
+                                onChange={(e) => dispatch(setSidebarColor(e.target.value))}
+                                value={isCustomColor ? themeColor : '#ffffff'}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
 

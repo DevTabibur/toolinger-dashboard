@@ -88,12 +88,18 @@ const ThemeCustomizer = () => {
                         </div>
 
                         {/* Footer */}
-                        <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 flex gap-2">
+                        <div className="p-4 flex gap-2">
                             <button
                                 onClick={() => dispatch(resetTheme())}
-                                className="flex-1 px-4 py-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700 dark:hover:bg-zinc-700 transition-colors"
+                                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-[var(--primary)] border dark:bg-[var(--primary)]   dark:bg-[var(--primary)]/20 dark:border-[var(--primary)] dark:hover:bg-[var(--primary)]/20 transition-colors"
                             >
                                 Reset
+                            </button>
+                            <button
+                                onClick={() => dispatch(toggleCustomizer())}
+                                className="flex-1 px-4 py-2 text-sm font-medium text-white  border bg-[var(--primary)]  dark:bg-[var(--primary)]/20 dark:border-[var(--primary)]  transition-colors"
+                            >
+                                Close
                             </button>
 
                         </div>

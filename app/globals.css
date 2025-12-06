@@ -4,6 +4,19 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --primary: #007496; /* fallback */
+  --primary-dark: #e28f34;
+  --primary-light: #ffd99b;
+  --primary-foreground: #0f172a;
+  --scrollbar-thumb: #c57d18;
+  --selection-bg: rgba(254,159,67,0.2);
+  --selection-color: #0f172a;
+  /* ======================================================== */
+   --primary-100: color-mix(in srgb, var(--primary) 20%, white);
+ --primary-300: color-mix(in srgb, var(--primary) 40%, white);
+  --primary-500: var(--primary);
+  --primary-700: color-mix(in srgb, var(--primary) 60%, black);
+  /* ==================================================== */
   --brand-start: #007496;
   --brand-end: #00bfd5;
   --radius: 0.625rem;
@@ -13,8 +26,8 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  /* --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0); */
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -40,7 +53,7 @@
   --sidebar-ring: oklch(0.708 0 0); */
 }
 
-body {
+ body {
   font-family: var(--font-montserrat), sans-serif;
 }
 
@@ -114,7 +127,7 @@ body {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-}
+} 
 
 @layer base {
   * {
@@ -126,8 +139,8 @@ body {
 
   /* Custom Scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
   }
 
   ::-webkit-scrollbar-track {
@@ -141,4 +154,35 @@ body {
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-zinc-400 dark:bg-zinc-600;
   }
+}   
+
+/* Text selection */
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-color);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 999px;
+  border: 2px solid transparent; /* for padding effect */
+  background-clip: padding-box;
+}
+
+/* optional: firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
+/* utility for usages in tailwind arbitrary classes (example) */
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.btn-primary:hover {
+  background: var(--primary-dark);
 }

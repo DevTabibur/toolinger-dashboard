@@ -22,7 +22,7 @@ export type UiState = {
 export const defaultUiState: UiState = {
   theme: "system",
   rtl: false,
-  themeColor: "#fe9f43",
+  themeColor: "#007496",
   layoutMode: "default",
   sidebarColor: null, // "#111827",
   topbarColor: null,

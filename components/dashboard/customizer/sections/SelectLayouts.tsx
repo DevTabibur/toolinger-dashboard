@@ -29,16 +29,14 @@ const SelectLayouts = () => {
                     <button
                         key={layout.id}
                         onClick={() => handleLayoutClick(layout.id)}
-                        className={`flex flex-col items-center gap-2 p-2 border-2 transition-all ${isActive
-                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                        className={`flex flex-col items-center gap-0 p-1 border-2 border-primary transition-all ${isActive
+                            ? 'border-[var(--primary)] bg-[var(--primary-100)] dark:bg-[var(--primary-700)] dark:border-[var(--primary-700)]'
                             : 'border-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800'
                             }`}
                     >
-                        <div className={`w-10 h-8  border flex items-center justify-center ${isActive ? 'bg-blue-500 border-blue-500 text-white' : 'bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700'
-                            }`}>
-                            <layout.icon className="w-4 h-4" />
-                        </div>
-                        <span className="text-xs text-zinc-600 dark:text-zinc-400">{layout.name}</span>
+
+                        <layout.icon className="w-6 h-6 dark:text-zinc-400" />
+                        <span className="text-xs text-zinc-600 dark:text-white">{layout.name}</span>
                     </button>
                 );
             })}

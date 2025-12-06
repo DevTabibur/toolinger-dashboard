@@ -1,8 +1,14 @@
+import { Button } from "@/components/ui"
+import { FiPlus } from "react-icons/fi"
 
 const page = () => {
   return (
-    <div>page 1212
-      <button className="px-4 py-2 border rounded bg-accent">Click</button>
+    <div>
+      <h1>Welcome Message</h1>
+      <Button variant="solid" size="lg">Click me</Button>
+      <Button variant="outline" size="md" className="ml-3" icon={<FiPlus />}>
+        Add New
+      </Button>
     </div>
   )
 }
