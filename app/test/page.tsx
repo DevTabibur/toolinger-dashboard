@@ -29,140 +29,172 @@ import {
   TableHead,
   TableCell,
   Tabs,
-  Textarea
+  Textarea,
+  // New Components
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AspectRatio,
+  Avatar,
+  ButtonGroup,
+  Carousel,
+  DatePicker,
+  Field,
+  Kbd,
+  Label,
+  Progress,
+  Separator,
+  Slider,
+  Spinner,
+  Switch,
+  Toggle,
+  Tooltip,
+  Typography
 } from "@/components/ui";
-import { FiMoreVertical, FiEdit, FiTrash, FiHome, FiUser, FiSettings } from "react-icons/fi";
+import { FiMoreVertical, FiEdit, FiTrash, FiHome, FiUser, FiSettings, FiBold, FiItalic, FiUnderline } from "react-icons/fi";
 
 export default function TestPage() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [date, setDate] = useState<Date>();
+  const [switchVal, setSwitchVal] = useState(false);
+  const [togglePressed, setTogglePressed] = useState(false);
 
   return (
-    <div className="p-8 space-y-8">
-      <h1 className="text-2xl font-bold mb-4">UI Component Library Test</h1>
+    <div className="p-8 space-y-8 max-w-6xl mx-auto">
+      <Typography variant="h2" className="mb-6">UI Component Library Test</Typography>
 
+      {/* --- Batch 1 Components --- */}
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Buttons</h2>
+        <Typography variant="h3">Basic Elements</Typography>
         <div className="flex gap-4 items-center flex-wrap">
           <Button variant="solid">Solid</Button>
           <Button variant="outline">Outline</Button>
           <Button variant="ghost">Ghost</Button>
           <Button variant="solid" loading>Loading</Button>
           <NotificationButton count={3} />
-          <ModalTriggerButton onOpen={() => setIsModalOpen(true)}>Open Modal</ModalTriggerButton>
         </div>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Alerts</h2>
-        <Alert variant="primary" title="Primary Alert">This is a primary alert.</Alert>
-        <Alert variant="success" title="Success Alert">Operation completed successfully.</Alert>
-        <Alert variant="warning" title="Warning Alert">Please check your inputs.</Alert>
-        <Alert variant="danger" title="Danger Alert">Something went wrong.</Alert>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Badges</h2>
         <div className="flex gap-2">
           <Badge variant="solid" color="primary">Primary</Badge>
           <Badge variant="outline" color="secondary">Secondary</Badge>
           <Badge variant="soft" color="success">Success</Badge>
           <Badge variant="solid" color="danger">Danger</Badge>
         </div>
+        <Alert variant="primary" title="Primary Alert">This is a primary alert.</Alert>
       </section>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Cards</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* --- Batch 2 Components --- */}
+      <section className="space-y-6">
+        <Typography variant="h3">Extended Components (Batch 2)</Typography>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Typography & Kbd */}
           <Card>
-            <CardHeader><h3 className="font-semibold">Card Title</h3></CardHeader>
-            <CardBody><p>This is the card body content.</p></CardBody>
-            <CardFooter><Button size="sm">Action</Button></CardFooter>
+            <CardHeader><Typography variant="h4">Typography & Kbd</Typography></CardHeader>
+            <CardBody className="space-y-2">
+              <Typography variant="h1">Heading 1</Typography>
+              <Typography variant="lead">Lead text for main descriptions.</Typography>
+              <Typography variant="p">Standard paragraph text.</Typography>
+              <Typography variant="muted">Muted text.</Typography>
+              <div className="mt-4">
+                <Typography variant="small">Press <Kbd>⌘</Kbd> + <Kbd>K</Kbd> to search</Typography>
+              </div>
+            </CardBody>
           </Card>
-          <Card noPadding className="flex items-center justify-center p-10 bg-zinc-50 dark:bg-zinc-900 border-dashed">
-            <p className="text-zinc-500">Custom Content Card</p>
+
+          {/* Forms Extended */}
+          <Card>
+            <CardHeader><Typography variant="h4">Extended Forms</Typography></CardHeader>
+            <CardBody className="space-y-4">
+              <Field label="Switch Toggle">
+                <div className="flex items-center gap-2">
+                  <Switch checked={switchVal} onChange={setSwitchVal} />
+                  <Label>Enable Notifications</Label>
+                </div>
+              </Field>
+              <DatePicker label="Pick a Date" value={date} onChange={setDate} />
+              <Field label="Volume Slider">
+                <Slider min={0} max={100} step={5} value={50} />
+              </Field>
+              <div className="flex gap-2">
+                <Toggle pressed={togglePressed} onPressedChange={setTogglePressed}><FiBold /></Toggle>
+                <Toggle><FiItalic /></Toggle>
+                <ButtonGroup>
+                  <Button variant="outline" size="sm">Left</Button>
+                  <Button variant="outline" size="sm">Center</Button>
+                  <Button variant="outline" size="sm">Right</Button>
+                </ButtonGroup>
+              </div>
+            </CardBody>
+          </Card>
+
+          {/* Data Display */}
+          <Card>
+            <CardHeader><Typography variant="h4">Data Display</Typography></CardHeader>
+            <CardBody className="space-y-4">
+              <div className="flex items-center gap-4">
+                <Avatar src="https://github.com/shadcn.png" fallback="CN" />
+                <Avatar fallback="JD" className="bg-blue-100 text-blue-600" />
+                <Tooltip content="This is a tooltip">
+                  <Button variant="outline" size="sm">Hover Me</Button>
+                </Tooltip>
+              </div>
+              <Separator />
+              <Progress value={60} label />
+              <Separator />
+              <Spinner size="lg" />
+            </CardBody>
+          </Card>
+
+          {/* Accordion & Carousel */}
+          <Card>
+            <CardHeader><Typography variant="h4">Interactive</Typography></CardHeader>
+            <CardBody className="space-y-4">
+              <Accordion>
+                <AccordionItem value="item-1">
+                  <AccordionTrigger>Accordion Item 1</AccordionTrigger>
+                  <AccordionContent>Content for item 1.</AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-2">
+                  <AccordionTrigger>Accordion Item 2</AccordionTrigger>
+                  <AccordionContent>Content for item 2.</AccordionContent>
+                </AccordionItem>
+              </Accordion>
+
+              <Carousel height="h-32" className="bg-zinc-100 dark:bg-zinc-800">
+                <div className="flex items-center justify-center h-full">Slide 1</div>
+                <div className="flex items-center justify-center h-full bg-zinc-200 dark:bg-zinc-700">Slide 2</div>
+                <div className="flex items-center justify-center h-full">Slide 3</div>
+              </Carousel>
+            </CardBody>
+          </Card>
+
+          {/* Aspect Ratio */}
+          <Card>
+            <CardHeader><Typography variant="h4">Aspect Ratio (16/9)</Typography></CardHeader>
+            <CardBody>
+              <AspectRatio ratio={16 / 9} className="bg-zinc-100 dark:bg-zinc-800 rounded-md flex items-center justify-center">
+                <Typography variant="muted">Image Placeholder</Typography>
+              </AspectRatio>
+            </CardBody>
           </Card>
         </div>
       </section>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Form Elements</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input label="Username" placeholder="Enter username" />
-          <Input label="Email" error="Invalid email" placeholder="Enter email" />
-          <Select
-            label="Role"
-            options={[
-              { label: "Admin", value: "admin" },
-              { label: "User", value: "user" }
-            ]}
-          />
-          <Textarea label="Bio" placeholder="Tell us about yourself" />
-          <Checkbox label="I agree to terms" />
-          <FileUpload onFileSelect={(files) => console.log(files)} />
-        </div>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Navigation & Overlay</h2>
-        <div className="flex flex-col gap-4">
-          <DashboardBreadcrumb items={[{ label: "Section", href: "#" }, { label: "Current Page" }]} />
-          <Pagination currentPage={currentPage} totalPages={10} onPageChange={setCurrentPage} />
-          <Button onClick={() => setIsDrawerOpen(true)}>Open Drawer</Button>
-        </div>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Data Display</h2>
-        <div className="space-y-4">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>John Doe</TableCell>
-                <TableCell><Badge variant="soft" color="success">Active</Badge></TableCell>
-                <TableCell>
-                  <Dropdown
-                    trigger={<Button variant="ghost" size="sm" icon={<FiMoreVertical />} />}
-                    items={[
-                      { label: "Edit", icon: <FiEdit /> },
-                      { label: "Delete", icon: <FiTrash />, color: "danger" }
-                    ]}
-                  />
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium">Skeleton</h3>
-            <Skeleton height="100px" />
-            <Skeleton width="50%" />
-          </div>
-
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium">Tabs</h3>
-            <Tabs
-              tabs={[
-                { label: "Profile", icon: <FiUser />, content: <div className="p-4 bg-zinc-50 rounded">Profile Content</div> },
-                { label: "Settings", icon: <FiSettings />, content: <div className="p-4 bg-zinc-50 rounded">Settings Content</div> }
-              ]}
-            />
-          </div>
-
-          <div className="space-y-2 max-w-md">
-            <h3 className="text-sm font-medium">Messages</h3>
-            <MessageBox sender="other" message="Hello there!" timestamp="10:00 AM" />
-            <MessageBox sender="me" message="Hi! How can I help?" timestamp="10:01 AM" />
-          </div>
-        </div>
+      <section className="flex gap-4">
+        <Button onClick={() => setIsAlertOpen(true)} variant="solid" className="bg-red-600 hover:bg-red-700 text-white">Trigger Alert Dialog</Button>
+        <Button onClick={() => setIsDrawerOpen(true)}>Open Drawer</Button>
       </section>
 
       {/* Overlays */}
@@ -175,12 +207,23 @@ export default function TestPage() {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Test Modal">
         <div className="space-y-4">
           <p>Modal content allows for focused interactions.</p>
-          <div className="flex justify-end gap-2">
-            <Button variant="ghost" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button onClick={() => setIsModalOpen(false)}>Confirm</Button>
-          </div>
         </div>
       </Modal>
+
+      <AlertDialog isOpen={isAlertOpen} onClose={() => setIsAlertOpen(false)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setIsAlertOpen(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => setIsAlertOpen(false)}>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
