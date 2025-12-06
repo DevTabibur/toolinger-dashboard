@@ -7,13 +7,9 @@ import * as z from 'zod';
 import { FaRegEye } from 'react-icons/fa';
 import { IoIosEyeOff } from 'react-icons/io';
 import Link from 'next/link';
+import { loginSchema } from '@/schemas/auth.schema';
 
-// Zod Schema
-const loginSchema = z.object({
-    email: z.string().email({ message: 'Invalid email address' }),
-    password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
-    rememberMe: z.boolean().optional(),
-});
+
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
@@ -44,7 +40,7 @@ const LoginForm = () => {
     };
 
     return (
-        <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-xl dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 transition-colors duration-300">
+        <div className="w-full max-w-md p-8 space-y-6 bg-white  shadow-xl dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 transition-colors duration-300">
             <div className="text-center space-y-2">
                 <h1 className="text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">
                     Welcome Back
@@ -68,7 +64,7 @@ const LoginForm = () => {
                         type="email"
                         placeholder="you@example.com"
                         {...register('email')}
-                        className={`w-full px-4 py-3 rounded-lg bg-zinc-50 dark:bg-zinc-800 border ${errors.email
+                        className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.email
                                 ? 'border-red-500 focus:ring-red-500'
                                 : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
                             } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200`}
@@ -102,7 +98,7 @@ const LoginForm = () => {
                             type={showPassword ? 'text' : 'password'}
                             placeholder="••••••••"
                             {...register('password')}
-                            className={`w-full px-4 py-3 rounded-lg bg-zinc-50 dark:bg-zinc-800 border ${errors.password
+                            className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.password
                                     ? 'border-red-500 focus:ring-red-500'
                                     : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
                                 } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200 pr-10`}
@@ -132,7 +128,7 @@ const LoginForm = () => {
                         id="remember-me"
                         type="checkbox"
                         {...register('rememberMe')}
-                        className="w-4 h-4 rounded border-zinc-300 text-[var(--brand-start)] focus:ring-[var(--brand-start)] dark:border-zinc-600 dark:bg-zinc-700"
+                        className="w-4 h-4  border-zinc-300 text-[var(--brand-start)] focus:ring-[var(--brand-start)] dark:border-zinc-600 dark:bg-zinc-700"
                     />
                     <label
                         htmlFor="remember-me"
@@ -146,7 +142,7 @@ const LoginForm = () => {
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-3.5 px-4 rounded-lg text-white font-semibold bg-gradient-to-r from-[var(--brand-start)] to-[var(--brand-end)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--brand-start)] disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] transition-all duration-200 shadow-lg shadow-cyan-500/20"
+                    className="w-full py-3.5 px-4  text-white font-semibold bg-gradient-to-r from-[var(--brand-start)] to-[var(--brand-end)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--brand-start)] disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] transition-all duration-200 shadow-lg shadow-cyan-500/20"
                 >
                     {isLoading ? (
                         <span className="flex items-center justify-center gap-2">

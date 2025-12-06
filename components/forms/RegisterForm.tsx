@@ -50,7 +50,7 @@ const RegisterForm = () => {
     };
 
     return (
-        <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-xl dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 transition-colors duration-300">
+        <div className="w-full max-w-md p-8 space-y-6 bg-white  shadow-xl dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 transition-colors duration-300">
             <div className="text-center space-y-2">
                 <h1 className="text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">
                     Create Account
@@ -74,7 +74,7 @@ const RegisterForm = () => {
                         type="text"
                         placeholder="John Doe"
                         {...register('name')}
-                        className={`w-full px-4 py-3 rounded-lg bg-zinc-50 dark:bg-zinc-800 border ${errors.name
+                        className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.name
                                 ? 'border-red-500 focus:ring-red-500'
                                 : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
                             } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200`}
@@ -99,7 +99,7 @@ const RegisterForm = () => {
                         type="email"
                         placeholder="you@example.com"
                         {...register('email')}
-                        className={`w-full px-4 py-3 rounded-lg bg-zinc-50 dark:bg-zinc-800 border ${errors.email
+                        className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.email
                                 ? 'border-red-500 focus:ring-red-500'
                                 : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
                             } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200`}
@@ -125,7 +125,7 @@ const RegisterForm = () => {
                             type={showPassword ? 'text' : 'password'}
                             placeholder="••••••••"
                             {...register('password')}
-                            className={`w-full px-4 py-3 rounded-lg bg-zinc-50 dark:bg-zinc-800 border ${errors.password
+                            className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.password
                                     ? 'border-red-500 focus:ring-red-500'
                                     : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
                                 } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200 pr-10`}
@@ -163,7 +163,7 @@ const RegisterForm = () => {
                             type={showConfirmPassword ? 'text' : 'password'}
                             placeholder="••••••••"
                             {...register('confirmPassword')}
-                            className={`w-full px-4 py-3 rounded-lg bg-zinc-50 dark:bg-zinc-800 border ${errors.confirmPassword
+                            className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.confirmPassword
                                     ? 'border-red-500 focus:ring-red-500'
                                     : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
                                 } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200 pr-10`}
@@ -191,7 +191,7 @@ const RegisterForm = () => {
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-3.5 px-4 rounded-lg text-white font-semibold bg-gradient-to-r from-[var(--brand-start)] to-[var(--brand-end)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--brand-start)] disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] transition-all duration-200 shadow-lg shadow-cyan-500/20 mt-2"
+                    className="w-full py-3.5 px-4  text-white font-semibold bg-gradient-to-r from-[var(--brand-start)] to-[var(--brand-end)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--brand-start)] disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] transition-all duration-200 shadow-lg shadow-cyan-500/20 mt-2"
                 >
                     {isLoading ? (
                         <span className="flex items-center justify-center gap-2">
