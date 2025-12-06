@@ -13,11 +13,13 @@ import TopBarColor from './sections/TopBarColor';
 import SidebarColor from './sections/SidebarColor';
 // import SidebarBackground from './sections/SidebarBackground';
 import ThemeColors from './sections/ThemeColors';
+import { useLanguage } from '@/context/LanguageContext';
 
 
 const ThemeCustomizer = () => {
     const dispatch = useDispatch();
     const isOpen = useSelector((state: RootState) => state.ui.customizerOpen);
+    const { t } = useLanguage();
 
     return (
         <AnimatePresence>
@@ -44,8 +46,8 @@ const ThemeCustomizer = () => {
                         {/* Header */}
                         <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between ">
                             <div>
-                                <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Theme Customizer</h2>
-                                <p className="text-xs text-zinc-500">Choose your themes & layouts etc.</p>
+                                <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">{t("Theme Customizer")}</h2>
+                                <p className="text-xs text-zinc-500">{t("Choose your themes & layouts etc.")}</p>
                             </div>
                             <button
                                 onClick={() => dispatch(toggleCustomizer())}
@@ -57,22 +59,22 @@ const ThemeCustomizer = () => {
 
                         {/* Content */}
                         <div className="flex-1 overflow-y-auto">
-                            <CustomizerSection title="Theme Mode" defaultOpen={true}>
+                            <CustomizerSection title={t("Theme Mode")} defaultOpen={true}>
                                 <ThemeMode />
                             </CustomizerSection>
-                            <CustomizerSection title="Select Layouts" >
+                            <CustomizerSection title={t("Select Layouts")} >
                                 <SelectLayouts />
                             </CustomizerSection>
 
-                            <CustomizerSection title="Layout Width">
+                            <CustomizerSection title={t("Layout Width")}>
                                 <LayoutWidth />
                             </CustomizerSection>
 
-                            <CustomizerSection title="Top Bar Color">
+                            <CustomizerSection title={t("Top Bar Color")}>
                                 <TopBarColor />
                             </CustomizerSection>
 
-                            <CustomizerSection title="Sidebar Color">
+                            <CustomizerSection title={t("Sidebar Color")}>
                                 <SidebarColor />
                             </CustomizerSection>
 
@@ -82,7 +84,7 @@ const ThemeCustomizer = () => {
                                 <SidebarBackground />
                             </CustomizerSection> */}
 
-                            <CustomizerSection title="Theme Colors">
+                            <CustomizerSection title={t("Theme Colors")}>
                                 <ThemeColors />
                             </CustomizerSection>
                         </div>
@@ -93,13 +95,13 @@ const ThemeCustomizer = () => {
                                 onClick={() => dispatch(resetTheme())}
                                 className="flex-1 px-4 py-2 text-sm font-medium text-white bg-[var(--primary)] border dark:bg-[var(--primary)]   dark:bg-[var(--primary)]/20 dark:border-[var(--primary)] dark:hover:bg-[var(--primary)]/20 transition-colors"
                             >
-                                Reset
+                                {t("Reset")}
                             </button>
                             <button
                                 onClick={() => dispatch(toggleCustomizer())}
                                 className="flex-1 px-4 py-2 text-sm font-medium text-white  border bg-[var(--primary)]  dark:bg-[var(--primary)]/20 dark:border-[var(--primary)]  transition-colors"
                             >
-                                Close
+                                {t("Close")}
                             </button>
 
                         </div>

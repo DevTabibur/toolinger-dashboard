@@ -6,6 +6,7 @@ import { SidebarMenuData } from '@/constants/SidebarMenu.constant';
 import SidebarItem from './sidebar/SidebarItem';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { useLanguage } from '@/context/LanguageContext';
 
 
 interface SidebarProps {
@@ -19,6 +20,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     const isDetached = layoutMode === 'detached';
     const sidebarColor = useSelector((state: RootState) => state.ui.sidebarColor);
     const isSidebarDark = sidebarColor !== '#ffffff';
+    const { t } = useLanguage();
 
 
     return (
@@ -37,8 +39,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                    ${isMini ? 'w-20' : 'w-64'}
                    ${isDetached ? 'lg:m-4  lg:h-[calc(100vh-2rem)] lg:border shadow-sm' : 'h-screen'}
                 `}
-            // style={!isDark && sidebarColor ? { background: sidebarColor } : undefined}
-             style={{ backgroundColor: sidebarColor || undefined }}
+                // style={!isDark && sidebarColor ? { background: sidebarColor } : undefined}
+                style={{ backgroundColor: sidebarColor || undefined }}
             >
                 {/* Logo Area */}
                 <div className={`h-14 flex items-center ${isMini ? 'justify-center px-0' : 'justify-between px-6'} border-b border-zinc-100 dark:border-zinc-800`}>
@@ -66,7 +68,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                         <div key={index}>
                             {!isMini && (
                                 <h3 className={`px-4 mb-2 text-xs font-semibold uppercase tracking-wider whitespace-nowrap ${isSidebarDark ? 'text-zinc-400' : 'text-zinc-500'}`}>
-                                    {section.title}
+                                    {t(section.title)}
                                 </h3>
                             )}
                             <div className="space-y-1">

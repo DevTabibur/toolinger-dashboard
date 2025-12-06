@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiChevronRight, FiChevronDown } from 'react-icons/fi';
 import { IconType } from 'react-icons';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface SubItem {
     title: string;
@@ -25,7 +26,10 @@ interface SidebarItemProps {
     isSidebarDark?: boolean;
 }
 
+
+
 const SidebarItem = ({ item, isMini = false, isSidebarDark = false }: SidebarItemProps) => {
+    const { t } = useLanguage();
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const hasSubItems = item.subItems && item.subItems.length > 0;
@@ -62,7 +66,7 @@ const SidebarItem = ({ item, isMini = false, isSidebarDark = false }: SidebarIte
                 >
                     <div className={`flex items-center gap-3 ${isMini ? 'justify-center' : ''}`}>
                         <Icon className={`w-4 h-4 ${isActive ? 'text-[var(--brand-start)]' : isSidebarDark ? 'text-zinc-400 group-hover:text-zinc-300' : 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'}`} />
-                        {!isMini && <span className={`font-medium ${isActive ? 'font-semibold' : ''}`}>{item.title}</span>}
+                        {!isMini && <span className={`font-medium ${isActive ? 'font-semibold' : ''}`}>{t(item.title)}</span>}
                     </div>
                     {!isMini && (
                         <FiChevronRight
@@ -81,7 +85,7 @@ const SidebarItem = ({ item, isMini = false, isSidebarDark = false }: SidebarIte
                         } ${isMini ? 'justify-center px-2' : ''}`}
                 >
                     <Icon className={`w-4 h-4 ${isActive ? 'text-[var(--brand-start)]' : isSidebarDark ? 'text-zinc-400 group-hover:text-zinc-300' : 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'}`} />
-                    {!isMini && <span className={`font-medium ${isActive ? 'font-semibold' : ''}`}>{item.title}</span>}
+                    {!isMini && <span className={`font-medium ${isActive ? 'font-semibold' : ''}`}>{t(item.title)}</span>}
                 </Link>
             )}
 
@@ -109,7 +113,7 @@ const SidebarItem = ({ item, isMini = false, isSidebarDark = false }: SidebarIte
                                             }`}
                                     >
                                         <span className="absolute -left-4 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-current opacity-50"></span>
-                                        {subItem.title}
+                                        {t(subItem.title)}
                                     </Link>
                                 );
                             })}

@@ -5,10 +5,12 @@ import { RootState } from '@/redux/store';
 import { setLayoutWidth } from '@/redux/slices/ui.slice';
 import { TbLayoutList } from "react-icons/tb";
 import { RxStretchHorizontally } from "react-icons/rx";
+import { useLanguage } from '@/context/LanguageContext';
 
 const LayoutWidth = () => {
     const dispatch = useDispatch();
     const layoutWidth = useSelector((state: RootState) => state.ui.layoutWidth);
+    const { t } = useLanguage();
     return (
         <>
 
@@ -25,7 +27,7 @@ const LayoutWidth = () => {
                         }`}
                 >
                     <TbLayoutList className="w-4 h-4" />
-                    Fluid
+                    {t("Fluid")}
                 </button>
                 <button
                     onClick={() => dispatch(setLayoutWidth("stretched"))}
@@ -35,7 +37,7 @@ const LayoutWidth = () => {
                         }`}
                 >
                     <RxStretchHorizontally className="w-4 h-4" />
-                    Stretched
+                    {t("Stretched")}
                 </button>
 
             </div>

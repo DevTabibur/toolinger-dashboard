@@ -24,7 +24,7 @@ const Button = ({
         lg: "px-5 py-3 text-base",
     };
 
-    const base = "inline-flex items-center gap-2 font-semibold rounded-md transition-shadow focus:outline-none focus:ring-2 focus:ring-offset-2";
+    const base = "inline-flex items-center gap-2 font-semibold  transition-shadow focus:outline-none focus:ring-2 focus:ring-offset-2";
     const solid = "bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[var(--primary-dark)]";
     const outline = "bg-transparent border border-[color:var(--primary)] text-[var(--primary)] hover:bg-[var(--primary-20)]";
     const ghost = "bg-transparent text-[var(--primary)] hover:bg-[var(--primary-20)]";

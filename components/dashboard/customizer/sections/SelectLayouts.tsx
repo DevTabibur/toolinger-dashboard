@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setLayoutMode, setRtl } from '@/redux/slices/ui.slice';
 import { layouts } from '@/constants/selectLayouts.constant';
+import { useLanguage } from '@/context/LanguageContext';
 
 
 const SelectLayouts = () => {
     const dispatch = useDispatch();
     const currentLayout = useSelector((state: RootState) => state.ui.layoutMode);
     const isRtl = useSelector((state: RootState) => state.ui.rtl);
+    const { t } = useLanguage();
 
     const handleLayoutClick = (id: string) => {
         if (id === 'rtl') {
@@ -36,7 +38,7 @@ const SelectLayouts = () => {
                     >
 
                         <layout.icon className="w-6 h-6 dark:text-zinc-400" />
-                        <span className="text-xs text-zinc-600 dark:text-white">{layout.name}</span>
+                        <span className="text-xs text-zinc-600 dark:text-white">{t(layout.name)}</span>
                     </button>
                 );
             })}
