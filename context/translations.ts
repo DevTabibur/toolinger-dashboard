@@ -211,6 +211,21 @@ export const translations: Record<string, Record<string, string>> = {
     Barcode: "Barcode",
     "QR Code": "QR Code",
     HRMS: "HRMS",
+
+    // Appearance Page
+    Appearance: "Appearance",
+    "Select Theme": "Select Theme",
+    "Choose accent colour of website": "Choose accent colour of website",
+    Automatic: "Automatic",
+    "Accent Color": "Accent Color",
+    "Expand Sidebar": "Expand Sidebar",
+    "Sidebar Size": "Sidebar Size",
+    "Select size of the sidebar to display":
+      "Select size of the sidebar to display",
+    "Small - 85px": "Small - 85px",
+    "Font Family": "Font Family",
+    "Select font family of website": "Select font family of website",
+    Nunito: "Nunito",
   },
   bn: {
     Main: "প্রধান",
@@ -425,6 +440,21 @@ export const translations: Record<string, Record<string, string>> = {
     Barcode: "বারকোড",
     "QR Code": "কিউআর কোড",
     HRMS: "এইচআরএমএস",
+
+    // Appearance Page
+    Appearance: "চেহারা",
+    "Select Theme": "থিম নির্বাচন করুন",
+    "Choose accent colour of website": "ওয়েবসাইটের অ্যাকসেন্ট রঙ বেছে নিন",
+    Automatic: "স্বয়ংক্রিয়",
+    "Accent Color": "অ্যাকসেন্ট রঙ",
+    "Expand Sidebar": "সাইডবার প্রসারিত করুন",
+    "Sidebar Size": "সাইডবারের আকার",
+    "Select size of the sidebar to display":
+      "প্রদর্শনের জন্য সাইডবারের আকার নির্বাচন করুন",
+    "Small - 85px": "ছোট - ৮৫পিক্সেল",
+    "Font Family": "ফন্ট ফ্যামিলি",
+    "Select font family of website": "ওয়েবসাইটের ফন্ট ফ্যামিলি নির্বাচন করুন",
+    Nunito: "নুনিটো",
   },
   es: {
     Main: "Principal",
@@ -543,7 +573,7 @@ export const translations: Record<string, Record<string, string>> = {
     "I am concerned about how my data is handled and want to remove my information.":
       "Me preocupa cómo se manejan mis datos y quiero eliminar mi información.",
     "Too many notifications/emails": "Demasiadas notificaciones/emails",
-    "I’m overwhelmed by the volume of notifications or emails and would like to reduce them.":
+    "I’m overwhelmed by the volume of notificaciones o correos y me gustaría reducirlos.":
       "Estoy abrumado por el volumen de notificaciones o correos y me gustaría reducirlos.",
     "Poor user experience": "Mala experiencia de usuario",
     "I’ve had difficulty using the platform, and it didn’t meet my expectations.":
@@ -637,5 +667,20 @@ export const translations: Record<string, Record<string, string>> = {
     Barcode: "Código de barras",
     "QR Code": "Código QR",
     HRMS: "RRHH",
+
+    // Appearance Page
+    Appearance: "Apariencia",
+    "Select Theme": "Seleccionar tema",
+    "Choose accent colour of website": "Elegir color de acento del sitio web",
+    Automatic: "Automático",
+    "Accent Color": "Color de acento",
+    "Expand Sidebar": "Expandir barra lateral",
+    "Sidebar Size": "Tamaño de la barra lateral",
+    "Select size of the sidebar to display":
+      "Seleccionar tamaño de la barra lateral",
+    "Small - 85px": "Pequeño - 85px",
+    "Font Family": "Familia de fuentes",
+    "Select font family of website": "Seleccionar familia de fuentes",
+    Nunito: "Nunito",
   },
 };
