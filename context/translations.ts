@@ -356,6 +356,34 @@ export const translations: Record<string, Record<string, string>> = {
     "Edit Faq": "Edit Faq",
     Question: "Question",
     Answer: "Answer",
+
+    // Users Management Page
+    "Manage your users": "Manage your users",
+    "Add User": "Add User",
+    // "User Name": "User Name",
+    "No users found": "No users found",
+    "Delete User": "Delete User",
+    "Are you sure you want to delete user?":
+      "Are you sure you want to delete user?",
+    "Edit User": "Edit User",
+    "User Details": "User Details",
+    User: "User",
+    // "Confirm Password": "Confirm Password",
+    // Close: "Close",
+    // View: "View",
+    Admin: "Admin",
+
+    // Roles & Permissions Page
+    "Roles & Permission": "Roles & Permission",
+    "Manage your roles": "Manage your roles",
+    "Add Role": "Add Role",
+    "No roles found": "No roles found",
+    "Delete Role": "Delete Role",
+    "Are you sure you want to delete role?":
+      "Are you sure you want to delete role?",
+    "Edit Role": "Edit Role",
+    "Role Name": "Role Name",
+    "No, Cancel": "No, Cancel",
   },
   bn: {
     Main: "প্রধান",

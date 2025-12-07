@@ -85,34 +85,34 @@ export const SidebarMenuData = [
       {
         title: "Users",
         icon: FiUser,
-        href: "#",
-        subItems: [
-          { title: "Users", href: "/dashboard/user-management/users" },
-        ],
+        href: "/dashboard/user-management/users",
+        // subItems: [
+        //   { title: "Users", href: "/dashboard/user-management/users" },
+        // ],
       },
       {
-        title: "Roles & Permissions",
+        title: "User Permissions",
         icon: FiBookOpen,
-        href: "#",
-        subItems: [
-          { title: "Roles", href: "/dashboard/user-management/roles" },
-          {
-            title: "Permissions",
-            href: "/dashboard/user-management/permissions",
-          },
-        ],
+        href: "/dashboard/user-management/permissions",
+        // subItems: [
+        //   { title: "Roles", href: "/dashboard/user-management/roles" },
+        //   {
+        //     title: "Permissions",
+        //     href: "/dashboard/user-management/permissions",
+        //   },
+        // ],
       },
-      {
-        title: "Delete Account Request",
-        icon: FiMapPin,
-        href: "#",
-        subItems: [
-          {
-            title: "Delete Account Request",
-            href: "/dashboard/user-management/delete-account-request",
-          },
-        ],
-      },
+      // {
+      //   title: "Delete Account Request",
+      //   icon: FiMapPin,
+      //   href: "#",
+      //   subItems: [
+      //     {
+      //       title: "Delete Account Request",
+      //       href: "/dashboard/user-management/delete-account-request",
+      //     },
+      //   ],
+      // },
     ],
   },
   {
@@ -123,27 +123,27 @@ export const SidebarMenuData = [
         icon: FiSettings,
         href: "#",
         subItems: [
-          { title: "Profile", href: "/dashboard/profile" },
+          { title: "Profile", href: "/dashboard/settings/general/profile" },
           { title: "Security", href: "/dashboard/settings/general/security" },
           {
             title: "Notifications",
             href: "/dashboard/settings/general/notification",
           },
-          {
-            title: "Connected Apps",
-            href: "/dashboard/settings/general/connected-apps",
-          },
+          // {
+          //   title: "Connected Apps",
+          //   href: "/dashboard/settings/general/connected-apps",
+          // },
         ],
       },
       {
-        title: "Website Settings",
+        title: "Website",
         icon: FiGlobe,
         href: "#",
         subItems: [
-          {
-            title: "System Settings",
-            href: "/dashboard/settings/website/system",
-          },
+          // {
+          //   title: "System Settings",
+          //   href: "/dashboard/settings/website/system",
+          // },
           {
             title: "Company Settings",
             href: "/dashboard/settings/website/company",
@@ -152,7 +152,7 @@ export const SidebarMenuData = [
             title: "Localization",
             href: "/dashboard/settings/website/localization",
           },
-          { title: "Prefixes", href: "/dashboard/settings/website/prefixes" },
+          // { title: "Prefixes", href: "/dashboard/settings/website/prefixes" },
           {
             title: "Preference",
             href: "/dashboard/settings/website/preference",
@@ -161,51 +161,51 @@ export const SidebarMenuData = [
             title: "Appearance",
             href: "/dashboard/settings/website/appearance",
           },
-          {
-            title: "Social Authentication",
-            href: "/dashboard/settings/website/social-auth",
-          },
-          { title: "Language", href: "/dashboard/settings/website/language" },
+          // {
+          //   title: "Social Authentication",
+          //   href: "/dashboard/settings/website/social-auth",
+          // },
+          // { title: "Language", href: "/dashboard/settings/website/language" },
         ],
       },
-      {
-        title: "App Settings",
-        icon: FiSmartphone,
-        href: "#",
-        subItems: [
-          { title: "Invoice", href: "/dashboard/settings/app/invoice" },
-          { title: "Printer", href: "/dashboard/settings/app/printer" },
-          { title: "POS", href: "/dashboard/settings/app/pos" },
-          {
-            title: "Custom Fields",
-            href: "/dashboard/settings/app/custom-fields",
-          },
-        ],
-      },
+      // {
+      //   title: "App Settings",
+      //   icon: FiSmartphone,
+      //   href: "#",
+      //   subItems: [
+      //     { title: "Invoice", href: "/dashboard/settings/app/invoice" },
+      //     { title: "Printer", href: "/dashboard/settings/app/printer" },
+      //     { title: "POS", href: "/dashboard/settings/app/pos" },
+      //     {
+      //       title: "Custom Fields",
+      //       href: "/dashboard/settings/app/custom-fields",
+      //     },
+      //   ],
+      // },
       {
         title: "System Settings",
         icon: FiMonitor,
         href: "#",
         subItems: [
-          { title: "Email", href: "/dashboard/settings/system/email" },
-          { title: "SMS", href: "/dashboard/settings/system/sms" },
+          // { title: "Email", href: "/dashboard/settings/system/email" },
+          // { title: "SMS", href: "/dashboard/settings/system/sms" },
           { title: "OTP", href: "/dashboard/settings/system/otp" },
-          {
-            title: "GDPR Cookies",
-            href: "/dashboard/settings/system/gdpr-cookies",
-          },
+          // {
+          //   title: "GDPR Cookies",
+          //   href: "/dashboard/settings/system/gdpr-cookies",
+          // },
         ],
       },
-      {
-        title: "Financial Settings",
-        icon: FiDollarSign,
-        href: "/dashboard/settings/financial",
-      },
-      {
-        title: "Other Settings",
-        icon: FiMoreHorizontal,
-        href: "/dashboard/settings/other",
-      },
+      // {
+      //   title: "Financial Settings",
+      //   icon: FiDollarSign,
+      //   href: "/dashboard/settings/financial",
+      // },
+      // {
+      //   title: "Other Settings",
+      //   icon: FiMoreHorizontal,
+      //   href: "/dashboard/settings/other",
+      // },
       {
         title: "Logout",
         icon: FiLogOut,
