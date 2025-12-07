@@ -126,6 +126,21 @@ export const translations: Record<string, Record<string, string>> = {
     Location: "Location",
     "IP Address": "IP Address",
     "Last Changed": "Last Changed",
+
+    // Notification Page
+    Notification: "Notification",
+    "Mobile Push Notifications": "Mobile Push Notifications",
+    "Desktop Notifications": "Desktop Notifications",
+    "Email Notifications": "Email Notifications",
+    "MSMS Notifications": "MSMS Notifications",
+    "General Notification": "General Notification",
+    Push: "Push",
+    SMS: "SMS",
+    Payment: "Payment",
+    Transaction: "Transaction",
+    OTP: "OTP",
+    Activity: "Activity",
+    Account: "Account",
   },
   bn: {
     Main: "প্রধান",
@@ -254,6 +269,21 @@ export const translations: Record<string, Record<string, string>> = {
     Location: "অবস্থান",
     "IP Address": "আইপি ঠিকানা",
     "Last Changed": "সর্বশেষ পরিবর্তিত",
+
+    // Notification Page
+    Notification: "নোটিফিকেশন",
+    "Mobile Push Notifications": "মোবাইল পুশ নোটিফিকেশন",
+    "Desktop Notifications": "ডেস্কটপ নোটিফিকেশন",
+    "Email Notifications": "ইমেল নোটিফিকেশন",
+    "MSMS Notifications": "এমএসএমএস নোটিফিকেশন",
+    "General Notification": "সাধারণ নোটিফিকেশন",
+    Push: "পুশ",
+    SMS: "এসএমএস",
+    Payment: "পেমেন্ট",
+    Transaction: "লেনদেন",
+    OTP: "ওটিপি",
+    Activity: "কার্যকলাপ",
+    Account: "অ্যাকাউন্ট",
   },
   es: {
     Main: "Principal",
@@ -336,7 +366,7 @@ export const translations: Record<string, Record<string, string>> = {
     "Manage activities associated with the account":
       "Gestionar actividades asociadas con la cuenta",
     "Deactivate Account": "Desactivar cuenta",
-    "This will shutdown your account. Your account will be reactive when you sign in again":
+    "This will shutdown your account. Your account will be reactive cuando inicies sesión nuevamente":
       "Esto cerrará tu cuenta. Tu cuenta se reactivará cuando inicies sesión nuevamente",
     "Delete Account": "Eliminar cuenta",
     "Your account will be permanently deleted":
@@ -383,5 +413,20 @@ export const translations: Record<string, Record<string, string>> = {
     Location: "Ubicación",
     "IP Address": "Dirección IP",
     "Last Changed": "Último cambio",
+
+    // Notification Page
+    Notification: "Notificación",
+    "Mobile Push Notifications": "Notificaciones Push Móvil",
+    "Desktop Notifications": "Notificaciones de Escritorio",
+    "Email Notifications": "Notificaciones por Correo",
+    "MSMS Notifications": "Notificaciones MSMS",
+    "General Notification": "Notificación General",
+    Push: "Push",
+    SMS: "SMS",
+    Payment: "Pago",
+    Transaction: "Transacción",
+    OTP: "OTP",
+    Activity: "Actividad",
+    Account: "Cuenta",
   },
 };
