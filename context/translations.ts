@@ -36,6 +36,96 @@ export const translations: Record<string, Record<string, string>> = {
     "Theme Colors": "Theme Colors",
     Reset: "Reset",
     Close: "Close",
+    Profile: "Profile",
+    "Basic Information": "Basic Information",
+    "Change Image": "Change Image",
+    "Upload an image below 2 MB, Accepted File format JPG, PNG":
+      "Upload an image below 2 MB, Accepted File format JPG, PNG",
+    "First Name": "First Name",
+    "Last Name": "Last Name",
+    Email: "Email",
+    "Phone Number": "Phone Number",
+    "User Name": "User Name",
+    Password: "Password",
+    Cancel: "Cancel",
+    "Save Changes": "Save Changes",
+    "File size exceeds 2MB": "File size exceeds 2MB",
+    "Invalid file format. Only JPG and PNG are allowed.":
+      "Invalid file format. Only JPG and PNG are allowed.",
+    "First Name is required": "First Name is required",
+    "Last Name is required": "Last Name is required",
+    "Invalid email address": "Invalid email address",
+    "Phone Number is required": "Phone Number is required",
+    "User Name is required": "User Name is required",
+    "Password must be at least 6 characters":
+      "Password must be at least 6 characters",
+
+    // Security Page
+    Security: "Security",
+    Settings: "Settings",
+    General: "General",
+    "Two Factor Authentication": "Two Factor Authentication",
+    "Receive codes via SMS or email every time you login":
+      "Receive codes via SMS or email every time you login",
+    "Google Authentication": "Google Authentication",
+    "Connect to Google": "Connect to Google",
+    "Phone Number Verification": "Phone Number Verification",
+    "Verified Mobile Number": "Verified Mobile Number",
+    "Email Verification": "Email Verification",
+    "Verified Email": "Verified Email",
+    "Device Management": "Device Management",
+    "Manage devices associated with the account":
+      "Manage devices associated with the account",
+    "Account Activity": "Account Activity",
+    "Manage activities associated with the account":
+      "Manage activities associated with the account",
+    "Deactivate Account": "Deactivate Account",
+    "This will shutdown your account. Your account will be reactive when you sign in again":
+      "This will shutdown your account. Your account will be reactive when you sign in again",
+    "Delete Account": "Delete Account",
+    "Your account will be permanently deleted":
+      "Your account will be permanently deleted",
+    "Change Password": "Change Password",
+    "Current Password": "Current Password",
+    "New Password": "New Password",
+    "Confirm Password": "Confirm Password",
+    "Change Phone Number": "Change Phone Number",
+    "Current Phone Number": "Current Phone Number",
+    "New Phone Number": "New Phone Number",
+    "New phone number only updated once you verified":
+      "New phone number only updated once you verified",
+    "Change Email": "Change Email",
+    "Current Email": "Current Email",
+    "New Email": "New Email",
+    "New email address only updated once you verified":
+      "New email address only updated once you verified",
+    Remove: "Remove",
+    Manage: "Manage",
+    View: "View",
+    Deactivate: "Deactivate",
+    Delete: "Delete",
+    Connected: "Connected",
+    "Why Are You Deleting Your Account?": "Why Are You Deleting Your Account?",
+    "We're sorry to see you go! To help us improve, please let us know your reason for deleting your account":
+      "We're sorry to see you go! To help us improve, please let us know your reason for deleting your account",
+    "No longer using the service": "No longer using the service",
+    "I no longer need this service and won’t be using it in the future.":
+      "I no longer need this service and won’t be using it in the future.",
+    "Privacy concerns": "Privacy concerns",
+    "I am concerned about how my data is handled and want to remove my information.":
+      "I am concerned about how my data is handled and want to remove my information.",
+    "Too many notifications/emails": "Too many notifications/emails",
+    "I’m overwhelmed by the volume of notifications or emails and would like to reduce them.":
+      "I’m overwhelmed by the volume of notifications or emails and would like to reduce them.",
+    "Poor user experience": "Poor user experience",
+    "I’ve had difficulty using the platform, and it didn’t meet my expectations.":
+      "I’ve had difficulty using the platform, and it didn’t meet my expectations.",
+    "Other (Please specify)": "Other (Please specify)",
+    Date: "Date",
+    Device: "Device",
+    Location: "Location",
+    "IP Address": "IP Address",
+    "Last Changed": "Last Changed",
   },
   bn: {
     Main: "প্রধান",
@@ -74,6 +164,96 @@ export const translations: Record<string, Record<string, string>> = {
     "Theme Colors": "থিম কালার",
     Reset: "রিসেট",
     Close: "বন্ধ",
+    Profile: "প্রোফাইল",
+    "Basic Information": "মৌলিক তথ্য",
+    "Change Image": "ছবি পরিবর্তন করুন",
+    "Upload an image below 2 MB, Accepted File format JPG, PNG":
+      "২ এমবি এর নিচে একটি ছবি আপলোড করুন, অনুমোদিত ফাইল ফরম্যাট JPG, PNG",
+    "First Name": "প্রথম নাম",
+    "Last Name": "শেষ নাম",
+    Email: "ইমেল",
+    "Phone Number": "ফোন নম্বর",
+    "User Name": "ব্যবহারকারীর নাম",
+    Password: "পাসওয়ার্ড",
+    Cancel: "বাতিল করুন",
+    "Save Changes": "পরিবর্তনগুলি সংরক্ষণ করুন",
+    "File size exceeds 2MB": "ফাইলের আকার ২ এমবি এর বেশি",
+    "Invalid file format. Only JPG and PNG are allowed.":
+      "অবৈধ ফাইল ফরম্যাট। শুধুমাত্র JPG এবং PNG অনুমোদিত।",
+    "First Name is required": "প্রথম নাম আবশ্যক",
+    "Last Name is required": "শেষ নাম আবশ্যক",
+    "Invalid email address": "অবৈধ ইমেল ঠিকানা",
+    "Phone Number is required": "ফোন নম্বর আবশ্যক",
+    "User Name is required": "ব্যবহারকারীর নাম আবশ্যক",
+    "Password must be at least 6 characters":
+      "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে",
+
+    // Security Page
+    Security: "নিরাপত্তা",
+    Settings: "সেটিংস",
+    General: "সাধারণ",
+    "Two Factor Authentication": "টু ফ্যাক্টর অথেন্টিকেশন",
+    "Receive codes via SMS or email every time you login":
+      "প্রতিবার লগইন করার সময় এসএমএস বা ইমেলের মাধ্যমে কোড পান",
+    "Google Authentication": "গুগল অথেন্টিকেশন",
+    "Connect to Google": "গুগলে সংযোগ করুন",
+    "Phone Number Verification": "ফোন নম্বর যাচাইকরণ",
+    "Verified Mobile Number": "যাচাইকৃত মোবাইল নম্বর",
+    "Email Verification": "ইমেল যাচাইকরণ",
+    "Verified Email": "যাচাইকৃত ইমেল",
+    "Device Management": "ডিভাইস ম্যানেজমেন্ট",
+    "Manage devices associated with the account":
+      "অ্যাকাউন্টের সাথে যুক্ত ডিভাইস পরিচালনা করুন",
+    "Account Activity": "অ্যাকাউন্ট কার্যকলাপ",
+    "Manage activities associated with the account":
+      "অ্যাকাউন্টের সাথে যুক্ত কার্যকলাপ পরিচালনা করুন",
+    "Deactivate Account": "অ্যাকাউন্ট নিষ্ক্রিয় করুন",
+    "This will shutdown your account. Your account will be reactive when you sign in again":
+      "এটি আপনার অ্যাকাউন্ট বন্ধ করে দেবে। আপনি আবার সাইন ইন করলে আপনার অ্যাকাউন্ট পুনরায় সক্রিয় হবে",
+    "Delete Account": "অ্যাকাউন্ট মুছুন",
+    "Your account will be permanently deleted":
+      "আপনার অ্যাকাউন্ট স্থায়ীভাবে মুছে ফেলা হবে",
+    "Change Password": "পাসওয়ার্ড পরিবর্তন করুন",
+    "Current Password": "বর্তমান পাসওয়ার্ড",
+    "New Password": "নতুন পাসওয়ার্ড",
+    "Confirm Password": "পাসওয়ার্ড নিশ্চিত করুন",
+    "Change Phone Number": "ফোন নম্বর পরিবর্তন করুন",
+    "Current Phone Number": "বর্তমান ফোন নম্বর",
+    "New Phone Number": "নতুন ফোন নম্বর",
+    "New phone number only updated once you verified":
+      "নতুন ফোন নম্বর যাচাই করার পরেই আপডেট হবে",
+    "Change Email": "ইমেল পরিবর্তন করুন",
+    "Current Email": "বর্তমান ইমেল",
+    "New Email": "নতুন ইমেল",
+    "New email address only updated once you verified":
+      "নতুন ইমেল ঠিকানা যাচাই করার পরেই আপডেট হবে",
+    Remove: "সরান",
+    Manage: "পরিচালনা করুন",
+    View: "দেখুন",
+    Deactivate: "নিষ্ক্রিয় করুন",
+    Delete: "মুছুন",
+    Connected: "সংযুক্ত",
+    "Why Are You Deleting Your Account?": "আপনি কেন আপনার অ্যাকাউন্ট মুছছেন?",
+    "We're sorry to see you go! To help us improve, please let us know your reason for deleting your account":
+      "আপনাকে যেতে দেখে আমরা দুঃখিত! আমাদের উন্নতি করতে সাহায্য করার জন্য, দয়া করে আপনার অ্যাকাউন্ট মোছার কারণ আমাদের জানান",
+    "No longer using the service": "আর সেবাটি ব্যবহার করছি না",
+    "I no longer need this service and won’t be using it in the future.":
+      "আমার আর এই সেবার প্রয়োজন নেই এবং ভবিষ্যতে এটি ব্যবহার করব না।",
+    "Privacy concerns": "গোপনীয়তা উদ্বেগ",
+    "I am concerned about how my data is handled and want to remove my information.":
+      "আমি আমার ডেটা কীভাবে পরিচালনা করা হয় তা নিয়ে উদ্বিগ্ন এবং আমার তথ্য সরাতে চাই।",
+    "Too many notifications/emails": "অতিরিক্ত নোটিফিকেশন/ইমেল",
+    "I’m overwhelmed by the volume of notifications or emails and would like to reduce them.":
+      "আমি নোটিফিকেশন বা ইমেলের পরিমাণে অভিভূত এবং সেগুলি কমাতে চাই।",
+    "Poor user experience": "বাজে ব্যবহারকারীর অভিজ্ঞতা",
+    "I’ve had difficulty using the platform, and it didn’t meet my expectations.":
+      "আমি প্ল্যাটফর্মটি ব্যবহার করতে সমস্যার সম্মুখীন হয়েছি এবং এটি আমার প্রত্যাশা পূরণ করেনি।",
+    "Other (Please specify)": "অন্যান্য (অনুগ্রহ করে উল্লেখ করুন)",
+    Date: "তারিখ",
+    Device: "ডিভাইস",
+    Location: "অবস্থান",
+    "IP Address": "আইপি ঠিকানা",
+    "Last Changed": "সর্বশেষ পরিবর্তিত",
   },
   es: {
     Main: "Principal",
@@ -112,5 +292,96 @@ export const translations: Record<string, Record<string, string>> = {
     "Theme Colors": "Colores del tema",
     Reset: "Restablecer",
     Close: "Cerrar",
+    Profile: "Perfil",
+    "Basic Information": "Información básica",
+    "Change Image": "Cambiar imagen",
+    "Upload an image below 2 MB, Accepted File format JPG, PNG":
+      "Sube una imagen de menos de 2 MB, formato aceptado JPG, PNG",
+    "First Name": "Nombre",
+    "Last Name": "Apellido",
+    Email: "Correo electrónico",
+    "Phone Number": "Número de teléfono",
+    "User Name": "Nombre de usuario",
+    Password: "Contraseña",
+    Cancel: "Cancelar",
+    "Save Changes": "Guardar cambios",
+    "File size exceeds 2MB": "El archivo excede los 2MB",
+    "Invalid file format. Only JPG and PNG are allowed.":
+      "Formato inválido. Solo se permiten JPG y PNG.",
+    "First Name is required": "El nombre es obligatorio",
+    "Last Name is required": "El apellido es obligatorio",
+    "Invalid email address": "Email inválido",
+    "Phone Number is required": "El teléfono es obligatorio",
+    "User Name is required": "El nombre de usuario es obligatorio",
+    "Password must be at least 6 characters":
+      "La contraseña debe tener al menos 6 caracteres",
+
+    // Security Page
+    Security: "Seguridad",
+    Settings: "Ajustes",
+    General: "General",
+    "Two Factor Authentication": "Autenticación de dos factores",
+    "Receive codes via SMS or email every time you login":
+      "Recibe códigos vía SMS o email cada vez que inicies sesión",
+    "Google Authentication": "Autenticación de Google",
+    "Connect to Google": "Conectar con Google",
+    "Phone Number Verification": "Verificación de número de teléfono",
+    "Verified Mobile Number": "Número móvil verificado",
+    "Email Verification": "Verificación de correo electrónico",
+    "Verified Email": "Correo electrónico verificado",
+    "Device Management": "Gestión de dispositivos",
+    "Manage devices associated with the account":
+      "Gestionar dispositivos asociados con la cuenta",
+    "Account Activity": "Actividad de la cuenta",
+    "Manage activities associated with the account":
+      "Gestionar actividades asociadas con la cuenta",
+    "Deactivate Account": "Desactivar cuenta",
+    "This will shutdown your account. Your account will be reactive when you sign in again":
+      "Esto cerrará tu cuenta. Tu cuenta se reactivará cuando inicies sesión nuevamente",
+    "Delete Account": "Eliminar cuenta",
+    "Your account will be permanently deleted":
+      "Tu cuenta será eliminada permanentemente",
+    "Change Password": "Cambiar contraseña",
+    "Current Password": "Contraseña actual",
+    "New Password": "Nueva contraseña",
+    "Confirm Password": "Confirmar contraseña",
+    "Change Phone Number": "Cambiar número de teléfono",
+    "Current Phone Number": "Número actual",
+    "New Phone Number": "Nuevo número",
+    "New phone number only updated once you verified":
+      "El nuevo número solo se actualizará una vez verificado",
+    "Change Email": "Cambiar correo",
+    "Current Email": "Correo actual",
+    "New Email": "Nuevo correo",
+    "New email address only updated once you verified":
+      "El nuevo correo solo se actualizará una vez verificado",
+    Remove: "Eliminar",
+    Manage: "Gestionar",
+    View: "Ver",
+    Deactivate: "Desactivar",
+    Delete: "Borrar",
+    Connected: "Conectado",
+    "Why Are You Deleting Your Account?":
+      "¿Por qué estás eliminando tu cuenta?",
+    "We're sorry to see you go! To help us improve, please let us know your reason for deleting your account":
+      "¡Lamentamos verte partir! Para ayudarnos a mejorar, cuéntanos tu motivo para eliminar la cuenta",
+    "No longer using the service": "Ya no uso el servicio",
+    "I no longer need this service and won’t be using it in the future.":
+      "Ya no necesito este servicio y no lo usaré en el futuro.",
+    "Privacy concerns": "Preocupaciones de privacidad",
+    "I am concerned about how my data is handled and want to remove my information.":
+      "Me preocupa cómo se manejan mis datos y quiero eliminar mi información.",
+    "Too many notifications/emails": "Demasiadas notificaciones/emails",
+    "I’m overwhelmed by the volume of notifications or emails and would like to reduce them.":
+      "Estoy abrumado por el volumen de notificaciones o correos y me gustaría reducirlos.",
+    "Poor user experience": "Mala experiencia de usuario",
+    "I’ve had difficulty using the platform, and it didn’t meet my expectations.":
+      "He tenido dificultades usando la plataforma y no cumplió mis expectativas.",
+    "Other (Please specify)": "Otro (Por favor especifica)",
+    Date: "Fecha",
+    Device: "Dispositivo",
+    Location: "Ubicación",
+    "IP Address": "Dirección IP",
+    "Last Changed": "Último cambio",
   },
 };

@@ -52,7 +52,7 @@ const Modal = ({ isOpen, onClose, title, children, size = "md" }: ModalProps) =>
                         exit={{ opacity: 0, scale: 0.95, y: 10 }}
                         transition={{ duration: 0.2 }}
                         className={clsx(
-                            "relative z-[70] w-full bg-white dark:bg-[var(--card)] rounded-xl shadow-2xl border border-zinc-200 dark:border-zinc-800 flex flex-col max-h-[90vh]",
+                            "relative z-[70] w-full bg-white dark:bg-[var(--card)] shadow-2xl border border-zinc-200 dark:border-zinc-800 flex flex-col max-h-[90vh]",
                             sizes[size]
                         )}
                     >

@@ -4,19 +4,19 @@ export const ProfileMenuData = [
   {
     id: "profile",
     title: "My Profile",
-    href: "/profile",
+    href: "/dashboard/settings/general/profile",
     icon: FiUser,
   },
-  {
-    id: "reports",
-    title: "Reports",
-    href: "/reports",
-    icon: FiFileText,
-  },
+  // {
+  //   id: "reports",
+  //   title: "Reports",
+  //   href: "/reports",
+  //   icon: FiFileText,
+  // },
   {
     id: "settings",
     title: "Settings",
-    href: "/settings",
+    href: "/dashboard/settings/general",
     icon: FiSettings,
   },
 ] as const;
