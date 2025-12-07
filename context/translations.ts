@@ -226,6 +226,20 @@ export const translations: Record<string, Record<string, string>> = {
     "Font Family": "Font Family",
     "Select font family of website": "Select font family of website",
     Nunito: "Nunito",
+    "Expand or collapse the sidebar menu":
+      "Expand or collapse the sidebar menu",
+
+    // OTP Page
+    "OTP Type": "OTP Type",
+    "Your can configure the type": "Your can configure the type",
+    "OTP Digit Limit": "OTP Digit Limit",
+    "Select size of the format": "Select size of the format",
+    "OTP Expire Time": "OTP Expire Time",
+    "Select expire time of OTP": "Select expire time of OTP",
+    "5 Mins": "5 Mins",
+    "10 Mins": "10 Mins",
+    "15 Mins": "15 Mins",
+    "30 Mins": "30 Mins",
   },
   bn: {
     Main: "প্রধান",
@@ -455,6 +469,20 @@ export const translations: Record<string, Record<string, string>> = {
     "Font Family": "ফন্ট ফ্যামিলি",
     "Select font family of website": "ওয়েবসাইটের ফন্ট ফ্যামিলি নির্বাচন করুন",
     Nunito: "নুনিটো",
+    "Expand or collapse the sidebar menu":
+      "সাইডবার মেনু প্রসারিত বা সংকুচিত করুন",
+
+    // OTP Page
+    "OTP Type": "ওটিপি টাইপ",
+    "Your can configure the type": "আপনি টাইপ কনফিগার করতে পারেন",
+    "OTP Digit Limit": "ওটিপি ডিজিট সীমা",
+    "Select size of the format": "ফরম্যাটের আকার নির্বাচন করুন",
+    "OTP Expire Time": "ওটিপি মেয়াদ শেষ সময়",
+    "Select expire time of OTP": "ওটিপির মেয়াদ শেষ সময় নির্বাচন করুন",
+    "5 Mins": "৫ মিনিট",
+    "10 Mins": "১০ মিনিট",
+    "15 Mins": "১৫ মিনিট",
+    "30 Mins": "৩০ মিনিট",
   },
   es: {
     Main: "Principal",
@@ -682,5 +710,19 @@ export const translations: Record<string, Record<string, string>> = {
     "Font Family": "Familia de fuentes",
     "Select font family of website": "Seleccionar familia de fuentes",
     Nunito: "Nunito",
+    "Expand or collapse the sidebar menu":
+      "Expandir o contraer el menú lateral",
+
+    // OTP Page
+    "OTP Type": "Tipo de OTP",
+    "Your can configure the type": "Puede configurar el tipo",
+    "OTP Digit Limit": "Límite de dígitos OTP",
+    "Select size of the format": "Seleccionar tamaño del formato",
+    "OTP Expire Time": "Tiempo de expiración OTP",
+    "Select expire time of OTP": "Seleccionar tiempo de expiración de OTP",
+    "5 Mins": "5 minutos",
+    "10 Mins": "10 minutos",
+    "15 Mins": "15 minutos",
+    "30 Mins": "30 minutos",
   },
 };

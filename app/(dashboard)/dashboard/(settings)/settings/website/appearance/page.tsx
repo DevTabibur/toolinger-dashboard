@@ -41,21 +41,21 @@ const AppearancePage = () => {
     <div
       onClick={() => handleThemeChange(value)}
       className={clsx(
-        "cursor-pointer rounded-[var(--radius)] border-2 p-1 transition-all",
+        "cursor-pointer border-2 p-1 transition-all",
         theme === value ? "border-[var(--primary)]" : "border-transparent hover:border-zinc-200 dark:hover:border-zinc-700"
       )}
     >
-      <div className={clsx("h-32 rounded-[var(--radius)] bg-zinc-100 dark:bg-zinc-800 mb-3 border border-zinc-200 dark:border-zinc-700 overflow-hidden relative")}>
+      <div className={clsx("h-32  bg-zinc-100 dark:bg-zinc-800 mb-3 border border-zinc-200 dark:border-zinc-700 overflow-hidden relative")}>
         {/* Mock UI for Theme Preview */}
         <div className="absolute top-0 left-0 bottom-0 w-1/4 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-700 p-1 flex flex-col gap-1">
-          <div className="w-full h-1 bg-zinc-200 dark:bg-zinc-700 rounded-sm"></div>
-          <div className="w-3/4 h-1 bg-zinc-200 dark:bg-zinc-700 rounded-sm"></div>
+          <div className="w-full h-1 bg-zinc-200 dark:bg-zinc-700 "></div>
+          <div className="w-3/4 h-1 bg-zinc-200 dark:bg-zinc-700 "></div>
         </div>
         <div className="absolute top-0 right-0 bottom-0 left-1/4 p-2 flex flex-col gap-2">
-          <div className="w-full h-4 bg-white dark:bg-zinc-900 rounded-sm shadow-sm border border-zinc-200 dark:border-zinc-700"></div>
+          <div className="w-full h-4 bg-white dark:bg-zinc-900  shadow-sm border border-zinc-200 dark:border-zinc-700"></div>
           <div className="flex gap-2">
-            <div className="flex-1 h-12 bg-white dark:bg-zinc-900 rounded-sm shadow-sm border border-zinc-200 dark:border-zinc-700"></div>
-            <div className="flex-1 h-12 bg-white dark:bg-zinc-900 rounded-sm shadow-sm border border-zinc-200 dark:border-zinc-700"></div>
+            <div className="flex-1 h-12 bg-white dark:bg-zinc-900  shadow-sm border border-zinc-200 dark:border-zinc-700"></div>
+            <div className="flex-1 h-12 bg-white dark:bg-zinc-900  shadow-sm border border-zinc-200 dark:border-zinc-700"></div>
           </div>
         </div>
         {/* Color Tint for Preview */}
@@ -79,7 +79,7 @@ const AppearancePage = () => {
     <div className="space-y-6">
       <DashboardBreadcrumb items={[{ label: t("Settings") }, { label: t("Website") }, { label: t("Appearance") }]} />
 
-      <div className="border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/50 rounded-[var(--radius)] overflow-hidden">
+      <div className="border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/50 overflow-hidden">
         <div className="border-b border-zinc-200 px-6 py-4 dark:border-zinc-800">
           <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100">{t("Appearance")}</h3>
         </div>
@@ -110,7 +110,7 @@ const AppearancePage = () => {
                   key={color.name}
                   onClick={() => handleAccentColorChange(color.name, color.value)}
                   className={clsx(
-                    "w-8 h-8 rounded-full flex items-center justify-center transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-zinc-900",
+                    "w-8 h-8  flex items-center justify-center transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-zinc-900",
                     accentColor === color.name ? "ring-2 ring-offset-2 ring-zinc-400 dark:ring-zinc-500" : ""
                   )}
                   style={{ backgroundColor: color.value }}
