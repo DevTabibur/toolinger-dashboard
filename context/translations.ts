@@ -198,6 +198,19 @@ export const translations: Record<string, Record<string, string>> = {
     "Max File Size": "Max File Size",
     "File size": "File size",
     "Allow All Countries": "Allow All Countries",
+
+    // Preference Page
+    Preference: "Preference",
+    "Maintenance Mode": "Maintenance Mode",
+    Coupon: "Coupon",
+    Offers: "Offers",
+    MultiLanguage: "MultiLanguage",
+    Multicurrency: "Multicurrency",
+    Stores: "Stores",
+    Warehouses: "Warehouses",
+    Barcode: "Barcode",
+    "QR Code": "QR Code",
+    HRMS: "HRMS",
   },
   bn: {
     Main: "প্রধান",
@@ -399,6 +412,19 @@ export const translations: Record<string, Record<string, string>> = {
     "Max File Size": "সর্বোচ্চ ফাইলের আকার",
     "File size": "ফাইলের আকার",
     "Allow All Countries": "সব দেশকে অনুমতি দিন",
+
+    // Preference Page
+    Preference: "পছন্দ",
+    "Maintenance Mode": "রক্ষণাবেক্ষণ মোড",
+    Coupon: "কুপন",
+    Offers: "অফার",
+    MultiLanguage: "বহুভাষিক",
+    Multicurrency: "বহু মুদ্রা",
+    Stores: "দোকান",
+    Warehouses: "গুদাম",
+    Barcode: "বারকোড",
+    "QR Code": "কিউআর কোড",
+    HRMS: "এইচআরএমএস",
   },
   es: {
     Main: "Principal",
@@ -598,5 +624,18 @@ export const translations: Record<string, Record<string, string>> = {
     "Max File Size": "Tamaño máx. de archivo",
     "File size": "Tamaño de archivo",
     "Allow All Countries": "Permitir todos los países",
+
+    // Preference Page
+    Preference: "Preferencia",
+    "Maintenance Mode": "Modo de mantenimiento",
+    Coupon: "Cupón",
+    Offers: "Ofertas",
+    MultiLanguage: "Multiidioma",
+    Multicurrency: "Multimoneda",
+    Stores: "Tiendas",
+    Warehouses: "Almacenes",
+    Barcode: "Código de barras",
+    "QR Code": "Código QR",
+    HRMS: "RRHH",
   },
 };
