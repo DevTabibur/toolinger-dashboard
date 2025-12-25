@@ -38,10 +38,10 @@ const ForgotPassword = () => {
             <div className="w-full max-w-md p-8 space-y-6 bg-white  shadow-xl dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 transition-colors duration-300">
                 <div className="text-center space-y-2">
                     <h1 className="text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">
-                        Reset Password
+                        Forgot Password
                     </h1>
                     <p className="text-zinc-500 dark:text-zinc-400">
-                        Enter your email to receive reset instructions
+                        Enter your email to receive forgot password instructions
                     </p>
                 </div>
 

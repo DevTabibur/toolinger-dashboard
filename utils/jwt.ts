@@ -1,5 +1,8 @@
-import jwtDecode from 'jwt-decode';
+// utils/jwt.client.ts
+'use client';
 
-export const decodedToken = (token: string) => {
-  return jwtDecode(token);
+import { jwtDecode } from 'jwt-decode';
+
+export const decodedToken = <T = any>(token: string): T => {
+  return jwtDecode<T>(token);
 };

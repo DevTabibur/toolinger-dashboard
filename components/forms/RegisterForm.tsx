@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,6 +6,8 @@ import * as z from 'zod';
 import { FaRegEye } from 'react-icons/fa';
 import { IoIosEyeOff } from 'react-icons/io';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
+
 
 // Zod Schema
 const registerSchema = z.object({
@@ -24,7 +25,7 @@ type RegisterFormInputs = z.infer<typeof registerSchema>;
 const RegisterForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const { register: registerUser, isLoading } = useAuth();
 
     const {
         register,
@@ -41,12 +42,18 @@ const RegisterForm = () => {
     });
 
     const onSubmit = async (data: RegisterFormInputs) => {
-        setIsLoading(true);
-        // Simulate API call
-        console.log('Form Data:', data);
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
+        // setIsLoading(true);
+        const registerData = {
+            firstName: data.name,
+            email: data.email,
+            password: data.confirmPassword,
+        }
+
+        try {
+            await registerUser(registerData);
+        } catch (error: any) {
+          console.log("error", error)
+        }
     };
 
     return (
@@ -75,8 +82,8 @@ const RegisterForm = () => {
                         placeholder="John Doe"
                         {...register('name')}
                         className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.name
-                                ? 'border-red-500 focus:ring-red-500'
-                                : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
+                            ? 'border-red-500 focus:ring-red-500'
+                            : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
                             } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200`}
                     />
                     {errors.name && (
@@ -100,8 +107,8 @@ const RegisterForm = () => {
                         placeholder="you@example.com"
                         {...register('email')}
                         className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.email
-                                ? 'border-red-500 focus:ring-red-500'
-                                : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
+                            ? 'border-red-500 focus:ring-red-500'
+                            : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
                             } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200`}
                     />
                     {errors.email && (
@@ -126,8 +133,8 @@ const RegisterForm = () => {
                             placeholder="••••••••"
                             {...register('password')}
                             className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.password
-                                    ? 'border-red-500 focus:ring-red-500'
-                                    : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
+                                ? 'border-red-500 focus:ring-red-500'
+                                : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
                                 } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200 pr-10`}
                         />
                         <button
@@ -164,8 +171,8 @@ const RegisterForm = () => {
                             placeholder="••••••••"
                             {...register('confirmPassword')}
                             className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.confirmPassword
-                                    ? 'border-red-500 focus:ring-red-500'
-                                    : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
+                                ? 'border-red-500 focus:ring-red-500'
+                                : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
                                 } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200 pr-10`}
                         />
                         <button
@@ -191,7 +198,7 @@ const RegisterForm = () => {
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-3.5 px-4  text-white font-semibold bg-gradient-to-r from-[var(--brand-start)] to-[var(--brand-end)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--brand-start)] disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] transition-all duration-200 shadow-lg shadow-cyan-500/20 mt-2"
+                    className="w-full py-3.5 px-4 cursor-pointer  text-white font-semibold bg-gradient-to-r from-[var(--brand-start)] to-[var(--brand-end)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--brand-start)] disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] transition-all duration-200 shadow-lg shadow-cyan-500/20 mt-2"
                 >
                     {isLoading ? (
                         <span className="flex items-center justify-center gap-2">

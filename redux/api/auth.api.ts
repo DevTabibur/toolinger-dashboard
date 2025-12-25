@@ -1,8 +1,11 @@
+import { getNewAccessToken } from '@/services/auth.services';
 import { tagTypes } from '../tag-types';
 import { baseAPI } from './baseApi';
-
+import { getFromLocalStorage } from '@/utils/localStorage';
+import { authKey } from '@/constants/storageKey.constant';
+ 
 const AuthURL = `/v1/auth`;
-
+ 
 export const authApi: any = baseAPI.injectEndpoints({
   endpoints: build => ({
     //** user login api */
@@ -18,9 +21,12 @@ export const authApi: any = baseAPI.injectEndpoints({
     //** user log out */
     userLogout: build.mutation({
       query: data => ({
-        url: `${AuthURL}/log-out`,
+        url: `${AuthURL}/logout`,
         method: 'POST',
-        data: data,
+        // data: data,
+         headers: {
+          "Authorization": `Bearer ${getFromLocalStorage(authKey)}`,
+        },
       }),
       invalidatesTags: [tagTypes.user],
     }),

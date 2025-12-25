@@ -52,6 +52,7 @@ export const SidebarMenuData = [
         href: "#",
         subItems: [
           { title: "All Blog", href: "/dashboard/cms/blog" },
+          { title: "Create Blog", href: "/dashboard/cms/blog/create" },
           { title: "Blog Tags", href: "/dashboard/cms/blog/tags" },
           { title: "Categories", href: "/dashboard/cms/blog/categories" },
           { title: "Blog Comments", href: "/dashboard/cms/blog/comments" },

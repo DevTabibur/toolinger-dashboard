@@ -8,6 +8,9 @@ import { FaRegEye } from 'react-icons/fa';
 import { IoIosEyeOff } from 'react-icons/io';
 import Link from 'next/link';
 import { loginSchema } from '@/schemas/auth.schema';
+import toast from 'react-hot-toast';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -15,7 +18,8 @@ type LoginFormInputs = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const { login, isLoading } = useAuth();
+    const router = useRouter();
 
     const {
         register,
@@ -31,12 +35,20 @@ const LoginForm = () => {
     });
 
     const onSubmit = async (data: LoginFormInputs) => {
-        setIsLoading(true);
-        // Simulate API call
-        console.log('Form Data:', data);
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
+        try {
+            await login(data);
+            toast.success("Login Complete!");
+            // Redirect is handled in AuthContext
+        } catch (error: any) {
+            // console.error("Login failed in form:", error);
+            if (error?.status === 404) {
+                toast.error("Credentials do not match!");
+            } else if (error?.data?.message) {
+                toast.error(error.data.message);
+            } else {
+                toast.error("Something went wrong");
+            }
+        }
     };
 
     return (
@@ -65,8 +77,8 @@ const LoginForm = () => {
                         placeholder="you@example.com"
                         {...register('email')}
                         className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.email
-                                ? 'border-red-500 focus:ring-red-500'
-                                : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
+                            ? 'border-red-500 focus:ring-red-500'
+                            : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
                             } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200`}
                     />
                     {errors.email && (
@@ -99,8 +111,8 @@ const LoginForm = () => {
                             placeholder="••••••••"
                             {...register('password')}
                             className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.password
-                                    ? 'border-red-500 focus:ring-red-500'
-                                    : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
+                                ? 'border-red-500 focus:ring-red-500'
+                                : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
                                 } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200 pr-10`}
                         />
                         <button
@@ -142,7 +154,7 @@ const LoginForm = () => {
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-3.5 px-4  text-white font-semibold bg-gradient-to-r from-[var(--brand-start)] to-[var(--brand-end)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--brand-start)] disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] transition-all duration-200 shadow-lg shadow-cyan-500/20"
+                    className="w-full py-3.5 px-4  text-white font-semibold bg-gradient-to-r from-[var(--brand-start)] to-[var(--brand-end)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--brand-start)] disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] transition-all duration-200 shadow-lg shadow-cyan-500/20 cursor-pointer"
                 >
                     {isLoading ? (
                         <span className="flex items-center justify-center gap-2">
@@ -159,7 +171,7 @@ const LoginForm = () => {
 
                 {/* Sign Up Link */}
                 <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
-                    Don't have an account?{' '}
+                    Don&apos;t have an account?{' '}
                     <Link
                         href="/auth/register"
                         className="font-semibold text-[var(--brand-start)] hover:text-[var(--brand-end)] transition-colors"

@@ -1,7 +1,9 @@
-import { decodedToken } from '@/utils/jwt';
+// import { decodedToken } from '@/utils/jwt.client';
 import { instance as axiosInstance } from '@/helpers/axios/axiosInstance';
 import { authKey } from '@/constants/storageKey.constant';
 import { getFromLocalStorage, setToLocalStorage } from '@/utils/localStorage';
+import { decodedToken } from '@/utils/jwt';
+import { getBaseURL } from '@/helpers/config/envConfig';
 
 export const storeUserInfo = ({ accessToken }: any) => {
   return setToLocalStorage(authKey, accessToken);
@@ -28,7 +30,6 @@ export const getLoggedInUser = () => {
 export const getCartItems = () =>{
   const items = getFromLocalStorage("cartList")
   console.log('items', items);
-
 }
 
 // ! return truthy or falsy value to check, is there anyone loggedIn
@@ -41,10 +42,11 @@ export const removeUserInfo = (key: string) => {
   return localStorage.removeItem(key);
 };
 
+
 export const getNewAccessToken = async () => {
   console.log('getNewAccessToken is hitted');
   return await axiosInstance({
-    url: `http://localhost:5000/api/v1/auth/refresh-token`,
+    url: `${getBaseURL()}/auth/refresh-token`,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { reducer } from "./rootReducer";
 import { defaultUiState, UiState } from "./slices/ui.slice";
+import { blogApi } from "./api/blog.api";
 
 function loadUiFromStorage(): { ui: UiState } | undefined {
   try {
@@ -17,6 +18,8 @@ function loadUiFromStorage(): { ui: UiState } | undefined {
 
 export const store = configureStore({
   reducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(blogApi.middleware), 
   preloadedState: loadUiFromStorage(),
 });
 
