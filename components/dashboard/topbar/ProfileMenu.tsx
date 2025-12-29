@@ -6,10 +6,6 @@ import { FiLogOut } from 'react-icons/fi';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ProfileMenuData } from '@/constants/ProfileMenu.constant';
-import { useUserLogoutMutation } from '@/redux/api/auth.api';
-import toast from 'react-hot-toast';
-import { removeUserInfo } from '@/services/auth.services';
-import { authKey } from '@/constants/storageKey.constant';
 import { useAuth } from '@/context/AuthContext';
 
 const ProfileMenu = () => {
@@ -17,7 +13,8 @@ const ProfileMenu = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     // const [logout] = useUserLogoutMutation()
     const router = useRouter();
-    const {logout} = useAuth()
+    const {logout, user} = useAuth()
+
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -31,6 +28,7 @@ const ProfileMenu = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
     const hanldleLogout = async () => {
         const res = await logout();
         // console.log('logout',res);
@@ -71,7 +69,7 @@ const ProfileMenu = () => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute top-full right-0 mt-2 w-64 bg-white dark:bg-zinc-900  shadow-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden z-50"
+                        className="absolute top-full right-0 mt-1 w-64 bg-white dark:bg-zinc-900  shadow-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden z-50"
                     >
                         <div className="p-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center gap-3 bg-zinc-50/50 dark:bg-zinc-800/50">
                             <img

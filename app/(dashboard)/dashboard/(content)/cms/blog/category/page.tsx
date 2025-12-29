@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-
+ 
 import React, { useState, useMemo } from 'react';
 import { DashboardBreadcrumb, Button, Input, Select, Modal, Switch, Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui';
 import { useLanguage } from '@/context/LanguageContext';
 import { FiSearch, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import Link from 'next/link';
 
 // Dummy category data
 const DUMMY_CATEGORIES = [
@@ -100,19 +101,26 @@ const BlogCategoriesPage = () => {
 
   return (
     <div className="space-y-6">
-      <DashboardBreadcrumb items={[{ label: t("Content (CMS)") }, { label: t("Blog") }, { label: t("Blog Categories") }]} />
-
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">{t("Blog Categories")}</h1>
           <p className="text-sm text-zinc-500 mt-1">{t("Manage your blogs")}</p>
         </div>
-        <Button className="bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-[var(--primary-foreground)] border-none">
-          <FiPlus className="w-4 h-4 mr-2" />
-          {t("Add Categories")}
-        </Button>
+        <Link
+          href="/dashboard/cms/blog/category/create"
+          className="bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-[var(--primary-foreground)] border-none cursor-pointer"
+        >
+          <Button className="flex items-center cursor-pointer" icon={<FiPlus className="w-4 h-4 mr-2" />}>
+
+            {t("Add Category")}
+          </Button>
+        </Link>
       </div>
+      {/* breadcurmb */}
+      <DashboardBreadcrumb items={[{ label: t("Content (CMS)") }, { label: t("Blog") }, { label: t("Blog Categories") }]} />
+
+
 
       {/* Filters */}
       <div className="border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/50 p-4">
@@ -236,8 +244,8 @@ const BlogCategoriesPage = () => {
                   key={pageNum}
                   onClick={() => setCurrentPage(pageNum)}
                   className={`w-8 h-8 text-sm border transition-colors ${currentPage === pageNum
-                      ? 'bg-[var(--primary)] text-[var(--primary-foreground)] border-[var(--primary)]'
-                      : 'border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                    ? 'bg-[var(--primary)] text-[var(--primary-foreground)] border-[var(--primary)]'
+                    : 'border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
                     }`}
                 >
                   {pageNum}

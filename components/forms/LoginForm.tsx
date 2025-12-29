@@ -10,17 +10,13 @@ import Link from 'next/link';
 import { loginSchema } from '@/schemas/auth.schema';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
-
-
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { login, isLoading } = useAuth();
-    const router = useRouter();
-
+    
     const {
         register,
         handleSubmit,
@@ -37,7 +33,7 @@ const LoginForm = () => {
     const onSubmit = async (data: LoginFormInputs) => {
         try {
             await login(data);
-            toast.success("Login Complete!");
+            // toast.success("Login Complete!");
             // Redirect is handled in AuthContext
         } catch (error: any) {
             // console.error("Login failed in form:", error);

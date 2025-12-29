@@ -73,7 +73,7 @@ const Notifications = () => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute top-full right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-zinc-900 rounded-xl shadow-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden z-50"
+                        className="absolute top-full right-0 mt-2.5 w-80 sm:w-96 bg-white dark:bg-zinc-900  shadow-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden z-50"
                     >
                         <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-100 dark:border-zinc-800">
                             <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">Notifications</h3>
@@ -119,11 +119,11 @@ const Notifications = () => {
                         <div className="p-3 border-t border-zinc-100 dark:border-zinc-800 flex gap-2">
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 rounded-lg transition-colors"
+                                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200  transition-colors"
                             >
                                 Cancel
                             </button>
-                            <button className="flex-1 px-4 py-2 text-sm font-medium text-white bg-[var(--brand-start)] hover:opacity-90 rounded-lg transition-colors">
+                            <button className="flex-1 px-4 py-2 text-sm font-medium text-white bg-[var(--brand-start)] hover:opacity-90  transition-colors">
                                 View all
                             </button>
                         </div>

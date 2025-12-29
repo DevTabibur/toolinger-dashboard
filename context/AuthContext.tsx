@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUserLoginMutation, useUserLogoutMutation, useUserRegisterMutation } from '@/redux/api/auth.api';
 import { storeUserInfo, getLoggedInUser, isLoggedIn, removeUserInfo } from '@/services/auth.services';
@@ -162,12 +162,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
+
     return (
         <AuthContext.Provider value={{ user, isAuthenticated, isLoading, login, register, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
+
+
 
 export const useAuth = () => {
     const context = useContext(AuthContext);

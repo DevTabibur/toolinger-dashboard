@@ -21,7 +21,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                     <textarea
                         ref={ref}
                         className={clsx(
-                            "w-full rounded-lg border bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] transition-all py-2 px-3 text-sm min-h-[80px]",
+                            "w-full  border bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] transition-all py-2 px-3 text-sm min-h-[80px]",
                             error
                                 ? "border-red-500 focus:ring-red-200 focus:border-red-500"
                                 : "border-zinc-200 dark:border-zinc-700",

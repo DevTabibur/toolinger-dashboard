@@ -54,7 +54,7 @@ export const SidebarMenuData = [
           { title: "All Blog", href: "/dashboard/cms/blog" },
           { title: "Create Blog", href: "/dashboard/cms/blog/create" },
           { title: "Blog Tags", href: "/dashboard/cms/blog/tags" },
-          { title: "Categories", href: "/dashboard/cms/blog/categories" },
+          { title: "Categories", href: "/dashboard/cms/blog/category" },
           { title: "Blog Comments", href: "/dashboard/cms/blog/comments" },
         ],
       },
