@@ -45,7 +45,9 @@ const BlogCategoriesPage = () => {
 
 
   // Pagination
-  const totalPages = Math.ceil(categories?.data?.data?.length / rowsPerPage);
+  const totalPages = Math.ceil(
+    (categories?.data?.meta?.total || 0) / rowsPerPage
+  );
 
 
   // Reset to page 1 when filters change
@@ -82,7 +84,7 @@ const BlogCategoriesPage = () => {
   };
 
   const handleSaveEdit = async () => {
-    
+
     const res = await updateCategory({
       categoryId: categoryToEdit?._id,
       data: {
@@ -265,7 +267,7 @@ const BlogCategoriesPage = () => {
                 <TableCell className="text-zinc-500">{category?.createdBy ? category?.createdBy : '—'}</TableCell>
                 <TableCell className="text-zinc-500">  {formatDate(category?.createdAt)}</TableCell>
                 <TableCell>
-                  {category?.name == "Uncategorized" ? (
+                  {category?.isSystem ? (
                     ""
                   ) : (
                     <div className="flex items-center justify-end gap-2">
