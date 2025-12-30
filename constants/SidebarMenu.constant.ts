@@ -86,7 +86,7 @@ export const SidebarMenuData = [
       {
         title: "Users",
         icon: FiUser,
-        href: "/dashboard/user-management/users",
+        href: "/dashboard/user-management/user",
         // subItems: [
         //   { title: "Users", href: "/dashboard/user-management/users" },
         // ],

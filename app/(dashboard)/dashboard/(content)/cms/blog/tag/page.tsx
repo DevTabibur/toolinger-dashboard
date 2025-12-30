@@ -47,7 +47,6 @@ const BlogTagsPage = () => {
 
 
   // Pagination
-  // const totalPages = Math.ceil(tags?.data?.data?.length / rowsPerPage);
 const totalPages = Math.ceil(
   (tags?.data?.meta?.total || 0) / rowsPerPage
 );
@@ -256,7 +255,7 @@ const totalPages = Math.ceil(
             {tags?.data?.data?.map((tag: any, idx: number) => (
               <TableRow key={tag.id}>
                 <TableCell className="font-medium text-[var(--primary)]">{idx + 1}</TableCell>
-                <TableCell className="font-medium text-[var(--primary)]">{tag?.parentId ? "— " + tag?.name : tag?.name}</TableCell>
+                <TableCell className="font-medium text-[var(--primary)]">{ tag?.name}</TableCell>
                 <TableCell className="font-medium text-[var(--primary)]">{tag?.slug}</TableCell>
                 <TableCell className="font-medium text-[var(--primary)]">{tag?.description ? tag.description : '—'}</TableCell>
 

@@ -1,111 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-
-import React, { useState, useMemo } from 'react';
+ 
+import React, { useState, useMemo, useEffect } from 'react';
 import { DashboardBreadcrumb, Button, Input, Select, Modal, Switch, Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui';
 import { useLanguage } from '@/context/LanguageContext';
 import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiEye, FiEyeOff, FiUpload, FiX } from 'react-icons/fi';
+import Link from 'next/link';
+import { SortableTableHead } from '@/components/ui/Table/Table';
+import { useDeleteUserMutation, useGetAllUsersQuery, useUpdateProfileMutation } from '@/redux/api/user.api';
+import { useDebounce } from '@/hooks/useDebounce';
+import Loader from '@/components/ui/Loader';
+import toast from 'react-hot-toast';
+import { TAG_STATUS_UI } from '@/utils/Blog_Tag_Status';
 
-// Dummy users data
-const DUMMY_USERS = [
-  {
-    id: 1,
-    name: 'Henry Bryant',
-    avatar: '/avatars/avatar1.jpg',
-    phone: '+12498345785',
-    email: 'henry@example.com',
-    role: 'Admin',
-    status: true
-  },
-  {
-    id: 2,
-    name: 'Jenny Ellis',
-    avatar: '/avatars/avatar2.jpg',
-    phone: '+13178964592',
-    email: 'jenny@example.com',
-    role: 'Manager',
-    status: true
-  },
-  {
-    id: 3,
-    name: 'Leon Baxter',
-    avatar: '/avatars/avatar3.jpg',
-    phone: '+12798183487',
-    email: 'leon@example.com',
-    role: 'Salesman',
-    status: true
-  },
-  {
-    id: 4,
-    name: 'Karen Flores',
-    avatar: '/avatars/avatar4.jpg',
-    phone: '+17538647943',
-    email: 'karen@example.com',
-    role: 'Supervisor',
-    status: true
-  },
-  {
-    id: 5,
-    name: 'Michael Dawson',
-    avatar: '/avatars/avatar5.jpg',
-    phone: '+13798132475',
-    email: 'michael@example.com',
-    role: 'Store Keeper',
-    status: true
-  },
-  {
-    id: 6,
-    name: 'Karen Galvan',
-    avatar: '/avatars/avatar6.jpg',
-    phone: '+17586341894',
-    email: 'karen@example.com',
-    role: 'Purchase',
-    status: true
-  },
-  {
-    id: 7,
-    name: 'Thomas Ward',
-    avatar: '/avatars/avatar7.jpg',
-    phone: '+12073548678',
-    email: 'thomas@example.com',
-    role: 'Delivery Biker',
-    status: true
-  },
-  {
-    id: 8,
-    name: 'Aliza Duncan',
-    avatar: '/avatars/avatar8.jpg',
-    phone: '+13147850357',
-    email: 'aliza@example.com',
-    role: 'Maintenance',
-    status: true
-  },
-  {
-    id: 9,
-    name: 'James Higham',
-    avatar: '/avatars/avatar9.jpg',
-    phone: '+11978348626',
-    email: 'james@example.com',
-    role: 'Quality Analyst',
-    status: true
-  },
-  {
-    id: 10,
-    name: 'Jada Robinson',
-    avatar: '/avatars/avatar10.jpg',
-    phone: '+12678934581',
-    email: 'robinson@example.com',
-    role: 'Accountant',
-    status: true
-  },
-];
+
 
 const UsersPage = () => {
   const { t } = useLanguage();
 
   // State
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [sortBy, setSortBy] = useState<string | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -123,39 +40,29 @@ const UsersPage = () => {
   const [editStatus, setEditStatus] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const debouncedSearch = useDebounce(searchQuery, 500);
+  const { data: users, isLoading } = useGetAllUsersQuery({
+    page: currentPage,
+    limit: rowsPerPage,
+    searchTerm: debouncedSearch || undefined,
+    sortBy,
+    sortOrder,
+    status: statusFilter || undefined,
+  })
+  const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation()
+  const [updateUser, { isLoading: isUpdating }] = useUpdateProfileMutation()
 
-  // Filter and sort users
-  const filteredAndSortedUsers = useMemo(() => {
-    let filtered = [...DUMMY_USERS];
+  console.log("users", users?.data?.data)
+  console.log("meta", users?.data?.meta)
 
-    // Apply search filter
-    if (searchQuery) {
-      filtered = filtered.filter(user =>
-        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.phone.includes(searchQuery) ||
-        user.role.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
 
-    // Apply status filter
-    if (statusFilter !== 'all') {
-      const isActive = statusFilter === 'active';
-      filtered = filtered.filter(user => user.status === isActive);
-    }
-
-    return filtered;
-  }, [searchQuery, statusFilter]);
 
   // Pagination
-  const totalPages = Math.ceil(filteredAndSortedUsers.length / rowsPerPage);
-  const paginatedUsers = filteredAndSortedUsers.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
+  const totalPages = Math.ceil(
+    (users?.data?.meta?.total || 0) / rowsPerPage
   );
-
   // Reset to page 1 when filters change
-  React.useEffect(() => {
+  useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, statusFilter, rowsPerPage]);
 
@@ -171,8 +78,15 @@ const UsersPage = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleConfirmDelete = () => {
-    console.log('Deleting user:', userToDelete);
+  const handleConfirmDelete = async () => {
+    // console.log('Deleting user:', userToDelete);
+    const res = await deleteUser(userToDelete?._id)
+    // console.log("delete", res)
+    if (res?.data?.statusCode == 200) {
+      toast.success("User deleted successfully")
+    } else {
+      toast.error("User deleted failed")
+    }
     setIsDeleteModalOpen(false);
     setUserToDelete(null);
   };
@@ -203,47 +117,89 @@ const UsersPage = () => {
     setUserToEdit(null);
   };
 
+  const handleSort = (column: string) => {
+    if (sortBy === column) {
+      setSortOrder(prev => (prev === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortBy(column);
+      setSortOrder('asc');
+    }
+  };
+
+
+  if (isLoading || isDeleting || isUpdating) {
+    return <Loader />
+  }
+
   return (
     <div className="space-y-6">
-      <DashboardBreadcrumb items={[{ label: t("User Management") }, { label: t("Users") }]} />
-
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">{t("Users")}</h1>
           <p className="text-sm text-zinc-500 mt-1">{t("Manage your users")}</p>
         </div>
-        <Button className="bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-[var(--primary-foreground)] border-none">
-          <FiPlus className="w-4 h-4 mr-2" />
-          {t("Add User")}
-        </Button>
+
+        <Link
+          href="/dashboard/user-management/user/create"
+          className="bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-[var(--primary-foreground)] border-none cursor-pointer"
+        >
+          <Button className="flex items-center cursor-pointer" icon={<FiPlus className="w-4 h-4 mr-2" />}>
+
+            {t("Add User")}
+          </Button>
+        </Link>
       </div>
 
+      <DashboardBreadcrumb items={[{ label: t("User Management") }, { label: t("Users") }]} />
+
+
+
       {/* Filters */}
-      <div className="border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/50 p-4">
-        <div className="flex flex-col sm:flex-row gap-4 justify-between">
-          {/* Search */}
+      <div className="border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/50  p-4 pl-0">
+        <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
+
+          {/* LEFT: Search */}
           <div className="relative flex-1 max-w-md">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 w-4 h-4" />
+            {/* <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 w-4 h-4" /> */}
             <Input
-              placeholder={t("Search")}
+              placeholder={t("Search by name, phone, email or role")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
+              className="pl-6 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)]"
             />
           </div>
 
-          {/* Status Filter */}
-          <Select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            options={[
-              { label: t("Status"), value: "all" },
-              { label: t("Active"), value: "active" },
-              { label: t("Inactive"), value: "inactive" },
-            ]}
-            className="w-full sm:w-40"
-          />
+          {/* RIGHT: Filters */}
+          <div className="flex items-center gap-3 flex-wrap">
+
+            {/* Sort by */}
+            {/* <Select
+              value={sortBy || ''}
+              onChange={(e) => setSortBy(e.target.value)}
+              options={[
+                { label: t("Sort By") + ": " + t("Name"), value: "name" },
+                { label: t("Sort By") + ": " + t("Created Date"), value: "createdAt" },
+              ]}
+              className="w-44"
+            /> */}
+
+            {/* Status filter (optional but recommended) */}
+            <Select
+              value={statusFilter as any}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              options={[
+                { label: t("All Status"), value: "" },
+                { label: t("Active"), value: "active" },
+                { label: t("Inactive"), value: "inactive" },
+                { label: t("Banned"), value: "banned" },
+                { label: t("Blocked"), value: "blocked" },
+                // { label: t("Rejected"), value: "rejected" },
+              ]}
+              className="w-36"
+            />
+
+          </div>
         </div>
       </div>
 
@@ -253,32 +209,110 @@ const UsersPage = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="min-w-[200px]">{t("User Name")}</TableHead>
-                <TableHead className="min-w-[140px]">{t("Phone")}</TableHead>
-                <TableHead className="min-w-[200px]">{t("Email")}</TableHead>
-                <TableHead className="min-w-[120px]">{t("Role")}</TableHead>
-                <TableHead className="min-w-[100px]">{t("Status")}</TableHead>
+                <SortableTableHead
+                  label={t("sl")}
+                  column="sl"
+                  activeColumn={sortBy}
+                  order={sortOrder}
+                  onSort={handleSort}
+                />
+                <SortableTableHead
+                  label={t("User")}
+                  column="user"
+                  activeColumn={sortBy}
+                  order={sortOrder}
+                  onSort={handleSort}
+                />
+                <SortableTableHead
+                  label={t("Phone")}
+                  column="phone"
+                  activeColumn={sortBy}
+                  order={sortOrder}
+                  onSort={handleSort}
+                />
+                {/* <SortableTableHead
+                  label={t("Email")}
+                  column="email"
+                  activeColumn={sortBy}
+                  order={sortOrder}
+                  onSort={handleSort}
+                /> */}
+                <SortableTableHead
+                  label={t("Role")}
+                  column="role"
+                  activeColumn={sortBy}
+                  order={sortOrder}
+                  onSort={handleSort}
+                />
+                <SortableTableHead
+                  label={t("Status")}
+                  column="status"
+                  activeColumn={sortBy}
+                  order={sortOrder}
+                  onSort={handleSort}
+                />
                 <TableHead className="text-right min-w-[120px]">{t("Actions")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {paginatedUsers.map((user) => (
+              {users?.data?.data?.map((user: any, index: any) => (
                 <TableRow key={user.id}>
-                  <TableCell>
+                  {/* <TableCell>
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center text-white font-semibold">
-                        {user.name.charAt(0)}
+                        {user?.firstName.charAt(0)}
                       </div>
                       <span className="font-medium text-zinc-900 dark:text-zinc-100">{user.name}</span>
                     </div>
-                  </TableCell>
-                  <TableCell className="text-zinc-600 dark:text-zinc-400">{user.phone}</TableCell>
-                  <TableCell className="text-[var(--primary)]">{user.email}</TableCell>
-                  <TableCell className="text-zinc-600 dark:text-zinc-400">{user.role}</TableCell>
+                  </TableCell> */}
+                  <TableCell className="font-medium text-[var(--primary)]">{index + 1}</TableCell>
                   <TableCell>
-                    <span className={`px-3 py-1 text-xs font-medium ${user.status ? 'bg-green-500 text-white' : 'bg-zinc-500 text-white'}`}>
-                      {user.status ? t("Active") : t("Inactive")}
-                    </span>
+                    <div className="flex items-center gap-3">
+                      {/* Avatar */}
+                      {user?.avatar ? (
+                        <img
+                          src={user.avatar}
+                          alt={user.firstName}
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center text-white font-semibold uppercase">
+                          {user?.firstName?.charAt(0)}
+                        </div>
+                      )}
+
+                      {/* Name & Email */}
+                      <div className="flex flex-col leading-tight">
+                        <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                          {user?.firstName}
+                          {user?.lastName ? ` ${user.lastName}` : ""}
+                        </span>
+                        <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                          {user?.email}
+                        </span>
+                      </div>
+                    </div>
+                  </TableCell>
+
+                  
+
+                  <TableCell className="text-zinc-600 dark:text-zinc-400">{user?.phoneNo ? user?.phoneNo : "—"}</TableCell>
+                  <TableCell className="text-[var(--primary)]">{user?.email}</TableCell>
+                  <TableCell>
+                    {(() => {
+                      const normalizedStatus = user?.status.toLowerCase();
+
+                      const statusConfig =
+                        TAG_STATUS_UI[normalizedStatus] || TAG_STATUS_UI.inactive;
+
+                      return (
+                        <span
+                          className={`px-3 py-1 text-xs font-medium rounded-lg ${statusConfig.className}`}
+                        >
+                          {t(statusConfig.label)}
+                        </span>
+                      );
+                    })()}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end gap-2">
@@ -312,17 +346,23 @@ const UsersPage = () => {
         </div>
 
         {/* No Results */}
-        {paginatedUsers.length === 0 && (
+        {users?.data?.meta?.total === 0 && (
           <div className="p-12 text-center">
             <p className="text-zinc-500">{t("No users found")}</p>
           </div>
         )}
+
       </div>
 
       {/* Pagination */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-zinc-200 dark:border-zinc-800 pt-4">
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-zinc-500">{t("Row Per Page")}:</span>
+
+        {/* LEFT: Row per page */}
+        <div className="flex items-center gap-2 text-sm text-zinc-500 whitespace-nowrap">
+          <span className="whitespace-nowrap">
+            {t("Row Per Page")}:
+          </span>
+
           <Select
             value={rowsPerPage.toString()}
             onChange={(e) => setRowsPerPage(Number(e.target.value))}
@@ -331,55 +371,63 @@ const UsersPage = () => {
               { label: "20", value: "20" },
               { label: "50", value: "50" },
             ]}
-            className="w-20"
+            className="w-16 shrink-0"
           />
-          <span className="text-sm text-zinc-500 ml-4">{t("Entries")}</span>
+
+          <span className="whitespace-nowrap">
+            {t("Entries")}
+          </span>
         </div>
 
+
+        {/* RIGHT: Pagination */}
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-            disabled={currentPage === 1}
-            className="px-3 py-1.5 text-sm border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {t("Previous")}
-          </button>
+          {/* previous / pages / next (unchanged) */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1.5 text-sm border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {t("Previous")}
+            </button>
 
-          <div className="flex items-center gap-1">
-            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-              let pageNum;
-              if (totalPages <= 5) {
-                pageNum = i + 1;
-              } else if (currentPage <= 3) {
-                pageNum = i + 1;
-              } else if (currentPage >= totalPages - 2) {
-                pageNum = totalPages - 4 + i;
-              } else {
-                pageNum = currentPage - 2 + i;
-              }
+            <div className="flex items-center gap-1">
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let pageNum;
+                if (totalPages <= 5) {
+                  pageNum = i + 1;
+                } else if (currentPage <= 3) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  pageNum = currentPage - 2 + i;
+                }
 
-              return (
-                <button
-                  key={pageNum}
-                  onClick={() => setCurrentPage(pageNum)}
-                  className={`w-8 h-8 text-sm border transition-colors ${currentPage === pageNum
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => setCurrentPage(pageNum)}
+                    className={`w-8 h-8 text-sm border transition-colors ${currentPage === pageNum
                       ? 'bg-[var(--primary)] text-[var(--primary-foreground)] border-[var(--primary)]'
                       : 'border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
-                    }`}
-                >
-                  {pageNum}
-                </button>
-              );
-            })}
-          </div>
+                      }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+            </div>
 
-          <button
-            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-            disabled={currentPage === totalPages}
-            className="px-3 py-1.5 text-sm border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {t("Next")}
-          </button>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1.5 text-sm border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {t("Next")}
+            </button>
+          </div>
         </div>
       </div>
 

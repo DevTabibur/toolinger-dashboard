@@ -48,6 +48,7 @@ const BlogCategoriesPage = () => {
   const totalPages = Math.ceil(
     (categories?.data?.meta?.total || 0) / rowsPerPage
   );
+  
 
 
   // Reset to page 1 when filters change
