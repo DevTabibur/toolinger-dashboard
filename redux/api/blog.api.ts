@@ -246,6 +246,6 @@ export const {
   useTrackBlogViewMutation,
 
   // Tags
-  useCreateTagMutation,
+  // useCreateTagMutation,
   useGetBlogsByTagQuery,
 } = blogApi;
