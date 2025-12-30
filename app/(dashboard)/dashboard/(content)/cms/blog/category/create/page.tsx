@@ -75,7 +75,7 @@ const CreateCategoryPage = () => {
                     href="/dashboard/cms/blog/category"
                     className="bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-[var(--primary-foreground)] border-none cursor-pointer"
                 >
-                    <Button icon={<FiPlus className="w-4 h-4 mr-2" />}>
+                    <Button className='cursor-pointer' icon={<FiPlus className="w-4 h-4 mr-2" />}>
                         {t('Manage Category')}
                     </Button>
                 </Link>
@@ -100,6 +100,7 @@ const CreateCategoryPage = () => {
                             ...values,
                             parentId: values.parentId || null,
                             description: values.description?.trim() || undefined,
+                            // createdBy: getFromLocalStorage(authKey),
                         };
 
                         const res = await createCategory(payload).unwrap();

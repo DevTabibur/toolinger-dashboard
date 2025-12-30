@@ -1,10 +1,20 @@
 "use client";
 import React from "react";
 import clsx from "clsx";
+import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 
 type TableProps = React.TableHTMLAttributes<HTMLTableElement> & {
     children: React.ReactNode;
 };
+
+type SortableHeadProps = {
+    label: string;
+    column: string;
+    activeColumn: string | null;
+    order: 'asc' | 'desc';
+    onSort: (column: string) => void;
+};
+
 
 const Table = ({ children, className, ...rest }: TableProps) => {
     return (
@@ -35,7 +45,7 @@ const TableRow = ({ children, className, ...rest }: React.HTMLAttributes<HTMLTab
 );
 
 const TableHead = ({ children, className, ...rest }: React.ThHTMLAttributes<HTMLTableCellElement>) => (
-    <th className={clsx("px-6 py-4 text-xs font-semibold text-zinc-500 uppercase tracking-wider", className)} {...rest}>
+    <th className={clsx("px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider", className)} {...rest}>
         {children}
     </th>
 );
@@ -45,6 +55,37 @@ const TableCell = ({ children, className, ...rest }: React.TdHTMLAttributes<HTML
         {children}
     </td>
 );
+
+
+
+
+
+const SortableTableHead = ({
+    label,
+    column,
+    activeColumn,
+    order,
+    onSort,
+}: SortableHeadProps) => {
+    const isActive = activeColumn === column;
+
+    return (
+        <TableHead
+            onClick={() => onSort(column)}
+            className="cursor-pointer select-none"
+        >
+            <div className="flex items-center gap-1">
+                <span>{label}</span>
+
+                {isActive && (
+                    order === 'asc'
+                        ? <FiChevronUp className="w-5 h-5 font-bold" />
+                        : <FiChevronDown className="w-5 h-5 font-bold" />
+                )}
+            </div>
+        </TableHead>
+    );
+};
 
 /*
  * How to use:
@@ -67,5 +108,5 @@ const TableCell = ({ children, className, ...rest }: React.TdHTMLAttributes<HTML
  * </Table>
  */
 
-export { Table, TableHeader, TableBody, TableRow, TableHead, TableCell };
+export { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, SortableTableHead };
 export default Table;
