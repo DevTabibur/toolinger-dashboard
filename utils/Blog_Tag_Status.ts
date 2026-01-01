@@ -22,4 +22,8 @@ export const TAG_STATUS_UI: Record<
     label: "Rejected",
     className: "bg-rose-700 dark:bg-rose-800 text-white",
   },
+  banned: {
+    label: "Banned",
+    className: "bg-rose-700 dark:bg-rose-800 text-white",
+  },
 };

@@ -207,11 +207,11 @@ export const SidebarMenuData = [
       //   icon: FiMoreHorizontal,
       //   href: "/dashboard/settings/other",
       // },
-      {
-        title: "Logout",
-        icon: FiLogOut,
-        href: "/logout",
-      },
+      // {
+      //   title: "Logout",
+      //   icon: FiLogOut,
+      //   href: "/logout",
+      // },
     ],
   },
 ];

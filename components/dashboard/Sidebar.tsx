@@ -7,6 +7,7 @@ import SidebarItem from './sidebar/SidebarItem';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useLanguage } from '@/context/LanguageContext';
+import { Button } from '../ui';
 
 
 interface SidebarProps {
@@ -79,6 +80,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                         </div>
                     ))}
                 </nav>
+                {/* <Button>Logout</Button> */}
             </aside>
         </>
     );
