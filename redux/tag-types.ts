@@ -7,6 +7,7 @@ export enum tagTypes {
   blog = "blog",
   blogCategory = "blogCategory",
   blogTag = "blogTag",
+  systemSettings = "systemSettings",
 }
 
 export const tagTypesList = [
@@ -18,4 +19,5 @@ export const tagTypesList = [
   tagTypes.blog,
   tagTypes.blogCategory,
   tagTypes.blogTag,
+  tagTypes.systemSettings,
 ];

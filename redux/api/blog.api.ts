@@ -198,7 +198,7 @@ export const blogApi: any = baseAPI.injectEndpoints({
         data: tagData,
       }),
       invalidatesTags: [tagTypes.blogTag],
-    }),
+    }), 
 
     //** Get blogs by tag slug */
     getBlogsByTag: build.query({

@@ -5,8 +5,9 @@ export const profileSchema = z.object({
   lastName: z.string().min(1, { message: "Last Name is required" }),
   email: z.string().email({ message: "Invalid email address" }),
   phoneNumber: z.string().min(1, { message: "Phone Number is required" }),
-  userName: z.string().min(1, { message: "User Name is required" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters" }),
+  avatar: z.string().optional(),
+  // userName: z.string().min(1, { message: "User Name is required" }),
+  // password: z
+  //   .string()
+  //   .min(6, { message: "Password must be at least 6 characters" }),
 });

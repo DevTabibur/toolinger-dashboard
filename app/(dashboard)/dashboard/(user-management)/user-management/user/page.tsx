@@ -1394,11 +1394,26 @@ const UsersPage = () => {
             </div>
 
             {/* Email */}
-            <div>
+            {/* <div>
               <label className="label">Email *</label>
               <Field as={Input} type="email" name="email" />
-              <ErrorMessage name="email" component="p" className="text-xs text-red-500" />
-            </div>
+              <ErrorMessage disabled={true} name="email" component="p" className="text-xs text-red-500" />
+            </div> */}
+            <div>
+  <label className="label">Email *</label>
+
+  <Input
+    type="email"
+    value={values.email}
+    disabled
+    className="cursor-not-allowed opacity-70"
+  />
+
+  <p className="text-xs text-zinc-500">
+    Email cannot be changed
+  </p>
+</div>
+
 
             {/* Role / Phone */}
             <div className="grid md:grid-cols-2 gap-2">
@@ -1422,7 +1437,7 @@ const UsersPage = () => {
             </div>
 
             {/* Password */}
-            <div className="grid md:grid-cols-2 gap-2">
+            {/* <div className="grid md:grid-cols-2 gap-2">
               <div className="relative">
                 <label className="label">Password</label>
                 <Field
@@ -1457,7 +1472,7 @@ const UsersPage = () => {
                 </button>
                 <ErrorMessage name="confirmPassword" component="p" className="text-xs text-red-500" />
               </div>
-            </div>
+            </div> */}
 
             {/* Status */}
             <div>
