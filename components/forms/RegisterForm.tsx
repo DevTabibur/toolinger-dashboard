@@ -11,7 +11,8 @@ import { useAuth } from '@/context/AuthContext';
 
 // Zod Schema
 const registerSchema = z.object({
-    name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
+    firstName: z.string().min(2, { message: 'First name must be at least 2 characters' }),
+    lastName: z.string().optional(),
     email: z.string().email({ message: 'Invalid email address' }),
     password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
     confirmPassword: z.string(),
@@ -34,7 +35,8 @@ const RegisterForm = () => {
     } = useForm<RegisterFormInputs>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
-            name: '',
+            firstName: '',
+            lastName: '',
             email: '',
             password: '',
             confirmPassword: '',
@@ -44,7 +46,8 @@ const RegisterForm = () => {
     const onSubmit = async (data: RegisterFormInputs) => {
         // setIsLoading(true);
         const registerData = {
-            firstName: data.name,
+            firstName: data.firstName,
+            lastName: data.lastName,
             email: data.email,
             password: data.confirmPassword,
         }
@@ -52,7 +55,7 @@ const RegisterForm = () => {
         try {
             await registerUser(registerData);
         } catch (error: any) {
-          console.log("error", error)
+            console.log("error", error)
         }
     };
 
@@ -69,29 +72,55 @@ const RegisterForm = () => {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                 {/* Name Field */}
-                <div className="space-y-2">
-                    <label
-                        htmlFor="name"
-                        className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-                    >
-                        Full Name
-                    </label>
-                    <input
-                        id="name"
-                        type="text"
-                        placeholder="John Doe"
-                        {...register('name')}
-                        className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.name
-                            ? 'border-red-500 focus:ring-red-500'
-                            : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
-                            } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200`}
-                    />
-                    {errors.name && (
-                        <p className="text-sm text-red-500 animate-pulse">
-                            {errors.name.message}
-                        </p>
-                    )}
+                <div className='grid md:grid-cols-2 gap-2'>
+                    <div className="space-y-2">
+                        <label
+                            htmlFor="firstName"
+                            className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+                        >
+                            First Name
+                        </label>
+                        <input
+                            id="firstName"
+                            type="text"
+                            placeholder="John"
+                            {...register('firstName')}
+                            className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.firstName
+                                ? 'border-red-500 focus:ring-red-500'
+                                : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
+                                } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200`}
+                        />
+                        {errors.firstName && (
+                            <p className="text-sm text-red-500 animate-pulse">
+                                {errors.firstName.message}
+                            </p>
+                        )}
+                    </div>
+                    <div className="space-y-2">
+                        <label
+                            htmlFor="lastName"
+                            className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+                        >
+                            Last Name
+                        </label>
+                        <input
+                            id="lastName"
+                            type="text"
+                            placeholder="John"
+                            {...register('lastName')}
+                            className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.lastName
+                                ? 'border-red-500 focus:ring-red-500'
+                                : 'border-zinc-200 dark:border-zinc-700 focus:ring-[var(--brand-start)]'
+                                } text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 transition-all duration-200`}
+                        />
+                        {errors.lastName && (
+                            <p className="text-sm text-red-500 animate-pulse">
+                                {errors.lastName.message}
+                            </p>
+                        )}
+                    </div>
                 </div>
+
 
                 {/* Email Field */}
                 <div className="space-y-2">

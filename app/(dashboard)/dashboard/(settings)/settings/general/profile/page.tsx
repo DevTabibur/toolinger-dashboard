@@ -281,9 +281,14 @@ const ProfilePage = () => {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
 
+    // const { data, isLoading } = useGetSingleUserByIdQuery(user?.userId!, {
+    //     skip: !user?.userId,
+    // });
+    // const { data, isLoading } = useGetSingleUserByIdQuery(userId);
     const { data, isLoading } = useGetSingleUserByIdQuery(user?.userId!, {
-        skip: !user?.userId, // ✅ VERY IMPORTANT
+        skip: !user?.userId,
     });
+    // console.log("data", data?.data?.avatar);
 
     const [updateProfile, { isLoading: isUpdating }] =
         useUpdateProfileMutation();
@@ -292,24 +297,57 @@ const ProfilePage = () => {
         enableReinitialize: true, // ✅ MAIN FIX
         initialValues: {
             firstName: data?.data?.firstName || "",
+            avatar: data?.data?.avatar || "",
             lastName: data?.data?.lastName || "",
             email: data?.data?.email || "",
-            phoneNumber: data?.data?.phoneNumber || "",
+            phoneNo: data?.data?.phoneNo || "",
         },
         validationSchema: toFormikValidationSchema(profileSchema),
         onSubmit: async (values) => {
-            const payload = {
-                userId: user?.userId,
-                data: {
-                    firstName: values.firstName,
-                    lastName: values.lastName,
-                    phoneNumber: values.phoneNumber,
-                    avatar: imageFile || undefined
-                }
-            };
-            console.log("payload", payload)
 
-            await updateProfile(payload);
+
+
+            const formData = new FormData();
+
+            formData.append("firstName", values.firstName);
+            formData.append("lastName", values.lastName || "");
+            formData.append("phoneNo", values.phoneNo || "");
+            // formData.append("email", values.email);
+            formData.append("avatar", imageFile || "");
+
+
+            //  avatar only if exists
+            // if (imageFile) {
+            //     formData.append("avatar", imageFile);
+            // }
+
+            const payload = {
+                userId: "694d3665eb6fb14b15426988",
+                data: formData,
+            };
+
+            console.log("FormData payload:", [...formData.entries()]);
+
+            const res = await updateProfile({
+                userId: user!.userId,
+                data: formData,
+            });
+
+            console.log("res", res)
+
+
+            // const payload = {
+            //     userId: user?.userId,
+            //     data: {
+            //         firstName: values.firstName,
+            //         lastName: values.lastName,
+            //         phoneNumber: values.phoneNumber,
+            //         avatar: imageFile || undefined
+            //     }
+            // };
+            // console.log("payload", payload)
+
+            // await updateProfile(payload);
         },
     });
 
@@ -355,6 +393,19 @@ const ProfilePage = () => {
                     {/* Avatar */}
                     <div className="flex items-center gap-6">
                         <div className="relative h-24 w-24 overflow-hidden border">
+                            {data?.data?.avatar ? (
+                                <Image
+                                    src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${data?.data?.avatar}`}
+                                    alt="Avatar"
+                                    fill
+                                    className="object-cover"
+                                    unoptimized
+                                />
+                            ) : (
+                                <div className="h-full w-full flex items-center justify-center bg-zinc-100 dark:bg-zinc-800">
+                                    <FiUser size={32} />
+                                </div>
+                            )}
                             {imagePreview ? (
                                 <>
                                     <Image
@@ -425,10 +476,10 @@ const ProfilePage = () => {
 
                         <Input
                             label={t("Phone Number")}
-                            name="phoneNumber"
-                            value={formik.values.phoneNumber}
+                            name="phoneNo"
+                            value={formik.values.phoneNo}
                             onChange={formik.handleChange}
-                            error={formik.touched.phoneNumber && formik.errors.phoneNumber as any}
+                            error={formik.touched.phoneNo && formik.errors.phoneNo as any}
                         />
 
                         <div className="col-span-full flex justify-end gap-3 pt-4">

@@ -7,13 +7,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ProfileMenuData } from '@/constants/ProfileMenu.constant';
 import { useAuth } from '@/context/AuthContext';
+import { useGetSingleUserByIdQuery } from '@/redux/api/user.api';
+import Loader from '@/components/ui/Loader';
+import Image from 'next/image';
 
 const ProfileMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     // const [logout] = useUserLogoutMutation()
     const router = useRouter();
-    const {logout, user} = useAuth()
+    const { logout, user } = useAuth()
+    // console.log("user", user)
+    const { data, isLoading } = useGetSingleUserByIdQuery(user?.userId!, {
+        skip: !user?.userId,
+    });
+    // console.log("data profile menu", data?.data)
 
 
     useEffect(() => {
@@ -41,6 +49,10 @@ const ProfileMenu = () => {
         // }
     }
 
+
+    if (isLoading) {
+        return <Loader />
+    }
     return (
         <div className="relative" ref={containerRef}>
             <button
@@ -54,10 +66,10 @@ const ProfileMenu = () => {
                 />
                 <div className="hidden md:block text-left">
                     <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 leading-none">
-                        John Smilga
+                        {data?.data?.firstName} {data?.data?.lastName}
                     </p>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                        Admin
+                        {data?.data?.role}
                     </p>
                 </div>
             </button>
@@ -72,14 +84,18 @@ const ProfileMenu = () => {
                         className="absolute top-full right-0 mt-1 w-64 bg-white dark:bg-zinc-900  shadow-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden z-50"
                     >
                         <div className="p-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center gap-3 bg-zinc-50/50 dark:bg-zinc-800/50">
-                            <img
-                                src="https://i.pravatar.cc/150?u=admin"
+                            <Image
+                                src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${data?.data?.avatar}`} //  || "https://i.pravatar.cc/150?u=admin"
                                 alt="Admin User"
                                 className="w-12 h-12 rounded-full object-cover shadow-sm"
+                                width={100}
+                                height={100}
+                                unoptimized
                             />
+
                             <div>
-                                <p className="font-semibold text-zinc-900 dark:text-zinc-100">John Smilga</p>
-                                <p className="text-xs text-zinc-500 dark:text-zinc-400">Admin</p>
+                                <p className="font-semibold text-zinc-900 dark:text-zinc-100">{data?.data?.firstName} {data?.data?.lastName}</p>
+                                <p className="text-xs text-zinc-500 dark:text-zinc-400">{data?.data?.role}</p>
                             </div>
                         </div>
 

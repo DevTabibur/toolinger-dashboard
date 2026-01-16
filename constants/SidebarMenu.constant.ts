@@ -1,3 +1,4 @@
+import { Mail } from "lucide-react";
 import {
   FiGrid,
   FiUser,
@@ -15,8 +16,27 @@ import {
   FiMoreHorizontal,
   FiLogOut,
 } from "react-icons/fi";
+import { IconType } from "react-icons";
+import { LucideIcon } from "lucide-react";
 
-export const SidebarMenuData = [
+export interface SidebarSubItem {
+  title: string;
+  href: string;
+}
+
+export interface SidebarItem {
+  title: string;
+  icon: IconType | LucideIcon;
+  href: string;
+  subItems?: SidebarSubItem[];
+}
+
+export interface SidebarSection {
+  title: string;
+  items: SidebarItem[];
+}
+
+export const SidebarMenuData: SidebarSection[] = [
   {
     title: "Main",
     items: [
@@ -80,6 +100,17 @@ export const SidebarMenuData = [
       },
     ],
   },
+  // {
+  //   title: "CRM",
+  //   items: [
+  //     {
+  //       title: "Customers",
+  //       icon: FiFileText,
+  //       href: "#",
+  //       subItems: [{ title: "Pages", href: "/dashboard/cms/pages" }],
+  //     },
+  //   ],
+  // },
   {
     title: "User Management",
     items: [
@@ -114,6 +145,14 @@ export const SidebarMenuData = [
       //     },
       //   ],
       // },
+      {
+        title: "Send Messages",
+        icon: Mail,
+        href: "/dashboard/user-management/send-message",
+        // subItems: [
+        //   { title: "Users", href: "/dashboard/user-management/users" },
+        // ],
+      },
     ],
   },
   {

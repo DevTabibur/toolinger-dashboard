@@ -11,4 +11,4 @@
 
 ## Task
 1. https://dreamspos.dreamstechnologies.com/html/template/permissions.html   ==> ei link er permission system ta amdr user management er moddhe kora lagbe...
-2. 
+2. forget password e issue ase, eita one click ee password reset hobe, jwt token based.. emon system korbo

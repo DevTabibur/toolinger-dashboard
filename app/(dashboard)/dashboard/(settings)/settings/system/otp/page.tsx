@@ -107,7 +107,7 @@ const OTPPage = () => {
                         setFieldValue('otpType', e.target.value)
                       }
                       options={[
-                        { label: t("SMS"), value: "sms" },
+                        // { label: t("SMS"), value: "sms" },
                         { label: t("Email"), value: "email" },
                       ]}
                     />
