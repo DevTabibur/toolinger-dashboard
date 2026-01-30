@@ -11,7 +11,7 @@ const Card = ({ children, className, noPadding = false, ...rest }: CardProps) =>
     return (
         <div
             className={clsx(
-                "bg-white dark:bg-[var(--card)] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden",
+                "bg-white dark:bg-[var(--card)] border border-zinc-200 dark:border-zinc-800  shadow-sm overflow-hidden",
                 !noPadding && "p-6",
                 className
             )}

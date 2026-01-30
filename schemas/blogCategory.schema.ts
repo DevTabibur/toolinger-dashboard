@@ -13,15 +13,15 @@ export const categorySchema = z.object({
       "Slug must contain only lowercase letters, numbers, and hyphens"
     ),
 
-  parentId: z.string().nullable(),
-  createdBy: z.string().nullable(),
+  // parentId: z.string().nullable(),
+  // createdBy: z.string().nullable(),
 
-  description: z
-    .string()
-    .max(500, "Description must not exceed 500 characters")
-    .optional(),
+  // description: z
+  //   .string()
+  //   .max(500, "Description must not exceed 500 characters")
+  //   .optional(),
 
-  status: z.enum(["active", "inactive"]),
+  // status: z.enum(["active", "inactive"]),
 
-  isSystem: z.boolean(),
+  // isSystem: z.boolean(),
 });

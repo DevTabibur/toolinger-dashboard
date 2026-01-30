@@ -173,7 +173,7 @@ const BlogCategoriesPage = () => {
 
             {/* Status filter (optional but recommended) */}
             <Select
-              value={statusFilter as any}
+              value={statusFilter as any || ""}
               onChange={(e) => setStatusFilter(e.target.value)}
               options={[
                 { label: t("All Status"), value: "" },
@@ -215,6 +215,13 @@ const BlogCategoriesPage = () => {
                 onSort={handleSort}
               />
               <SortableTableHead
+                label={t("Parent Category")}
+                column="parentId"
+                activeColumn={sortBy}
+                order={sortOrder}
+                onSort={handleSort}
+              />
+              <SortableTableHead
                 label={t("description")}
                 column="description"
                 activeColumn={sortBy}
@@ -247,10 +254,11 @@ const BlogCategoriesPage = () => {
           </TableHeader>
           <TableBody>
             {categories?.data?.data?.map((category: any, idx: number) => (
-              <TableRow key={category.id}>
+              <TableRow key={category._id}>
                 <TableCell className="font-medium text-[var(--primary)]">{idx + 1}</TableCell>
                 <TableCell className="font-medium text-[var(--primary)]">{category?.parentId ? "— " + category?.name : category?.name}</TableCell>
-                <TableCell className="font-medium text-[var(--primary)]">{category?.slug}</TableCell>
+                <TableCell className="font-medium text-[var(--primary)]">/{category?.slug}</TableCell>
+                <TableCell className="font-medium text-[var(--primary)]">{category?.parentId ?  category?.parentId?.name : "— "}</TableCell>
                 <TableCell className="font-medium text-[var(--primary)]">{category?.description ? category.description : '—'}</TableCell>
 
                 <TableCell>
@@ -310,7 +318,7 @@ const BlogCategoriesPage = () => {
           </span>
 
           <Select
-            value={rowsPerPage.toString()}
+            value={rowsPerPage.toString() || ""}
             onChange={(e) => setRowsPerPage(Number(e.target.value))}
             options={[
               { label: "10", value: "10" },

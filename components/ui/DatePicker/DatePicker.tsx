@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { FiCalendar, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiCalendar, FiChevronLeft, FiChevronRight, FiClock, FiCheck } from "react-icons/fi";
 import clsx from "clsx";
 
 type DatePickerProps = {
@@ -9,6 +9,7 @@ type DatePickerProps = {
     label?: string;
     placeholder?: string;
     className?: string;
+    showTime?: boolean;
 };
 
 const DAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
@@ -17,11 +18,16 @@ const MONTHS = [
     "July", "August", "September", "October", "November", "December"
 ];
 
-const DatePicker = ({ value, onChange, label, placeholder = "Select date", className }: DatePickerProps) => {
+const DatePicker = ({ value, onChange, label, placeholder = "Select date", className, showTime = false }: DatePickerProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(value);
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+    // Time state
+    const [selectedHour, setSelectedHour] = useState(value ? value.getHours() : 12);
+    const [selectedMinute, setSelectedMinute] = useState(value ? value.getMinutes() : 0);
+
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -39,6 +45,8 @@ const DatePicker = ({ value, onChange, label, placeholder = "Select date", class
             setSelectedDate(value);
             setCurrentMonth(value.getMonth());
             setCurrentYear(value.getFullYear());
+            setSelectedHour(value.getHours());
+            setSelectedMinute(value.getMinutes());
         }
     }, [value]);
 
@@ -46,10 +54,33 @@ const DatePicker = ({ value, onChange, label, placeholder = "Select date", class
     const getFirstDayOfMonth = (month: number, year: number) => new Date(year, month, 1).getDay();
 
     const handleDateClick = (day: number) => {
-        const newDate = new Date(currentYear, currentMonth, day);
+        const newDate = new Date(currentYear, currentMonth, day, selectedHour, selectedMinute);
         setSelectedDate(newDate);
         onChange?.(newDate);
-        setIsOpen(false);
+        if (!showTime) {
+            setIsOpen(false);
+        }
+    };
+
+    const handleTimeChange = (type: 'hour' | 'minute', val: number) => {
+        let newHour = selectedHour;
+        let newMinute = selectedMinute;
+
+        if (type === 'hour') {
+            newHour = Math.max(0, Math.min(23, val));
+            setSelectedHour(newHour);
+        } else {
+            newMinute = Math.max(0, Math.min(59, val));
+            setSelectedMinute(newMinute);
+        }
+
+        if (selectedDate) {
+            const newDate = new Date(selectedDate);
+            newDate.setHours(newHour);
+            newDate.setMinutes(newMinute);
+            setSelectedDate(newDate);
+            onChange?.(newDate);
+        }
     };
 
     const nextMonth = () => {
@@ -74,11 +105,22 @@ const DatePicker = ({ value, onChange, label, placeholder = "Select date", class
     const firstDay = getFirstDayOfMonth(currentMonth, currentYear);
 
     const formatDate = (date: Date) => {
-        return date.toLocaleDateString("en-US", {
+        const dateStr = date.toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
         });
+
+        if (showTime) {
+            const timeStr = date.toLocaleTimeString("en-US", {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+            return `${dateStr} at ${timeStr}`;
+        }
+
+        return dateStr;
     };
 
     return (
@@ -100,18 +142,19 @@ const DatePicker = ({ value, onChange, label, placeholder = "Select date", class
             </button>
 
             {isOpen && (
-                <div className="absolute z-50 mt-2 p-4 bg-white dark:bg-zinc-800 rounded-xl shadow-xl border border-zinc-200 dark:border-zinc-700 w-64">
+                <div className="absolute z-50 mt-2 p-4 bg-white dark:bg-zinc-800 rounded-xl shadow-xl border border-zinc-200 dark:border-zinc-700 w-72 animate-in fade-in zoom-in-95 duration-200">
                     <div className="flex items-center justify-between mb-4">
-                        <button onClick={prevMonth} className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-full">
+                        <button onClick={prevMonth} className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-full transition-colors">
                             <FiChevronLeft className="w-4 h-4" />
                         </button>
                         <span className="text-sm font-semibold">
                             {MONTHS[currentMonth]} {currentYear}
                         </span>
-                        <button onClick={nextMonth} className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-full">
+                        <button onClick={nextMonth} className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-full transition-colors">
                             <FiChevronRight className="w-4 h-4" />
                         </button>
                     </div>
+
                     <div className="grid grid-cols-7 gap-1 mb-2">
                         {DAYS.map((day) => (
                             <div key={day} className="text-xs text-center text-zinc-500 font-medium py-1">
@@ -119,6 +162,7 @@ const DatePicker = ({ value, onChange, label, placeholder = "Select date", class
                             </div>
                         ))}
                     </div>
+
                     <div className="grid grid-cols-7 gap-1">
                         {Array.from({ length: firstDay }).map((_, i) => (
                             <div key={`empty-${i}`} />
@@ -137,11 +181,12 @@ const DatePicker = ({ value, onChange, label, placeholder = "Select date", class
                             return (
                                 <button
                                     key={day}
+                                    type="button"
                                     onClick={() => handleDateClick(day)}
                                     className={clsx(
-                                        "h-8 w-8 text-sm rounded-full flex items-center justify-center transition-colors",
+                                        "h-8 w-8 text-sm rounded-full flex items-center justify-center transition-all",
                                         isSelected
-                                            ? "bg-[var(--primary)] text-white"
+                                            ? "bg-[var(--primary)] text-white shadow-md shadow-[var(--primary)]/20"
                                             : isToday
                                                 ? "bg-zinc-100 dark:bg-zinc-700 text-[var(--primary)] font-semibold"
                                                 : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300"
@@ -152,6 +197,43 @@ const DatePicker = ({ value, onChange, label, placeholder = "Select date", class
                             );
                         })}
                     </div>
+
+                    {showTime && (
+                        <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-700">
+                            <div className="flex items-center gap-2 mb-3">
+                                <FiClock className="w-3.5 h-3.5 text-zinc-500" />
+                                <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Time</span>
+                            </div>
+                            <div className="flex items-center justify-between gap-3">
+                                <div className="flex items-center gap-2 flex-1">
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="23"
+                                        value={selectedHour.toString().padStart(2, '0')}
+                                        onChange={(e) => handleTimeChange('hour', parseInt(e.target.value) || 0)}
+                                        className="w-full p-2 text-center text-sm bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none"
+                                    />
+                                    <span className="text-zinc-400 font-bold">:</span>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="59"
+                                        value={selectedMinute.toString().padStart(2, '0')}
+                                        onChange={(e) => handleTimeChange('minute', parseInt(e.target.value) || 0)}
+                                        className="w-full p-2 text-center text-sm bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none"
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsOpen(false)}
+                                    className="px-3 py-2 bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-white rounded-md text-xs font-medium transition-colors"
+                                >
+                                    OK
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
         </div>
@@ -166,6 +248,7 @@ const DatePicker = ({ value, onChange, label, placeholder = "Select date", class
  * <DatePicker 
  *   label="Start Date" 
  *   onChange={(date) => console.log(date)} 
+ *   showTime={true} // Optional: Enable time selection
  * />
  */
 

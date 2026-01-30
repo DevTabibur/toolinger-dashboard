@@ -28,6 +28,9 @@ import Loader from '@/components/ui/Loader';
 import { Formik, Form } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { categorySchema } from '@/schemas/blogCategory.schema';
+import clsx from 'clsx';
+import { getFromLocalStorage } from '@/utils/localStorage';
+import { authKey } from '@/constants/storageKey.constant';
 
 
 const initialValues = {
@@ -35,17 +38,17 @@ const initialValues = {
     slug: '',
     parentId: null as string | null,
     description: '',
-    createdBy: '',
+    // createdBy: '',
     status: 'active' as 'active' | 'inactive',
     isSystem: false,
 };
 
+
 const CreateCategoryPage = () => {
     const { t } = useLanguage();
     const router = useRouter();
-    const [createCategory] = useCreateCategoryMutation();
-    const { data: categories, isLoading } = useGetAllCategoriesQuery({ limit: 500 });
-
+    const [createCategory, { isLoading }] = useCreateCategoryMutation();
+    const { data: categories, isLoading: categoriesLoading } = useGetAllCategoriesQuery({});
     const [autoGenerateSlug, setAutoGenerateSlug] = useState(true);
 
     const categoryOptions = [
@@ -56,7 +59,8 @@ const CreateCategoryPage = () => {
         })),
     ];
 
-    if (isLoading) return <Loader />;
+
+    if (isLoading || categoriesLoading) return <Loader />;
 
     return (
         <div className="space-y-6">
@@ -98,10 +102,11 @@ const CreateCategoryPage = () => {
                     try {
                         const payload = {
                             ...values,
-                            parentId: values.parentId || null,
-                            description: values.description?.trim() || undefined,
+                           
                             // createdBy: getFromLocalStorage(authKey),
                         };
+                        console.log("create categfory payload ==>", payload)
+                        console.log("create category values ==>", values)
 
                         const res = await createCategory(payload).unwrap();
 
@@ -111,9 +116,14 @@ const CreateCategoryPage = () => {
                         } else {
                             toast.error(res?.message || 'Something went wrong');
                         }
-                    } catch (error) {
-                        console.error(error);
-                        toast.error('Failed to create category');
+                    } catch (error: any) {
+                        if (error?.data?.message?.includes('duplicate')) {
+                            toast.error('Category already exists');
+                        } else {
+                            toast.error('Failed to create category');
+                        }
+                        console.log('create category error ==>', error);
+                        // toast.error('Failed to create category');
                     }
                 }}
             >
@@ -186,7 +196,7 @@ const CreateCategoryPage = () => {
                                             <Select
                                                 label="Parent Category"
                                                 options={categoryOptions}
-                                                value={values.parentId ?? ''}
+                                                value={values.parentId || ''}
                                                 onChange={(e) =>
                                                     setFieldValue('parentId', e.target.value || null)
                                                 }
@@ -216,14 +226,27 @@ const CreateCategoryPage = () => {
                                         </div>
 
                                     </div>
-                                    <div> {/* Description */}
+                                    {/* Description */}
+                                    <div>
+
                                         <Textarea
                                             label="Description"
                                             value={values.description}
                                             onChange={handleChange}
                                             name="description"
-                                            error={touched.description ? errors.description : undefined}
+                                            // error={touched.description ? errors.description : undefined}
                                             rows={4}
+                                            maxLength={100}
+                                            className={clsx(
+                                                values.description.length >= 100 && "border-red-500 focus:ring-red-500 focus:border-red-500"
+                                            )}
+                                            error={
+                                                touched.description && errors.description
+                                                    ? errors.description
+                                                    : values.description.length >= 100
+                                                        ? "Maximum 100 characters allowed"
+                                                        : undefined
+                                            }
                                         />
                                         <div className="mt-1.5 flex items-start justify-between gap-2">
                                             <p className="text-xs text-zinc-500 flex items-start gap-1">
@@ -231,7 +254,7 @@ const CreateCategoryPage = () => {
                                                 <span>The description is not prominent by default; however, some themes may show it</span>
                                             </p>
                                             <span className="text-xs text-zinc-400 flex-shrink-0">
-                                                {/* {description.length}/500 */}
+                                                {values?.description?.length}/100
                                             </span>
                                         </div>
                                     </div>

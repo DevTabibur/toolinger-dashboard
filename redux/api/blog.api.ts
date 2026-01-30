@@ -191,14 +191,14 @@ export const blogApi: any = baseAPI.injectEndpoints({
     }),
 
     //** Create a new tag */
-    createTag: build.mutation({
-      query: (tagData) => ({
-        url: `/v1/tags`,
-        method: "POST",
-        data: tagData,
-      }),
-      invalidatesTags: [tagTypes.blogTag],
-    }), 
+    // createTag: build.mutation({
+    //   query: (tagData) => ({
+    //     url: `/v1/tags`,
+    //     method: "POST",
+    //     data: tagData,
+    //   }),
+    //   invalidatesTags: [tagTypes.blogTag],
+    // }), 
 
     //** Get blogs by tag slug */
     getBlogsByTag: build.query({

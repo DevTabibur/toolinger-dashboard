@@ -106,7 +106,7 @@ const RegisterForm = () => {
                         <input
                             id="lastName"
                             type="text"
-                            placeholder="John"
+                            placeholder="Doe"
                             {...register('lastName')}
                             className={`w-full px-4 py-3  bg-zinc-50 dark:bg-zinc-800 border ${errors.lastName
                                 ? 'border-red-500 focus:ring-red-500'
