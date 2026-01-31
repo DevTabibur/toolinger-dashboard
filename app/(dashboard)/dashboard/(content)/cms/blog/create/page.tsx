@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useFormik } from "formik";
+import { ErrorMessage, useFormik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { z } from "zod";
 import {
@@ -23,7 +23,8 @@ import {
   FiAlertCircle,
   FiX,
   FiFolder,
-  FiLink
+  FiLink,
+  FiRefreshCw
 } from "react-icons/fi";
 import { clsx } from "clsx";
 import toast from "react-hot-toast";
@@ -50,6 +51,10 @@ import { useLanguage } from "@/context/LanguageContext";
 import { BlogPostSchema } from "@/schemas/blogPost.schema";
 import { categorySchema } from "@/schemas/blogCategory.schema";
 import { BLOG_STATUS } from "@/constants/blogStatus.constant";
+import { zodResolver } from "@hookform/resolvers/zod";
+import RichTextEditor from "@/components/editor/RichTextEditor";
+import { useCreateBlogPostMutation } from "@/redux/api/blog.api";
+import Loader from "@/components/ui/Loader";
 
 type BlogPostFormValues = z.infer<typeof BlogPostSchema>;
 type CategoryFormValues = z.infer<typeof categorySchema>;
@@ -58,15 +63,18 @@ const BlogCreatePage = () => {
   const { t } = useLanguage();
 
   // API Hooks
-  const { data: categoriesData } = useGetAllCategoriesQuery({});
-  const { data: tagsData } = useGetAllTagsQuery({});
+  const { data: categoriesData } = useGetAllCategoriesQuery({ limit: 500 });
+  const { data: tagsData } = useGetAllTagsQuery({ limit: 6 });
   const [createCategory, { isLoading: isCreatingCategory }] = useCreateCategoryMutation();
-  console.log('categoriesData', categoriesData)
-  console.log('tagsData', tagsData)
+  const [createBlogPost, { isLoading: isCreatingBlogPost }] = useCreateBlogPostMutation();
+  // console.log('categoriesData', categoriesData)
+  // console.log('tagsData', tagsData)
   // State
-  const [previewMode, setPreviewMode] = useState(false);
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [tagInput, setTagInput] = useState("");
+  const [wordCount, setWordCount] = useState(0);
+  const [charCount, setCharCount] = useState(0);
 
   // Main Blog Form
   const formik = useFormik<BlogPostFormValues>({
@@ -76,27 +84,42 @@ const BlogCreatePage = () => {
       content: "",
       status: "draft",
       excerpt: "",
-      primaryCategory: "",
-      secondaryCategories: [],
+      //
+      primaryCategory: "uncategorized",
+      // secondaryCategories: [],
       tags: [],
-      blogFeaturedImage: "",
-      allowComments: true,
-      isFeatured: false,
-      isSponsored: false,
-      sponsorName: "",
-      sponsorUrl: "",
+      // blogFeaturedImage: "",
+      // allowComments: true,
+      // isFeatured: false,
+      // isSponsored: false,
+      // sponsorName: "",
+      // sponsorUrl: "",
       seo: {
         title: "",
         description: "",
-        keywords: [],
-        noIndex: false,
-        noFollow: false,
+        // keywords: [],
+        // noIndex: false,
+        // noFollow: false,
       },
     },
     validationSchema: toFormikValidationSchema(BlogPostSchema),
-    onSubmit: async (values) => {
-      console.log("Form Submitted:", values);
-      toast.success(t("Blog post data logged to console!"));
+    onSubmit: async (values, { setFieldValue, resetForm, setSubmitting, setFieldTouched }) => {
+      // console.log("📝 BLOG POST FORM SUBMISSION", values);
+      const res = await createBlogPost(values)
+      // console.log("res ==>", res)
+      if (res?.data?.statusCode == 200) {
+        toast.success(t("Blog post created successfully!"));
+        resetForm();
+      }
+      else if (res?.error) {
+        toast.error(res?.error?.data?.message || t("Failed to create blog post"));
+      } else {
+        toast.error("Something went wrong!");
+      }
+
+
+
+      // toast.success(t("Blog post data logged to console! Check browser console (F12)"));
     },
   });
 
@@ -105,11 +128,11 @@ const BlogCreatePage = () => {
     initialValues: {
       name: "",
       slug: "",
-      parentId: null,
-      createdBy: null,
-      description: "",
-      status: "active",
-      isSystem: false,
+      // parentId: null,
+      // createdBy: null,
+      // description: "",
+      // status: "active",
+      // isSystem: false,
     },
     validationSchema: toFormikValidationSchema(categorySchema),
     onSubmit: async (values) => {
@@ -146,6 +169,13 @@ const BlogCreatePage = () => {
     }
   }, [categoryFormik.values.name, categoryFormik.touched.slug]);
 
+  // Update word count
+  useEffect(() => {
+    const text = formik.values.content || "";
+    setCharCount(text.length);
+    setWordCount(text.trim() === "" ? 0 : text.trim().split(/\s+/).length);
+  }, [formik.values.content]);
+
   // Handlers
   const handleFileSelect = (files: File[]) => {
     if (files.length > 0) {
@@ -155,12 +185,36 @@ const BlogCreatePage = () => {
     }
   };
 
+  // Tags
+  // const handleTagAdd = () => {
+  //   const val = tagInput.trim();
+  //   if (val && !formik.values.tags?.includes(val)) {
+  //     formik.setFieldValue("tags", [...(formik.values.tags || []), val]);
+  //     setTagInput("");
+  //   }
+  // };
+  const normalizeTag = (tag: string) =>
+    tag
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .replace(/^#/, "");
   const handleTagAdd = () => {
-    const val = tagInput.trim();
-    if (val && !formik.values.tags?.includes(val)) {
-      formik.setFieldValue("tags", [...(formik.values.tags || []), val]);
+    const raw = tagInput.trim();
+    if (!raw) return;
+
+    const normalized = normalizeTag(raw);
+
+    const currentTags = formik.values.tags || [];
+
+    // ❌ duplicate prevent
+    if (currentTags.includes(normalized)) {
       setTagInput("");
+      return;
     }
+
+    formik.setFieldValue("tags", [...currentTags, normalized]);
+    setTagInput("");
   };
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -170,22 +224,25 @@ const BlogCreatePage = () => {
     }
   };
 
+
   const handleTagRemove = (index: number) => {
     const newTags = formik.values.tags?.filter((_, i) => i !== index);
     formik.setFieldValue("tags", newTags);
   };
 
+  // Category function
+
   const handleCategoryToggle = (categoryId: string) => {
-    const currentCategories = formik.values.secondaryCategories || [];
-    const isSelected = currentCategories.includes(categoryId);
+    const currentCategories = formik.values.primaryCategory;
+    const isSelected = currentCategories === categoryId;
 
     if (isSelected) {
       formik.setFieldValue(
-        "secondaryCategories",
-        currentCategories.filter((id) => id !== categoryId)
+        "primaryCategory",
+        currentCategories?.filter((id: any) => id !== categoryId)
       );
     } else {
-      formik.setFieldValue("secondaryCategories", [...currentCategories, categoryId]);
+      formik.setFieldValue("primaryCategory", categoryId);
     }
   };
 
@@ -209,58 +266,50 @@ const BlogCreatePage = () => {
       borderColor: "border-green-200 dark:border-green-800",
       hoverBg: "hover:bg-green-100 dark:hover:bg-green-900/30",
     },
-    scheduled: {
-      icon: FiClock,
-      label: t("Scheduled"),
-      description: t("Publish at a future date"),
-      color: "text-blue-600 dark:text-blue-500",
-      bgColor: "bg-blue-50 dark:bg-blue-900/20",
-      borderColor: "border-blue-200 dark:border-blue-800",
-      hoverBg: "hover:bg-blue-100 dark:hover:bg-blue-900/30",
-    },
-    private: {
-      icon: FiLock,
-      label: t("Private"),
-      description: t("Only admin can access"),
-      color: "text-purple-600 dark:text-purple-500",
-      bgColor: "bg-purple-50 dark:bg-purple-900/20",
-      borderColor: "border-purple-200 dark:border-purple-800",
-      hoverBg: "hover:bg-purple-100 dark:hover:bg-purple-900/30",
-    },
-    pending_review: {
-      icon: FiAlertCircle,
-      label: t("Pending Review"),
-      description: t("Awaiting approval"),
-      color: "text-orange-600 dark:text-orange-500",
-      bgColor: "bg-orange-50 dark:bg-orange-900/20",
-      borderColor: "border-orange-200 dark:border-orange-800",
-      hoverBg: "hover:bg-orange-100 dark:hover:bg-orange-900/30",
-    },
-    archived: {
-      icon: FiArchive,
-      label: t("Archived"),
-      description: t("Hidden from public view"),
-      color: "text-gray-600 dark:text-gray-500",
-      bgColor: "bg-gray-50 dark:bg-gray-900/20",
-      borderColor: "border-gray-200 dark:border-gray-800",
-      hoverBg: "hover:bg-gray-100 dark:hover:bg-gray-900/30",
-    },
+    // scheduled: {
+    //   icon: FiClock,
+    //   label: t("Scheduled"),
+    //   description: t("Publish at a future date"),
+    //   color: "text-blue-600 dark:text-blue-500",
+    //   bgColor: "bg-blue-50 dark:bg-blue-900/20",
+    //   borderColor: "border-blue-200 dark:border-blue-800",
+    //   hoverBg: "hover:bg-blue-100 dark:hover:bg-blue-900/30",
+    // },
+    // private: {
+    //   icon: FiLock,
+    //   label: t("Private"),
+    //   description: t("Only admin can access"),
+    //   color: "text-purple-600 dark:text-purple-500",
+    //   bgColor: "bg-purple-50 dark:bg-purple-900/20",
+    //   borderColor: "border-purple-200 dark:border-purple-800",
+    //   hoverBg: "hover:bg-purple-100 dark:hover:bg-purple-900/30",
+    // },
+    // pending_review: {
+    //   icon: FiAlertCircle,
+    //   label: t("Pending Review"),
+    //   description: t("Awaiting approval"),
+    //   color: "text-orange-600 dark:text-orange-500",
+    //   bgColor: "bg-orange-50 dark:bg-orange-900/20",
+    //   borderColor: "border-orange-200 dark:border-orange-800",
+    //   hoverBg: "hover:bg-orange-100 dark:hover:bg-orange-900/30",
+    // },
+    // archived: {
+    //   icon: FiArchive,
+    //   label: t("Archived"),
+    //   description: t("Hidden from public view"),
+    //   color: "text-gray-600 dark:text-gray-500",
+    //   bgColor: "bg-gray-50 dark:bg-gray-900/20",
+    //   borderColor: "border-gray-200 dark:border-gray-800",
+    //   hoverBg: "hover:bg-gray-100 dark:hover:bg-gray-900/30",
+    // },
   };
 
-  // Custom Editor Toolbar
-  const EditorToolbar = () => (
-    <div className="flex items-center gap-1 p-2 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 overflow-x-auto">
-      {["Bold", "Italic", "Underline", "H1", "H2", "Link", "Quote", "List", "Code"].map((tool) => (
-        <button
-          key={tool}
-          type="button"
-          className="p-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors whitespace-nowrap"
-        >
-          {tool}
-        </button>
-      ))}
+  if (isCreatingBlogPost || isCreatingCategory) {
+    return <div className="flex items-center justify-center h-[300px]">
+      <Loader />
     </div>
-  );
+  }
+
 
   return (
     <div className="space-y-6">
@@ -296,21 +345,26 @@ const BlogCreatePage = () => {
       {/* Action Buttons */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={() => setPreviewMode(!previewMode)}>
-            <FiEye className="w-4 h-4 mr-2" />
-            {previewMode ? t("Edit Mode") : t("Preview")}
+          <Button variant="outline" onClick={() => setIsPreviewModalOpen(true)} icon={<FiEye className="w-4 h-4 mr-2" />}>
+
+            {t("Preview")}
           </Button>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
           <Button
             variant="outline"
-            onClick={() => formik.resetForm()}
-            className="text-zinc-600 dark:text-zinc-400"
+            onClick={() => {
+              formik.resetForm();
+              setTagInput("");
+              toast.success(t("Form has been reset successfully!"));
+            }}
+            className="text-zinc-600 dark:text-zinc-400 cursor-pointer"
+            icon={<FiRefreshCw className="w-4 h-4 mr-2" />}
           >
             {t("Reset")}
           </Button>
-          <Button onClick={formik.submitForm} disabled={formik.isSubmitting}>
-            <FiSave className="w-4 h-4 mr-2" />
+          <Button onClick={formik.submitForm} disabled={formik.isSubmitting} className="cursor-pointer" icon={<FiSave className="w-4 h-4 mr-2" />}>
+
             {formik.isSubmitting ? t("Saving...") : t("Save Post")}
           </Button>
         </div>
@@ -326,19 +380,19 @@ const BlogCreatePage = () => {
                 {t("Blog Title")} <span className="text-red-500">*</span>
               </Label>
               <input
-                placeholder={t("Enter blog title (English, हिन्दी)...")}
+                placeholder={t("Enter blog title..")}
                 name="title"
                 value={formik.values.title}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="w-full text-3xl md:text-4xl font-bold bg-transparent placeholder-zinc-300 dark:placeholder-zinc-700 focus:ring-2 focus:ring-[var(--primary)]/20 focus:outline-none text-zinc-900 dark:text-zinc-100 px-0 border-0"
+                className="w-full text-3xl md:text-4xl font-bold placeholder-zinc-300 dark:placeholder-zinc-700 text-zinc-900 dark:text-zinc-100 px-0"
               />
               {formik.touched.title && formik.errors.title && (
                 <p className="text-red-500 text-sm">{formik.errors.title}</p>
               )}
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
+            {/* <div className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
               <span className="font-medium whitespace-nowrap">{t("Permalink")}:</span>
               <div className="flex items-center gap-1 flex-1">
                 <span className="text-zinc-400 dark:text-zinc-600">/blog/</span>
@@ -350,29 +404,44 @@ const BlogCreatePage = () => {
                   className="bg-transparent border-b border-dashed border-zinc-300 dark:border-zinc-700 hover:border-[var(--primary)] focus:border-[var(--primary)] focus:outline-none text-zinc-700 dark:text-zinc-300 w-full max-w-sm transition-colors py-0.5"
                 />
               </div>
-            </div>
-            {formik.touched.slug && formik.errors.slug && (
-              <p className="text-red-500 text-sm">{formik.errors.slug}</p>
-            )}
+            </div> 
+            {formik.touched.title && formik.errors.title && (
+              <p className="text-red-500 text-sm">{formik.errors.title}</p>
+            )}*/}
           </div>
 
           {/* Editor */}
-          <Card className="min-h-[500px] flex flex-col p-0 overflow-hidden border-zinc-200 dark:border-zinc-800 shadow-sm">
-            <EditorToolbar />
-            <textarea
-              name="content"
-              value={formik.values.content}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              className="flex-1 w-full p-4 md:p-6 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 resize-none focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 font-serif text-lg leading-relaxed"
-              placeholder={t("Start writing your amazing story...")}
-            />
-            {formik.touched.content && formik.errors.content && (
-              <div className="p-2 bg-red-50 dark:bg-red-900/10 border-t border-red-100 dark:border-red-900/20 text-red-500 text-sm">
-                {formik.errors.content}
+          <div className="bg-white shadow-sm border border-gray-200">
+            <div className="border-b border-gray-200 bg-gray-50 px-4 py-2">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-semibold text-gray-900">Description</label>
+                <div className="flex items-center gap-3 text-xs text-gray-500">
+                  <span>{wordCount} words</span>
+                  <span className="h-4 w-px bg-gray-300"></span>
+                  <span>{charCount} chars</span>
+                </div>
               </div>
-            )}
-          </Card>
+            </div>
+            <div className="p-3">
+              <RichTextEditor
+                name="content"
+                value={formik.values.content}
+                onChange={(content: string) => {
+                  formik.setFieldValue("content", content, true);
+                }}
+                onBlur={() => {
+                  formik.setFieldTouched("content", true, true);
+                }}
+                placeholder="Write  description here..."
+              />
+              {formik.touched.content && formik.errors.content && (
+                <div className="p-2 bg-red-50 dark:bg-red-900/10 border-t border-red-100 dark:border-red-900/20 text-red-500 text-sm">
+                  {formik.errors.content}
+                </div>
+              )}
+
+            </div>
+          </div>
 
           {/* Excerpt */}
           <Card className="p-6">
@@ -401,19 +470,20 @@ const BlogCreatePage = () => {
               <h3 className="text-base font-semibold">{t("SEO Settings")}</h3>
             </div>
             <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1  gap-4">
                 <Input
                   label={t("Meta Title")}
                   name="seo.title"
                   placeholder={formik.values.title}
                   value={formik.values.seo?.title}
                   onChange={formik.handleChange}
+                  className="w-full"
                 />
-                <Input
+                {/* <Input
                   label={t("Focus Keywords (comma separated)")}
                   name="seo.keywords"
                   placeholder={t("e.g. react, nextjs, blog")}
-                />
+                /> */}
               </div>
               <Textarea
                 label={t("Meta Description")}
@@ -423,7 +493,7 @@ const BlogCreatePage = () => {
                 value={formik.values.seo?.description}
                 onChange={formik.handleChange}
               />
-              <div className="flex items-center gap-6 pt-2">
+              {/* <div className="flex items-center gap-6 pt-2">
                 <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300 cursor-pointer">
                   <input
                     type="checkbox"
@@ -444,7 +514,7 @@ const BlogCreatePage = () => {
                   />
                   {t("No Follow")}
                 </label>
-              </div>
+              </div> */}
             </div>
           </Card>
         </div>
@@ -457,8 +527,14 @@ const BlogCreatePage = () => {
               {t("Blog Status")}
             </h3>
 
-            <div className="grid grid-cols-3 gap-2 mb-6">
-              {['draft', 'published', 'scheduled', 'private', 'pending_review', 'archived'].map((status) => {
+            <div className="grid grid-cols-2 gap-2 mb-6">
+              {['draft',
+                'published',
+                // 'scheduled',
+                // 'private', 
+                // 'pending_review',
+                // 'archived'
+              ].map((status) => {
                 const config = statusConfig[status as keyof typeof statusConfig];
                 const Icon = config.icon;
                 const isSelected = formik.values.status === status;
@@ -508,7 +584,7 @@ const BlogCreatePage = () => {
             </div>
 
             {/* Scheduled Date Picker */}
-            {formik.values.status === 'scheduled' && (
+            {/* {formik.values.status === 'scheduled' && (
               <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800 animate-in fade-in slide-in-from-top-2 duration-200">
                 <DatePicker
                   label={t("Schedule Date")}
@@ -517,7 +593,7 @@ const BlogCreatePage = () => {
                   showTime
                 />
               </div>
-            )}
+            )} */}
           </Card>
 
 
@@ -569,7 +645,7 @@ const BlogCreatePage = () => {
 
               {/* Preview Box */}
               <div className="p-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm text-zinc-500 break-all">
-                <span className="opacity-70">yourstore.com/blog/</span>
+                <span className="opacity-70">abc.com/blog/</span>
                 <span className="font-semibold text-zinc-900 dark:text-zinc-100">{formik.values.slug || 'slug'}</span>
               </div>
 
@@ -663,14 +739,15 @@ const BlogCreatePage = () => {
                   {t("Categories")}
                 </h3>
               </div>
-              <button
-                type="button"
+              <Button
                 onClick={() => setIsCategoryModalOpen(true)}
-                className="text-[var(--primary)] hover:text-[var(--primary-dark)] text-xs font-medium flex items-center gap-1"
+                className="cursor-pointer"
+                type="button"
+                size="sm"
+                icon={<FiPlus className="w-3 h-3" />}
               >
-                <FiPlus className="w-3 h-3" />
                 {t("New")}
-              </button>
+              </Button>
             </div>
 
             <div className="space-y-3">
@@ -688,9 +765,9 @@ const BlogCreatePage = () => {
 
               {/* All Categories Checkboxes */}
               <div className="pt-3 border-t border-zinc-200 dark:border-zinc-700">
-                <Label className="text-xs uppercase text-zinc-400 mb-2 block">
+                {/* <Label className="text-xs uppercase text-zinc-400 mb-2 block">
                   {t("Additional Categories")}
-                </Label>
+                </Label> */}
                 <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
                   {categoriesData?.data?.data?.map((category: any) => (
                     <label
@@ -700,7 +777,7 @@ const BlogCreatePage = () => {
                       <div className="relative flex items-center">
                         <input
                           type="checkbox"
-                          checked={formik.values.secondaryCategories?.includes(category._id)}
+                          checked={formik.values.primaryCategory === category._id}
                           onChange={() => handleCategoryToggle(category._id)}
                           className="peer appearance-none w-4 h-4 border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 checked:bg-[var(--primary)] checked:border-[var(--primary)] transition-colors focus:ring-2 focus:ring-[var(--primary)]/20"
                         />
@@ -726,11 +803,25 @@ const BlogCreatePage = () => {
 
           {/* Tags Card */}
           <Card className="p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <FiHash className="w-4 h-4 text-zinc-500" />
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500">
-                {t("Tags")}
-              </h3>
+            <div className="flex items-center justify-between gap-2 mb-4">
+              <div className="flex items-center gap-2">
+                <FiHash className="w-4 h-4 text-zinc-500" />
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500">
+                  {t("Tags")}
+                </h3>
+              </div>
+              <div>
+                <Button
+                  className="cursor-pointer"
+                  type="button"
+                  size="sm"
+                  onClick={handleTagAdd}
+                  disabled={!tagInput.trim()}
+                >
+                  {t("Add")}
+                </Button>
+              </div>
+
             </div>
             <div className="space-y-3">
               <div className="flex gap-2">
@@ -741,14 +832,7 @@ const BlogCreatePage = () => {
                   onKeyDown={handleTagKeyDown}
                   className="flex-1 px-3 py-2 text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] text-zinc-900 dark:text-zinc-100"
                 />
-                <Button
-                  type="button"
-                  size="sm"
-                  onClick={handleTagAdd}
-                  disabled={!tagInput.trim()}
-                >
-                  {t("Add")}
-                </Button>
+
               </div>
 
               {/* Selected Tags */}
@@ -763,7 +847,7 @@ const BlogCreatePage = () => {
                       <button
                         type="button"
                         onClick={() => handleTagRemove(idx)}
-                        className="ml-1.5 hover:text-red-500 focus:outline-none"
+                        className="ml-1.5 hover:text-red-500 focus:outline-none cursor-pointer"
                       >
                         <FiX className="w-3 h-3" />
                       </button>
@@ -776,7 +860,7 @@ const BlogCreatePage = () => {
               <div className="pt-3 border-t border-zinc-200 dark:border-zinc-700">
                 <p className="text-xs text-zinc-400 mb-2">{t("Most Used")}:</p>
                 <div className="flex flex-wrap gap-2">
-                  {/* {tagsData?.data?.slice(0, 5).map((tag: any) => (
+                  {tagsData?.data?.data?.slice(0, 5).map((tag: any) => (
                     <button
                       key={tag._id}
                       type="button"
@@ -785,17 +869,20 @@ const BlogCreatePage = () => {
                           formik.setFieldValue("tags", [...(formik.values.tags || []), tag.name]);
                         }
                       }}
-                      className="text-xs text-[var(--primary)] hover:underline focus:outline-none"
+                      className="text-xs text-[var(--primary)] hover:underline focus:outline-none cursor-pointer"
                     >
                       {tag.name}
                     </button>
-                  ))} */}
+                  ))}
                 </div>
               </div>
             </div>
           </Card>
         </div>
       </div>
+
+
+
 
       {/* Create Category Modal */}
       <Modal
@@ -830,37 +917,37 @@ const BlogCreatePage = () => {
             required
           />
 
-          <Textarea
-            label={t("Description")}
-            name="description"
-            placeholder={t("Enter category description (optional)")}
-            rows={3}
-            value={categoryFormik.values.description}
-            onChange={categoryFormik.handleChange}
-            onBlur={categoryFormik.handleBlur}
-          />
+          {/* <Textarea
+      label={t("Description")}
+      name="description"
+      placeholder={t("Enter category description (optional)")}
+      rows={3}
+      value={categoryFormik.values.description}
+      onChange={categoryFormik.handleChange}
+      onBlur={categoryFormik.handleBlur}
+    /> */}
 
           {/* <Select
-            label={t("Parent Category")}
-            name="parentId"
-            options={[
-              { label: t("None (Top Level)"), value: "" },
-              ...(categoriesData?.data?.map((c: any) => ({ label: c.name, value: c._id })) || [])
-            ]}
-            value={categoryFormik.values.parentId || ""}
-            onChange={(e) => categoryFormik.setFieldValue("parentId", e.target.value || null)}
-          /> */}
+      label={t("Parent Category")}
+      name="parentId"
+      options={[
+        { label: t("None (Top Level)"), value: "" },
+        ...(categoriesData?.data?.map((c: any) => ({ label: c.name, value: c._id })) || [])
+      ]}
+      value={categoryFormik.values.parentId || ""}
+      onChange={(e) => categoryFormik.setFieldValue("parentId", e.target.value || null)}
+    /> */}
 
-          <Select
-            label={t("Status")}
-            name="status"
-            options={[
-              { label: t("Active"), value: "active" },
-              { label: t("Inactive"), value: "inactive" }
-            ]}
-            value={categoryFormik.values.status}
-            onChange={categoryFormik.handleChange}
-          />
+          {/* <Select
+      label={t("Status")}
+      name="status"
+      options={[
+        { label: t("Active"), value: "active" },
+        { label: t("Inactive"), value: "inactive" }
+      ]}
+      value={categoryFormik.values.status}
+      onChange={categoryFormik.handleChange}
+    /> */}
 
           <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-200 dark:border-zinc-700">
             <Button
@@ -883,8 +970,218 @@ const BlogCreatePage = () => {
           </div>
         </form>
       </Modal>
+
+
+      {/* Preview Modal */}
+      <Modal
+        isOpen={isPreviewModalOpen}
+        onClose={() => setIsPreviewModalOpen(false)}
+        title={t("Blog Post Preview")}
+        size="xl"
+      >
+        <div className="space-y-6">
+          {/* Preview Header */}
+          <div className="space-y-3 pb-6 border-b border-zinc-200 dark:border-zinc-700">
+            {/* Status Badge */}
+            <div className="flex items-center gap-2">
+              <span className={clsx(
+                "inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold uppercase tracking-wider border",
+                statusConfig[formik.values.status as keyof typeof statusConfig].bgColor,
+                statusConfig[formik.values.status as keyof typeof statusConfig].borderColor,
+                statusConfig[formik.values.status as keyof typeof statusConfig].color
+              )}>
+                {React.createElement(statusConfig[formik.values.status as keyof typeof statusConfig].icon, { className: "w-3 h-3" })}
+                {statusConfig[formik.values.status as keyof typeof statusConfig].label}
+              </span>
+              {/* {formik.values.isFeatured && (
+                <span className="inline-flex items-center px-3 py-1 text-xs font-bold uppercase tracking-wider bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 text-yellow-700 dark:text-yellow-500">
+                  {t("Featured")}
+                </span>
+              )} */}
+            </div>
+
+            {/* Title */}
+            <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-zinc-100">
+              {formik.values.title || t("Untitled Blog Post")}
+            </h1>
+
+            {/* Metadata */}
+            <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400">
+              <div className="flex items-center gap-2">
+                <FiClock className="w-4 h-4" />
+                <span>{new Date().toLocaleDateString()}</span>
+              </div>
+              {formik.values.slug && (
+                <div className="flex items-center gap-2">
+                  <FiLink className="w-4 h-4" />
+                  <span className="font-mono text-xs">/blog/{formik.values.slug}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Excerpt */}
+            {formik.values.excerpt && (
+              <p className="text-lg text-zinc-600 dark:text-zinc-400 italic border-l-4 border-[var(--primary)] pl-4">
+                {formik.values.excerpt}
+              </p>
+            )}
+          </div>
+
+          {/* Featured Image */}
+          {/* {formik.values.blogFeaturedImage && (
+            <div className="overflow-hidden border border-zinc-200 dark:border-zinc-700">
+              <img
+                src={formik.values.blogFeaturedImage}
+                alt={formik.values.title}
+                className="w-full h-64 object-cover"
+              />
+            </div>
+          )} */}
+
+          {/* Content */}
+          {/* <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <div className="whitespace-pre-wrap text-zinc-800 dark:text-zinc-200 font-serif text-lg leading-relaxed">
+              {formik.values.content || t("No content yet...")}
+            </div>
+          </div> */}
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <div
+              className="text-zinc-800 dark:text-zinc-200 font-serif text-lg leading-relaxed"
+              dangerouslySetInnerHTML={{
+                __html: formik.values.content || t("No content yet..."),
+              }}
+            />
+          </div>
+
+
+          {/* Categories & Tags */}
+          {/* {(formik.values.secondaryCategories && formik.values.secondaryCategories.length > 0) || (formik.values.tags && formik.values.tags.length > 0) ? (
+            <div className="pt-6 border-t border-zinc-200 dark:border-zinc-700 space-y-4">
+              {formik.values.secondaryCategories && formik.values.secondaryCategories.length > 0 && (
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <FiFolder className="w-4 h-4 text-zinc-500" />
+                    <h4 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">{t("Categories")}:</h4>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {formik.values.secondaryCategories.map((catId) => {
+                      const category = categoriesData?.data?.data?.find((c: any) => c._id === catId);
+                      return category ? (
+                        <span
+                          key={catId}
+                          className="inline-flex items-center px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 text-sm font-medium border border-blue-200 dark:border-blue-800"
+                        >
+                          {category.name}
+                        </span>
+                      ) : null;
+                    })}
+                  </div>
+                </div>
+              )}
+
+              // Tags
+              {formik.values.tags && formik.values.tags.length > 0 && (
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <FiHash className="w-4 h-4 text-zinc-500" />
+                    <h4 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">{t("Tags")}:</h4>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {formik.values.tags.map((tag, idx) => (
+                      <span
+                        key={idx}
+                        className="inline-flex items-center px-3 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium border border-zinc-200 dark:border-zinc-700"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : null} */}
+
+           {formik.values.tags && formik.values.tags.length > 0 && (
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <FiHash className="w-4 h-4 text-zinc-500" />
+                    <h4 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">{t("Tags")}:</h4>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {formik.values.tags.map((tag, idx) => (
+                      <span
+                        key={idx}
+                        className="inline-flex items-center px-3 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium border border-zinc-200 dark:border-zinc-700"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+          {/* SEO Preview */}
+          {(formik.values.seo?.title || formik.values.seo?.description) && (
+            <div className="pt-6 border-t border-zinc-200 dark:border-zinc-700">
+              <div className="flex items-center gap-2 mb-3">
+                <FiGlobe className="w-4 h-4 text-zinc-500" />
+                <h4 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">{t("SEO Preview")}:</h4>
+              </div>
+              <div className="p-4 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 space-y-2">
+                <h5 className="text-lg font-semibold text-blue-600 dark:text-blue-400">
+                  {formik.values.seo?.title || formik.values.title}
+                </h5>
+                <p className="text-sm text-green-700 dark:text-green-500 font-mono">
+                  abc.com/blog/{formik.values.slug || 'slug'}
+                </p>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  {formik.values.seo?.description || formik.values.excerpt || t("No description")}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Scheduled Date */}
+          {/* {formik.values.status === 'scheduled' && formik.values.scheduledAt && (
+            <div className="pt-6 border-t border-zinc-200 dark:border-zinc-700">
+              <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400">
+                <FiClock className="w-4 h-4" />
+                <span className="text-sm font-medium">
+                  {t("Scheduled for")}: {new Date(formik.values.scheduledAt).toLocaleString()}
+                </span>
+              </div>
+            </div>
+          )} */}
+
+          {/* Close Button */}
+          <div className="flex justify-end pt-4 border-t border-zinc-200 dark:border-zinc-700">
+            <Button onClick={() => setIsPreviewModalOpen(false)}>
+              {t("Close Preview")}
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+
     </div>
   );
 };
 
 export default BlogCreatePage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

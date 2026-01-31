@@ -1833,7 +1833,7 @@ export default function RichTextEditor({
   return (
     <div
       ref={containerRef}
-      className="border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm relative"
+      className="border border-gray-300  overflow-hidden bg-white shadow-sm relative"
       style={{
         height: editorHeight,
         minHeight: minHeight,

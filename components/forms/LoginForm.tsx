@@ -22,7 +22,7 @@ const LoginForm = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<LoginFormInputs>({
-        resolver: zodResolver(loginSchema),
+        resolver: zodResolver(loginSchema), 
         defaultValues: {
             email: '',
             password: '',
