@@ -307,23 +307,23 @@ const FontFamily = TextStyle.extend({
 // Function to clean Word/Google Docs HTML while preserving formatting
 // Function to clean Word/Google Docs HTML while preserving formatting
 // FIXED VERSION: Function to clean Word/Google Docs HTML
-const cleanWordHTML = (html: any) => {
+const cleanWordHTML = (html) => {
   if (!html) return "";
 
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html;
 
   // 1. Remove all <br> tags - এইগুলোই extra spacing এর কারণ
-  const removeExcessiveLineBreaks = (element: any) => {
+  const removeExcessiveLineBreaks = (element) => {
     const allElements = element.querySelectorAll("*");
 
-    allElements.forEach((el: any) => {
+    allElements.forEach((el) => {
       // Check for multiple consecutive <br> tags
       const childNodes = Array.from(el.childNodes);
       let brCount = 0;
       let lastBrIndex = -1;
 
-      childNodes.forEach((child: any, index: any) => {
+      childNodes.forEach((child, index) => {
         if (child.nodeType === Node.ELEMENT_NODE && child.tagName === "BR") {
           brCount++;
           lastBrIndex = index;
@@ -346,7 +346,7 @@ const cleanWordHTML = (html: any) => {
         textNodes.push(node);
       }
 
-      textNodes.forEach((textNode: any) => {
+      textNodes.forEach((textNode) => {
         let text = textNode.textContent;
         // Replace multiple newlines with single newline
         text = text.replace(/\n{2,}/g, "\n");
@@ -356,7 +356,7 @@ const cleanWordHTML = (html: any) => {
 
     // Remove empty paragraphs
     const paragraphs = element.querySelectorAll("p, div");
-    paragraphs.forEach((p: any) => {
+    paragraphs.forEach((p) => {
       // Check if paragraph is empty or only contains whitespace/BR
       const children = Array.from(p.childNodes);
       const hasOnlyBr =
@@ -375,7 +375,7 @@ const cleanWordHTML = (html: any) => {
   removeExcessiveLineBreaks(tempDiv);
 
   // 2. Combine short consecutive paragraphs into one
-  const combineShortParagraphs = (element: any) => {
+  const combineShortParagraphs = (element) => {
     const paragraphs = Array.from(element.querySelectorAll("p, div.MsoNormal"));
 
     for (let i = 0; i < paragraphs.length - 1; i++) {
@@ -410,24 +410,24 @@ const cleanWordHTML = (html: any) => {
   combineShortParagraphs(tempDiv);
 
   // 3. Preserve basic formatting
-  const preserveFormatting = (element: any) => {
+  const preserveFormatting = (element) => {
     // Keep bold, italic, underline
     const boldElements = element.querySelectorAll("strong, b");
-    boldElements.forEach((el: any) => {
+    boldElements.forEach((el) => {
       if (!el.hasAttribute("style")) {
         el.style.fontWeight = "bold";
       }
     });
 
     const italicElements = element.querySelectorAll("em, i");
-    italicElements.forEach((el: any) => {
+    italicElements.forEach((el) => {
       if (!el.hasAttribute("style")) {
         el.style.fontStyle = "italic";
       }
     });
 
     const underlineElements = element.querySelectorAll("u");
-    underlineElements.forEach((el: any) => {
+    underlineElements.forEach((el) => {
       if (!el.hasAttribute("style")) {
         el.style.textDecoration = "underline";
       }
@@ -435,9 +435,9 @@ const cleanWordHTML = (html: any) => {
 
     // Remove Word-specific classes
     const elementsWithClass = element.querySelectorAll("[class]");
-    elementsWithClass.forEach((el: any) => {
+    elementsWithClass.forEach((el) => {
       const classes = Array.from(el.classList);
-      if (classes.some((cls: any) => cls.startsWith("Mso"))) {
+      if (classes.some((cls) => cls.startsWith("Mso"))) {
         el.removeAttribute("class");
       }
     });
@@ -449,7 +449,7 @@ const cleanWordHTML = (html: any) => {
 };
 
 // Function to detect if HTML is from Word
-const isFromWord = (html: any) => {
+const isFromWord = (html) => {
   return (
     html.includes('xmlns:o="urn:schemas-microsoft-com') ||
     html.includes('xmlns:w="urn:schemas-microsoft-com') ||
@@ -460,7 +460,7 @@ const isFromWord = (html: any) => {
 };
 
 // Better paste handler for Word/Docs content
-const handleWordPaste = (view: any, html: any, text: any) => {
+const handleWordPaste = (view, html, text) => {
   try {
     // Clean the Word HTML
     const cleanedHTML = cleanWordHTML(html);
@@ -470,10 +470,10 @@ const handleWordPaste = (view: any, html: any, text: any) => {
     temp.innerHTML = cleanedHTML;
 
     // Convert to TipTap format
-    const convertToTipTapFormat = (element: any) => {
+    const convertToTipTapFormat = (element) => {
       let result = "";
 
-      const walk = (node: any, depth = 0) => {
+      const walk = (node, depth = 0) => {
         if (node.nodeType === Node.TEXT_NODE) {
           result += node.textContent;
           return;
@@ -627,7 +627,9 @@ export default function RichTextEditor({
   defaultHeight = "800px",
   minHeight = "300px",
   maxHeight = "800px",
-}: any) {
+  onBlur,
+  name
+}) {
   const fileInputRef = useRef(null);
   const [mediaUploading, setMediaUploading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -655,7 +657,7 @@ export default function RichTextEditor({
 
   // Debounced onChange handler
   const debouncedOnChange = useRef(
-    debounce((content: any) => {
+    debounce((content) => {
       if (onChange) onChange(content);
     }, 300)
   );
@@ -744,6 +746,9 @@ export default function RichTextEditor({
     onUpdate: ({ editor: e }) => {
       debouncedOnChange.current(e.getHTML());
     },
+    onBlur: ({ editor: e }) => {
+      if (onBlur) onBlur();
+    },
     onSelectionUpdate: ({ editor: e }) => {
       const { from, to } = e.state.selection;
 
@@ -751,7 +756,7 @@ export default function RichTextEditor({
       let imageFound = false;
       e.state.doc.nodesBetween(from, to, (node, pos) => {
         if (node.type.name === "blockImage") {
-          setSelectedImage(node as any);
+          setSelectedImage(node);
           setShowImageMenu(true);
           imageFound = true;
           return false; // Stop searching
@@ -788,10 +793,10 @@ export default function RichTextEditor({
             temp.innerHTML = cleanedHTML;
 
             // Convert to plain text with SINGLE line breaks
-            const convertToSingleSpacedText = (element: any) => {
+            const convertToSingleSpacedText = (element) => {
               let result = "";
 
-              const processNode = (node: any, isInParagraph = false) => {
+              const processNode = (node, isInParagraph = false) => {
                 if (node.nodeType === Node.TEXT_NODE) {
                   let text = node.textContent;
 
@@ -911,7 +916,7 @@ export default function RichTextEditor({
   });
 
   // Function to update text properties based on current selection
-  const updateTextProperties = (editorInstance: any) => {
+  const updateTextProperties = (editorInstance) => {
     if (!editorInstance) return;
 
     const newProperties = {
@@ -974,7 +979,7 @@ export default function RichTextEditor({
   useEffect(() => {
     if (!isMounted) return;
 
-    const handleKeyDown = (e: any) => {
+    const handleKeyDown = (e) => {
       // editor এখনও initialize না হলে return
       if (!editor || !containerRef.current?.contains(e.target)) return;
 
@@ -1021,7 +1026,7 @@ export default function RichTextEditor({
 
   // Improved Resize functionality
   useEffect(() => {
-    const handleMouseMove = (e: any) => {
+    const handleMouseMove = (e) => {
       if (!isResizing || !containerRef.current) return;
 
       e.preventDefault();
@@ -1063,7 +1068,7 @@ export default function RichTextEditor({
   }, [isResizing, minHeight, maxHeight]);
 
   // Image upload function - স্থানীয়ভাবে image লোড করার জন্য (সার্ভার ছাড়া)
-  const handleImageUpload = async (file: any) => {
+  const handleImageUpload = async (file) => {
     if (!editor) return;
 
     setMediaUploading(true);
@@ -1124,7 +1129,7 @@ export default function RichTextEditor({
   };
 
   // Image resize functions
-  const resizeImage = (width: any, height = null) => {
+  const resizeImage = (width, height = null) => {
     if (!editor || !selectedImage) return;
 
     if (height) {
@@ -1159,7 +1164,7 @@ export default function RichTextEditor({
     resizeImage(newWidth);
   };
 
-  const setImageSize = (size: any) => {
+  const setImageSize = (size) => {
     if (!editor || !selectedImage) return;
     const sizes = {
       small: "200px",
@@ -1234,7 +1239,7 @@ export default function RichTextEditor({
   };
 
   // Cell background - improved version
-  const setCellBackground = (color: any) => {
+  const setCellBackground = (color) => {
     if (!editor) return;
 
     const view = editor.view;
@@ -1278,14 +1283,14 @@ export default function RichTextEditor({
   };
 
   // Text color - using Color extension
-  const setTextColor = (color: any) => {
+  const setTextColor = (color) => {
     if (!editor) return;
     editor.chain().focus().setColor(color).run();
     setSelectedTextProperties((prev) => ({ ...prev, color }));
   };
 
   // Text highlight (background color) - FIXED VERSION
-  const setHighlightColor = (color: any) => {
+  const setHighlightColor = (color) => {
     if (!editor) return;
 
     // If color is null or undefined, remove the highlight
@@ -1303,21 +1308,21 @@ export default function RichTextEditor({
   };
 
   // Font size - using our custom extension
-  const setFontSize = (size: any) => {
+  const setFontSize = (size) => {
     if (!editor) return;
     editor.chain().focus().setFontSize(size).run();
     setSelectedTextProperties((prev) => ({ ...prev, fontSize: size }));
   };
 
   // Font family - using our custom extension
-  const setFontFamily = (fontFamily: any) => {
+  const setFontFamily = (fontFamily) => {
     if (!editor) return;
     editor.chain().focus().setFontFamily(fontFamily).run();
     setSelectedTextProperties((prev) => ({ ...prev, fontFamily }));
   };
 
   // Text alignment
-  const setTextAlignment = (alignment: any) => {
+  const setTextAlignment = (alignment) => {
     if (!editor) return;
     editor.chain().focus().setTextAlign(alignment).run();
     setSelectedTextProperties((prev) => ({ ...prev, align: alignment }));
@@ -1889,7 +1894,7 @@ export default function RichTextEditor({
                   .toggleHeading({ level: parseInt(value) })
                   .run();
               }
-              setSelectedTextProperties((prev: any) => ({
+              setSelectedTextProperties((prev) => ({
                 ...prev,
                 headingLevel: value === "paragraph" ? null : parseInt(value),
               }));

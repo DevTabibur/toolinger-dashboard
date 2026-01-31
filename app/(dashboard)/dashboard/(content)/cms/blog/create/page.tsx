@@ -233,14 +233,11 @@ const BlogCreatePage = () => {
   // Category function
 
   const handleCategoryToggle = (categoryId: string) => {
-    const currentCategories = formik.values.primaryCategory;
-    const isSelected = currentCategories === categoryId;
+    const currentCategory = formik.values.primaryCategory;
+    const isSelected = currentCategory === categoryId;
 
     if (isSelected) {
-      formik.setFieldValue(
-        "primaryCategory",
-        currentCategories?.filter((id: any) => id !== categoryId)
-      );
+      formik.setFieldValue("primaryCategory", "");
     } else {
       formik.setFieldValue("primaryCategory", categoryId);
     }
@@ -1101,24 +1098,24 @@ const BlogCreatePage = () => {
             </div>
           ) : null} */}
 
-           {formik.values.tags && formik.values.tags.length > 0 && (
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <FiHash className="w-4 h-4 text-zinc-500" />
-                    <h4 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">{t("Tags")}:</h4>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {formik.values.tags.map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className="inline-flex items-center px-3 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium border border-zinc-200 dark:border-zinc-700"
-                      >
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
+          {formik.values.tags && formik.values.tags.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <FiHash className="w-4 h-4 text-zinc-500" />
+                <h4 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">{t("Tags")}:</h4>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {formik.values.tags.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center px-3 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-medium border border-zinc-200 dark:border-zinc-700"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* SEO Preview */}
           {(formik.values.seo?.title || formik.values.seo?.description) && (
