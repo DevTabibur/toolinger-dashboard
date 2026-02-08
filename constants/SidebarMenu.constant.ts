@@ -45,34 +45,34 @@ export const SidebarMenuData: SidebarSection[] = [
         icon: FiGrid,
         href: "/dashboard",
       },
-      {
-        title: "Super Admin",
-        icon: FiUser,
-        href: "/dashboard/super-admin",
-      },
-      {
-        title: "Application",
-        icon: FiLayers,
-        href: "/dashboard/application",
-      },
+      // {
+      //   title: "Super Admin",
+      //   icon: FiUser,
+      //   href: "/dashboard/super-admin",
+      // },
+      // {
+      //   title: "Application",
+      //   icon: FiLayers,
+      //   href: "/dashboard/application",
+      // },
     ],
   },
   {
     title: "Content (CMS)",
     items: [
-      {
-        title: "Pages",
-        icon: FiFileText,
-        href: "#",
-        subItems: [{ title: "Pages", href: "/dashboard/cms/pages" }],
-      },
+      // {
+      //   title: "Pages",
+      //   icon: FiFileText,
+      //   href: "#",
+      //   subItems: [{ title: "Pages", href: "/dashboard/cms/pages" }],
+      // },
       {
         title: "Blog",
         icon: FiBookOpen,
         href: "#",
         subItems: [
           { title: "All Blog", href: "/dashboard/cms/blog" },
-          { title: "Create Blog", href: "/dashboard/cms/blog/create" },
+          // { title: "Create Blog", href: "/dashboard/cms/blog/create" },
           { title: "Blog Tags", href: "/dashboard/cms/blog/tag" },
           { title: "Categories", href: "/dashboard/cms/blog/category" },
           { title: "Blog Comments", href: "/dashboard/cms/blog/comments" },
@@ -88,16 +88,16 @@ export const SidebarMenuData: SidebarSection[] = [
       //     { title: "Cities", href: "/dashboard/cms/location/cities" },
       //   ],
       // },
-      {
-        title: "Testimonials",
-        icon: FiStar,
-        href: "/dashboard/cms/testimonials",
-      },
-      {
-        title: "FAQ",
-        icon: FiHelpCircle,
-        href: "/dashboard/cms/faq",
-      },
+      // {
+      //   title: "Testimonials",
+      //   icon: FiStar,
+      //   href: "/dashboard/cms/testimonials",
+      // },
+      // {
+      //   title: "FAQ",
+      //   icon: FiHelpCircle,
+      //   href: "/dashboard/cms/faq",
+      // },
     ],
   },
   // {
