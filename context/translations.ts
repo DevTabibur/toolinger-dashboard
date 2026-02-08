@@ -396,7 +396,7 @@ export const translations: Record<string, Record<string, string>> = {
     "Quick Actions": "Quick Actions",
     "Create Blog": "Create Blog",
     "Write a new blog post": "Write a new blog post",
-    "Add User": "Add User",
+    // "Add User": "Add User",
     "Register a new user": "Register a new user",
     "View Reports": "View Reports",
     "Analytics and insights": "Analytics and insights",
@@ -416,7 +416,7 @@ export const translations: Record<string, Record<string, string>> = {
   },
   bn: {
     Main: "প্রধান",
-    Main: "প্রধান",
+    // Main: "প্রধান",
     Inventory: "ইনভেন্টরি",
     Dashboard: "ড্যাশবোর্ড",
     "Super Admin": "সুপার অ্যাডমিন",
