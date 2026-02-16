@@ -3,7 +3,7 @@ import "./globals.css";
 import Providers from "@/lib/Providers";
 import { Montserrat } from "next/font/google";
 import ClientToaster from "@/components/ClientToaster";
-
+ 
 export const metadata: Metadata = {
   title: "Dashboard - Toolinger",
   description: "Dashboard - Toolinger",
