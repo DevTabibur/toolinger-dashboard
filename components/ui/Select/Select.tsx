@@ -15,7 +15,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
     helperText?: string;
 };
 
-const Select = ({ label, options, error, helperText, className, ...rest }: SelectProps) => {
+const Select = ({ label, options, error, helperText, className, value, ...rest }: SelectProps) => {
     return (
         <div className="w-full">
             {label && (
@@ -32,6 +32,7 @@ const Select = ({ label, options, error, helperText, className, ...rest }: Selec
                             : "border-zinc-200 dark:border-zinc-700",
                         className
                     )}
+                    value={value ?? ""}
                     {...rest}
                 >
                     {options.map((option) => (

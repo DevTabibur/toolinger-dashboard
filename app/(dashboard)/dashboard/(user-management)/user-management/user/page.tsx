@@ -1067,7 +1067,7 @@ const UsersPage = () => {
             </TableHeader>
             <TableBody>
               {users?.data?.data?.map((user: any, index: any) => (
-                <TableRow key={user.id}>
+                <TableRow key={user?._id ?? index}>
                   {/* <TableCell>
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center text-white font-semibold">

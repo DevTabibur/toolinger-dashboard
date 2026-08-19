@@ -56,7 +56,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>{/* inline script must be in head or top of body so it runs before hydration */}
         <script dangerouslySetInnerHTML={{ __html: bootstrapScript }} />
       </head>
